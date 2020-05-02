@@ -7,7 +7,8 @@ production = 'KUBERNETES_SERVICE_HOST' in os.environ
 
 credentials = {}
 if production:
-    pass
+    from pprint import pprint
+    pprint(os.environ)
 else:
     import secrets
     credentials = secrets.credentials
