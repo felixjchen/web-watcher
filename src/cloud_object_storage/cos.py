@@ -3,6 +3,8 @@ import os
 import ibm_boto3
 from ibm_botocore.client import Config, ClientError
 
+from pprint import pprint
+pprint(os.environ)
 production = 'KUBERNETES_SERVICE_HOST' in os.environ
 
 credentials = {}
