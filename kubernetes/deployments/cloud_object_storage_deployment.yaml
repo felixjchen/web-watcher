@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloud-object-storage-deployment
+  labels:
+    app: cloud-object-storage-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloud-object-storage-app
+  template:
+    metadata:
+      labels:
+        app: cloud-object-storage-app
+    spec:
+      containers:
+        - name: cloud-object-storage-container
+          image: docker.io/felixchen1998/web-watcher-cloud-object-storage:latest
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          env:
+            - name: SECRET_APIKEY
+              valueFrom:
+                secretKeyRef:
+                  name: cloud-object-storage-secret
+                  key: apikey
+            - name: SECRET_RESOURCE_INSTANCE_ID
+              valueFrom:
+                secretKeyRef:
+                  name: cloud-object-storage-secret
+                  key: resouce-instance-id
