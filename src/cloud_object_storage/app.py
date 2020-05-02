@@ -53,4 +53,6 @@ def get_file():
 
 
 if __name__ == "__main__":
+    from pprint import pprint
+    pprint(os.environ)
     app.run('127.0.0.1', port=8001, debug=True)

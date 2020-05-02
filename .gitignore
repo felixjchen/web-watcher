@@ -128,7 +128,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-kubernetes/secrets/*
+kubernetes/secrets/*.yaml
 **secrets.py
 
 src/cloud_object_storage/files/*.png
