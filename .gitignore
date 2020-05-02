@@ -130,3 +130,5 @@ dmypy.json
 
 kubernetes/secrets/*
 **secrets.py
+
+src/cloud_object_storage/files/*.png
