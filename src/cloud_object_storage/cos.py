@@ -7,19 +7,18 @@ production = 'KUBERNETES_SERVICE_HOST' in os.environ
 
 credentials = {}
 if production:
-    from pprint import pprint
-    pprint(os.environ)
+    COS_API_KEY_ID = os.environ['SECRET_APIKEY']
+    COS_RESOURCE_CRN = os.environ['SECRET_RESOURCE_INSTANCE_ID']
 else:
     import secrets
-    credentials = secrets.credentials
+    COS_API_KEY_ID = secrets.credentials['apikey']
+    COS_RESOURCE_CRN = secrets.credentials['resource_instance_id']
 
 # https://cloud.ibm.com/docs/services/cloud-object-storage?topic=cloud-object-storage-endpoints#endpoints
 COS_ENDPOINT = "https://s3.us-east.cloud-object-storage.appdomain.cloud"
 # https://cloud.ibm.com/docs/services/cloud-object-storage?topic=cloud-object-storage-classes#classes-locationconstraint
 COS_BUCKET_LOCATION = "us-east-standard"
 COS_AUTH_ENDPOINT = "https://iam.cloud.ibm.com/identity/token"
-COS_API_KEY_ID = credentials['apikey']
-COS_RESOURCE_CRN = credentials['resource_instance_id']
 
 # Create resource
 file_bucket = "web-watcher-files"
