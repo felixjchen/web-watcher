@@ -4,6 +4,7 @@ RUN pip install --upgrade pip
 RUN pip install ibm-cos-sdk
 RUN pip install flask
 
-COPY . .
+COPY app.py .
+COPY cos.py .
 
-CMD python cos.py
+CMD python app.py
