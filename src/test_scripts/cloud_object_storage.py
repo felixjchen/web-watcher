@@ -1,6 +1,6 @@
 import requests
 
-url = 'http://127.0.0.1:8001'
+url = 'http://0.0.0.0:8001'
 files = {'file': open('100303030222.png', 'rb')}
 
 
