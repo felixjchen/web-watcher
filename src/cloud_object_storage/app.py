@@ -44,7 +44,7 @@ def get_file():
     """
     data = request.json
     file_ID = data['file_ID']
-    server_file_path = f'./files/{file_ID}'
+    server_file_path = os.path.join('files', file_ID)
 
     get_item(server_file_path, file_ID)
 
