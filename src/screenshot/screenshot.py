@@ -1,6 +1,5 @@
 
 import os
-
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
@@ -10,8 +9,11 @@ def get_screenshot(url, file_path):
     options.add_argument('--headless')
     options.add_argument('--no-sandbox')
     options.add_argument("window-size=1920,1080")
+
+    # Production has chromedriver in PATH already.
     if os.environ.get('PRODUCTION'):
         driver = webdriver.Chrome(options=options)
+    # DEV enviroment is mac chromedriver
     else:
         driver = webdriver.Chrome('./chromedriver', options=options)
 

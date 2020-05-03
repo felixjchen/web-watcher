@@ -1,15 +1,23 @@
 
 import os
 from screenshot import get_screenshot
-
 from flask import Flask, send_file, request
-from screenshot import get_screenshot
-import os
 
 app = Flask(__name__)
 
+
 @app.route('/screenshot', methods=['POST'])
 def screenshot():
+    """ Return an screenshot file with name file_ID at url 
+
+    Args:
+        file_ID: the file_ID for file 
+        url: url for screenshot
+
+    Returns:
+        File for success
+
+    """
     data = request.json
     file_ID = data['file_ID']
     file_path = os.path.join('files', file_ID)
