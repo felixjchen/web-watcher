@@ -5,6 +5,16 @@ from selenium.webdriver.chrome.options import Options
 
 
 def get_screenshot(url, file_path):
+    """ Save an screenshot at file_path at url
+
+    Args:
+        file_path: the file_path for file
+        url: url for screenshot
+
+    Returns:
+        File for success
+
+    """
     options = Options()
     options.add_argument('--headless')
     options.add_argument('--no-sandbox')

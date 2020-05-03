@@ -18,6 +18,8 @@ def screenshot():
         File for success
 
     """
+
+    # Get payload data, create local file path
     data = request.json
     file_ID = data['file_ID']
     file_path = os.path.join('files', file_ID)
