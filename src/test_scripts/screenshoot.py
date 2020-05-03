@@ -1,6 +1,6 @@
 import requests
 
-url = 'http://127.0.0.1:8002'
+url = 'http://0.0.0.0:80'
 payload = {
     'url': 'http://www.facebook.com',
     'file_ID':  '10030303044.png'

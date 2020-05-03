@@ -21,10 +21,16 @@ RUN pip install --upgrade pip
 # install selenium
 RUN pip install selenium
 RUN pip install flask
+RUN pip install gevent
+RUN pip install gunicorn
 
 RUN mkdir files
 COPY screenshot.py .
 COPY app.py .
+COPY patched.py .
 
-CMD python app.py
+CMD gunicorn --worker-class gevent \
+    --workers 2 \
+    --bind 0.0.0.0:80 \
+    patched:app
 
