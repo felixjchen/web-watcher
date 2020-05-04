@@ -2,6 +2,7 @@ FROM python:3.7-alpine
 
 RUN pip install --upgrade pip
 RUN pip install scikit-image
+RUN pip install numpy
 RUN pip install opencv-python
 RUN pip install flask
 RUN pip install gevent
