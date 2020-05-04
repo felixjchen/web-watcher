@@ -1,6 +1,6 @@
 FROM python:3.7-alpine
 
-RUN apk add build-base
+RUN apk add --no-cache gcc libc-dev unixodbc-dev
 
 RUN pip install --upgrade pip
 RUN pip install ibm-cos-sdk
