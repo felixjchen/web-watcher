@@ -1,5 +1,7 @@
 FROM python:3.7-alpine
 
+RUN apk add build-base
+
 RUN pip install --upgrade pip
 RUN pip install scikit-image
 RUN pip install numpy
