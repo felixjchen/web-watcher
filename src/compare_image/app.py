@@ -1,7 +1,7 @@
 import os
 from flask import Flask, request, send_file
 from werkzeug.utils import secure_filename
-from image_compare import get_difference, create_difference_image
+from compare_image import get_difference, create_difference_image
 
 app = Flask(__name__)
 
