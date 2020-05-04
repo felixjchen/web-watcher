@@ -1,10 +1,10 @@
 FROM python:3.7-alpine
 
-RUN apk add build-base
+RUN apk add --no-cache gcc libc-dev unixodbc-dev
 
 RUN pip install --upgrade pip
-RUN pip install scikit-image
 RUN pip install numpy
+RUN pip install scikit-image
 RUN pip install opencv-python
 RUN pip install flask
 RUN pip install gevent
