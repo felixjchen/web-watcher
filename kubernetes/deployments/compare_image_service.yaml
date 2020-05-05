@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: compare-image-deployment
+  labels:
+    app: compare-image-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: compare-image-app
+  template:
+    metadata:
+      labels:
+        app: compare-image-app
+    spec:
+      containers:
+        - name: compare-image-container
+          image: docker.io/felixchen1998/web-watcher-compare-image:latest
+          ports:
+            - containerPort: 80
+              protocol: TCP
