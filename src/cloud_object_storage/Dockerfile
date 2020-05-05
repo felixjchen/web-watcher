@@ -1,6 +1,7 @@
 FROM python:3.7-alpine
 
-RUN apk add --no-cache gcc libc-dev unixodbc-dev
+# For gevent
+RUN apk add --no-cache python3-dev libffi-dev gcc musl-dev make
 
 RUN pip install --upgrade pip
 RUN pip install ibm-cos-sdk
