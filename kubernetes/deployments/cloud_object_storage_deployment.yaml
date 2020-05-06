@@ -5,7 +5,7 @@ metadata:
   labels:
     app: cloud-object-storage-deployment
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: cloud-object-storage-app
@@ -17,6 +17,13 @@ spec:
       containers:
         - name: cloud-object-storage-container
           image: docker.io/felixchen1998/web-watcher-cloud-object-storage:latest
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
           ports:
             - containerPort: 80
               protocol: TCP
