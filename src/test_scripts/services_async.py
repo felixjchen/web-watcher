@@ -34,7 +34,7 @@ else:
 
 
 async def test_1(session):
-    ''' This test case gets a screenshot of youtube.com as new.png, uploads and downloads it from COS as old.png and creates a difference image (from new.png and old.png) called difference.png. Finnally, difference image should be the same as both new.png and old.png'''
+    ''' This test case gets a screenshot of youtube.com as new.png, uploads and downloads it from COS as old.png and creates a difference image (from new.png and old.png) called difference.png. Finnally, difference image should be the same as both new.png and old.png with an difference index of 0'''
 
     # TEST Screenshot
     payload = {
@@ -84,7 +84,7 @@ async def test_1(session):
 
 
 async def test_2(session):
-    ''' '''
+    ''' This test case gets two screenshots of youtube.com as YT1.png, YT2.png. Then creates the difference image and gets the difference index of both Youtube screenshots, ideally these two images are different because youtube will recommend different videos for seperate instances.'''
 
     # TEST Screenshot
     payload = {
