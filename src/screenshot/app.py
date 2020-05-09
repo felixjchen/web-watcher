@@ -1,5 +1,6 @@
 
 import os
+import io
 import uuid
 from screenshot import get_screenshot
 from flask import Flask, send_file, request
@@ -28,7 +29,14 @@ def screenshot():
 
     get_screenshot(url, file_path)
 
-    return send_file(file_path)
+    # Buffer file into memmory
+    file_buffer = io.BytesIO()
+    with open(file_path, 'rb') as f:
+        file_buffer.write(f.read())
+    file_buffer.seek(0)
+    os.remove(file_path)
+
+    return send_file(file_buffer, mimetype='image/gif')
 
 
 if __name__ == "__main__":

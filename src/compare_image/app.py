@@ -1,4 +1,5 @@
 import os
+import io
 import uuid
 from flask import Flask, request, send_file
 from werkzeug.utils import secure_filename
@@ -36,8 +37,8 @@ def difference():
     result = str(get_difference(file_path_old, file_path_new))
 
     # Remove two downloaded files
-    # os.remove(file_path_old)
-    # os.remove(file_path_new)
+    os.remove(file_path_old)
+    os.remove(file_path_new)
 
     return result
 
@@ -69,14 +70,22 @@ def difference_image():
 
     file_path_difference = os.path.join(
         'files', f'{uuid.uuid4()}.png')
+    file_path_difference = os.path.abspath(file_path_difference)
 
     create_difference_image(file_path_old, file_path_new, file_path_difference)
 
     # Remove two downloaded files
-    # os.remove(file_path_old)
-    # os.remove(file_path_new)
+    os.remove(file_path_old)
+    os.remove(file_path_new)
 
-    return send_file(file_path_difference, mimetype='image/gif')
+    # Buffer file into memmory
+    differece_image_buffer = io.BytesIO()
+    with open(file_path_difference, 'rb') as f:
+        differece_image_buffer.write(f.read())
+    differece_image_buffer.seek(0)
+    os.remove(file_path_difference)
+
+    return send_file(differece_image_buffer, mimetype='image/gif')
 
 
 if __name__ == "__main__":

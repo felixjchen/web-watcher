@@ -1,5 +1,7 @@
 
 import os
+import uuid
+import io
 from cos import multi_part_upload, get_item
 
 from flask import Flask, request, send_file
@@ -23,10 +25,15 @@ def set_file():
     file = request.files['file']
     file_ID = secure_filename(file.filename)
     server_file_path = os.path.join('files', file_ID)
+    server_file_path = os.path.abspath(server_file_path)
     file.save(server_file_path)
 
     # Upload file to COS
     multi_part_upload(server_file_path, file_ID)
+
+    # Remove file
+    print(server_file_path)
+    os.remove(server_file_path)
 
     return 'Success'
 
@@ -48,8 +55,14 @@ def get_file():
 
     get_item(server_file_path, file_ID)
 
-    # Serve file
-    return send_file(server_file_path, mimetype='image/gif')
+    # Buffer file into memmory
+    file_buffer = io.BytesIO()
+    with open(server_file_path, 'rb') as f:
+        file_buffer.write(f.read())
+    file_buffer.seek(0)
+    os.remove(server_file_path)
+
+    return send_file(file_buffer, mimetype='image/gif')
 
 
 if __name__ == "__main__":
