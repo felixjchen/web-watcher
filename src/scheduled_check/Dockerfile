@@ -4,6 +4,6 @@ RUN pip install --upgrade pip
 RUN pip install requests
 
 RUN mkdir files
-COPY check.py . 
+COPY scheduled_check.py . 
 
 CMD python scheduled_check.py
