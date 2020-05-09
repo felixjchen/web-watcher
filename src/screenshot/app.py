@@ -1,5 +1,6 @@
 
 import os
+import uuid
 from screenshot import get_screenshot
 from flask import Flask, send_file, request
 
@@ -21,7 +22,7 @@ def screenshot():
 
     # Get payload data, create local file path
     data = request.json
-    file_ID = data['file_ID']
+    file_ID = f'{uuid.uuid4()}.png'
     file_path = os.path.join('files', file_ID)
     url = data['url']
 
