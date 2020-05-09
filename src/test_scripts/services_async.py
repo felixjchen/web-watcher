@@ -121,9 +121,11 @@ async def test_2(session):
     return r > 0
 
 
-async def main():
+async def get_tests():
     async with ClientSession() as session:
-        await asyncio.gather(test_1(session), test_2(session))
+        tests = await asyncio.gather(test_1(session), test_2(session))
+
+    return tests
 
 
 if __name__ == "__main__":
@@ -132,7 +134,12 @@ if __name__ == "__main__":
 
     loop = asyncio.get_event_loop()
     try:
-        loop.run_until_complete(main())
+        tests = get_tests()
+        results = loop.run_until_complete(tests)
+
+        if all(results):
+            print('Passed all test cases')
+
     finally:
         loop.close()
 
