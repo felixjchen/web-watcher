@@ -1,4 +1,5 @@
 import os
+import uuid
 from flask import Flask, request, send_file
 from werkzeug.utils import secure_filename
 from compare_image import get_difference, create_difference_image
@@ -18,6 +19,7 @@ def difference():
         Image structural similarity index
 
     """
+    # Save both image
     file_old = request.files['file_old']
     file_ID_old = secure_filename(file_old.filename)
     file_path_old = os.path.join('files', file_ID_old)
@@ -30,7 +32,14 @@ def difference():
     file_path_new = os.path.abspath(file_path_new)
     file_new.save(file_path_new)
 
-    return str(get_difference(file_path_old, file_path_new))
+    # Get structural similarity index
+    result = str(get_difference(file_path_old, file_path_new))
+
+    # Remove two downloaded files
+    # os.remove(file_path_old)
+    # os.remove(file_path_new)
+
+    return result
 
 
 @app.route('/difference_image', methods=['POST'])
@@ -44,6 +53,8 @@ def difference_image():
     Returns:
         difference image with bounding boxes
     """
+
+    # Save both image
     file_old = request.files['file_old']
     file_ID_old = secure_filename(file_old.filename)
     file_path_old = os.path.join('files', file_ID_old)
@@ -57,9 +68,13 @@ def difference_image():
     file_new.save(file_path_new)
 
     file_path_difference = os.path.join(
-        'files', f'{file_ID_new.replace(".png","")}_difference.png')
+        'files', f'{uuid.uuid4()}.png')
 
     create_difference_image(file_path_old, file_path_new, file_path_difference)
+
+    # Remove two downloaded files
+    # os.remove(file_path_old)
+    # os.remove(file_path_new)
 
     return send_file(file_path_difference, mimetype='image/gif')
 
