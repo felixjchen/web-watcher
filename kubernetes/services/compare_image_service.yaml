@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: compare-image-service
+  name: compare-image
   labels:
-    app: compare-image-service
+    app: compare-image
 spec:
   ports:
     - port: 80
