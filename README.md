@@ -11,3 +11,6 @@
 
 - use alpine image for Selenium application
 - use alpine for compare_image Sci kit application
+- frontend
+- configuration
+- scheduled check

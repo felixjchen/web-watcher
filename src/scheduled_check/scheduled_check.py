@@ -32,51 +32,6 @@ else:
     screenshot_address = 'http://0.0.0.0:8003'
 
 
-def test():
-
-    # TEST Screenshot
-    payload = {
-        'url': 'http://www.youtube.com',
-        'file_ID':  'new.png'
-    }
-
-    r = requests.post(f'{screenshot_address}/screenshot', json=payload)
-    open('files/new.png', 'wb').write(r.content)
-
-    # TEST COS
-    # UP
-    files = {'file': open('files/new.png', 'rb')}
-    r = requests.post(
-        f'{cloud_object_storage_service_address}/set', files=files)
-
-    # DOWN
-    payload = {
-        'file_ID':  'new.png'
-    }
-    r = requests.post(
-        f'{cloud_object_storage_service_address}/get', json=payload)
-    open('files/old.png', 'wb').write(r.content)
-
-    # TEST Compare
-    # Get difference image
-    files = {
-        'file_old': open('files/old.png', 'rb'),
-        'file_new': open('files/new.png', 'rb')
-    }
-    r = requests.post(
-        f'{compare_image_service_address}/difference_image', files=files)
-    open('files/difference.png', 'wb').write(r.content)
-
-    # Get difference
-    files = {
-        'file_old': open('files/old.png', 'rb'),
-        'file_new': open('files/difference.png', 'rb')
-    }
-
-    r = requests.post(
-        f'{compare_image_service_address}/difference', files=files)
-    print(r.text)
-
-
+pass
 if __name__ == "__main__":
-    test()
+    pass
