@@ -1,7 +1,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: scheduled-check-job
+  name: check-job
 spec:
   schedule: "*/1 * * * *"
   jobTemplate:
@@ -9,6 +9,6 @@ spec:
       template:
         spec:
           containers:
-            - name: scheduled-check-script
-              image: docker.io/felixchen1998/web-watcher-scheduled-check:latest
+            - name: check-script
+              image: docker.io/felixchen1998/web-watcher-check:latest
           restartPolicy: OnFailure
