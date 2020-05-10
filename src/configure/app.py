@@ -5,7 +5,7 @@ import os
 import uuid
 import requests
 from flask import Flask, jsonify, request
-from configure import add_user, list_users, get_user, add_watcher, list_watchers, get_watcher
+from configure import add_user, list_users, get_user, add_watcher, list_watchers, get_watcher, update_watcher
 
 app = Flask(__name__)
 
@@ -59,29 +59,49 @@ def watchers():
         return jsonify(list_watchers())
 
     # Create new watcher
-    data = request.json
-    user_id = data['user_id']
-    url = data['url']
-    frequency = data['frequency']
+    if request.method == 'POST':
+        data = request.json
+        user_id = data['user_id']
+        url = data['url']
+        frequency = data['frequency']
 
-    watcher_id = add_watcher(user_id, url, frequency)
+        watcher_id = add_watcher(user_id, url, frequency)
 
-    # FIRST TIME SCREENSHOT
-    server_file_path = os.path.join('files', f'{watcher_id}.png')
-    r = requests.get(f'{screenshot_address}/screenshot', json=data)
-    open(server_file_path, 'wb').write(r.content)
-    # Upload to COS
-    files = {'file': open(server_file_path, 'rb')}
-    r = requests.post(
-        f'{cloud_object_storage_service_address}/file', files=files)
-    os.remove(server_file_path)
+        # FIRST TIME SCREENSHOT
+        server_file_path = os.path.join('files', f'{watcher_id}.png')
+        r = requests.get(f'{screenshot_address}/screenshot', json=data)
+        open(server_file_path, 'wb').write(r.content)
+        # Upload to COS
+        files = {'file': open(server_file_path, 'rb')}
+        r = requests.post(
+            f'{cloud_object_storage_service_address}/file', files=files)
+        os.remove(server_file_path)
 
-    return f'Succesfully created watcher {watcher_id}'
+        return f'Succesfully created watcher {watcher_id}'
+
+    return 'Error'
 
 
-@app.route('/watchers/<watcher_id>')
+@app.route('/watchers/<watcher_id>', methods=['GET', 'PUT'])
 def watcher_profile(watcher_id):
-    return jsonify(get_watcher(watcher_id))
+
+    # Get watcher
+    if request.method == 'GET':
+        return jsonify(get_watcher(watcher_id))
+
+    # Update watcher
+    if request.method == 'PUT':
+        data = request.json
+        last_run = data.get('last_run')
+        url = data.get('url')
+        frequency = data.get('frequency')
+
+        update_watcher(watcher_id, last_run, frequency, url)
+
+        return f'Succesfully updated watcher {watcher_id}'
+
+    return 'Error'
+
 
 
 if __name__ == "__main__":

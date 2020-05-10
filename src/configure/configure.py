@@ -102,6 +102,29 @@ def add_watcher(user_id, url, frequency):
 
     return watcher_uuid
 
+def update_watcher(watcher_id, last_run=None, frequency=None, url=None):
+
+    # Add watcher to use
+    with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
+
+        db = client['configuration']
+
+        # Add watcher to watchers
+        with Document(db, "watchers") as document:
+            watchers = document['watchers']
+            watcher = watchers[watcher_id]
+
+            if last_run:
+                watcher['last_run'] = last_run
+
+            if frequency:
+                watcher['frequency'] = frequency
+
+            if url:
+                watcher['url'] = url
+
+
+    return True
 
 def get_watcher(watcher_id):
 
