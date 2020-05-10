@@ -1,9 +1,9 @@
 import requests
 
-url = 'http://0.0.0.0:80'
+url = 'http://0.0.0.0:8003'
 payload = {
     'url': 'http://www.facebook.com',
 }
 
-r = requests.post(f'{url}/screenshot', json=payload)
-open('10030303044.png', 'wb').write(r.content)
+r = requests.get(f'{url}/screenshot', json=payload)
+open('files/screenshot.png', 'wb').write(r.content)

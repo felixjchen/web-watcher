@@ -8,7 +8,7 @@ from flask import Flask, send_file, request
 app = Flask(__name__)
 
 
-@app.route('/screenshot', methods=['POST'])
+@app.route('/screenshot', methods=['GET'])
 def screenshot():
     """ Return an screenshot file with name file_ID at url 
 
