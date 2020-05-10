@@ -32,5 +32,5 @@ COPY patched.py .
 CMD gunicorn --worker-class gevent \
     --workers 2 \
     --bind 0.0.0.0:8003 \
-    patched:app
+    app:app
 
