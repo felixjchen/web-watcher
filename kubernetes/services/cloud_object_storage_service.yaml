@@ -8,6 +8,6 @@ spec:
   ports:
     - port: 80
       protocol: TCP
-      targetPort: 80
+      targetPort: 8001
   selector:
     app: cloud-object-storage-app
