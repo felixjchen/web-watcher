@@ -80,6 +80,7 @@ def add_watcher(user_id, url, frequency):
 
     watcher_uuid = str(uuid.uuid4())
     new_watcher = {
+        'user_id' : user_id,
         'url': url,
         'frequency': frequency,
         'last_run': int(time())
