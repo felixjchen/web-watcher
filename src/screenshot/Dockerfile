@@ -27,7 +27,6 @@ RUN pip install gunicorn
 RUN mkdir files
 COPY screenshot.py .
 COPY app.py .
-COPY patched.py .
 
 CMD gunicorn --worker-class gevent \
     --workers 2 \
