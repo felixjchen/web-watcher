@@ -41,42 +41,39 @@ async def test_1(session):
         'url': 'http://www.facebook.com',
     }
 
-    async with session.post(f'{screenshot_address}/screenshot', json=payload) as response:
+    async with session.get(f'{screenshot_address}/screenshot', json=payload) as response:
         file = await response.read()
-        open('files/new.png', 'wb').write(file)
+        open('files/test_1.png', 'wb').write(file)
 
     # TEST COS
     # UP
-    files = {'file': open('files/new.png', 'rb')}
+    files = {'file': open('files/test_1.png', 'rb')}
     r = await session.post(
-        f'{cloud_object_storage_service_address}/set', data=files)
+        f'{cloud_object_storage_service_address}/file', data=files)
 
     # DOWN
-    payload = {
-        'file_ID':  'new.png'
-    }
-    async with session.post(f'{cloud_object_storage_service_address}/get', json=payload) as response:
+    async with session.get(f'{cloud_object_storage_service_address}/file/test_1.png') as response:
         file = await response.read()
-        open('files/old.png', 'wb').write(file)
+        open('files/test_1_old.png', 'wb').write(file)
 
     # TEST Compare
     # Get difference image
     files = {
-        'file_old': open('files/old.png', 'rb'),
-        'file_new': open('files/new.png', 'rb')
+        'file_old': open('files/test_1_old.png', 'rb'),
+        'file_new': open('files/test_1.png', 'rb')
     }
 
-    async with session.post(f'{compare_image_service_address}/difference_image', data=files) as response:
+    async with session.get(f'{compare_image_service_address}/difference_image', data=files) as response:
         file = await response.read()
-        open('files/difference.png', 'wb').write(file)
+        open('files/test_1_difference.png', 'wb').write(file)
 
     # Get difference
     files = {
-        'file_old': open('files/old.png', 'rb'),
-        'file_new': open('files/difference.png', 'rb')
+        'file_old': open('files/test_1_old.png', 'rb'),
+        'file_new': open('files/test_1_difference.png', 'rb')
     }
     r = 1
-    async with session.post(f'{compare_image_service_address}/difference', data=files) as response:
+    async with session.get(f'{compare_image_service_address}/difference', data=files) as response:
         r = await response.text()
         r = float(r)
 
@@ -90,11 +87,11 @@ async def test_2(session):
     payload = {
         'url': 'http://www.youtube.com',
     }
-    async with session.post(f'{screenshot_address}/screenshot', json=payload) as response:
+    async with session.get(f'{screenshot_address}/screenshot', json=payload) as response:
         file = await response.read()
         open('files/YT1.png', 'wb').write(file)
 
-    async with session.post(f'{screenshot_address}/screenshot', json=payload) as response:
+    async with session.get(f'{screenshot_address}/screenshot', json=payload) as response:
         file = await response.read()
         open('files/YT2.png', 'wb').write(file)
 
@@ -104,9 +101,9 @@ async def test_2(session):
         'file_old': open('files/YT1.png', 'rb'),
         'file_new': open('files/YT2.png', 'rb')
     }
-    async with session.post(f'{compare_image_service_address}/difference_image', data=files) as response:
+    async with session.get(f'{compare_image_service_address}/difference_image', data=files) as response:
         file = await response.read()
-        open('files/difference.png', 'wb').write(file)
+        open('files/YT_difference.png', 'wb').write(file)
 
     # Get difference
     files = {
@@ -114,7 +111,7 @@ async def test_2(session):
         'file_new': open('files/YT2.png', 'rb')
     }
     r = 0
-    async with session.post(f'{compare_image_service_address}/difference', data=files) as response:
+    async with session.get(f'{compare_image_service_address}/difference', data=files) as response:
         r = await response.text()
         r = float(r)
 
