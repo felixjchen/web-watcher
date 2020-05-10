@@ -9,9 +9,9 @@ production = 'KUBERNETES_SERVICE_HOST' in os.environ
 credentials = {}
 if production:
     # TODO
-    USERNAME = credentials['username']
-    PASSWORD = credentials['password']
-    URL = credentials['url']
+    USERNAME = os.environ['SECRET_USERNAME']
+    PASSWORD = os.environ['SECRET_PASSWORD']
+    URL = os.environ['SECRET_URL']
 
 else:
     import secrets
