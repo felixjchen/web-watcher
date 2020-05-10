@@ -40,41 +40,37 @@ def test_1():
     payload = {
         'url': 'http://www.facebook.com',
     }
-
-    r = requests.post(f'{screenshot_address}/screenshot', json=payload)
-    open('files/new.png', 'wb').write(r.content)
+    r = requests.get(f'{screenshot_address}/screenshot', json=payload)
+    open('files/test_1.png', 'wb').write(r.content)
 
     # TEST COS
     # UP
-    files = {'file': open('files/new.png', 'rb')}
+    files = {'file': open('files/test_1.png', 'rb')}
     r = requests.post(
-        f'{cloud_object_storage_service_address}/set', files=files)
+        f'{cloud_object_storage_service_address}/file', files=files)
 
     # DOWN
-    payload = {
-        'file_ID':  'new.png'
-    }
-    r = requests.post(
-        f'{cloud_object_storage_service_address}/get', json=payload)
-    open('files/old.png', 'wb').write(r.content)
+    r = requests.get(
+        f'{cloud_object_storage_service_address}/file/test_1.png')
+    open('files/test_1_old.png', 'wb').write(r.content)
 
     # TEST Compare
     # Get difference image
     files = {
-        'file_old': open('files/old.png', 'rb'),
-        'file_new': open('files/new.png', 'rb')
+        'file_old': open('files/test_1_old.png', 'rb'),
+        'file_new': open('files/test_1.png', 'rb')
     }
-    r = requests.post(
+    r = requests.get(
         f'{compare_image_service_address}/difference_image', files=files)
-    open('files/difference.png', 'wb').write(r.content)
+    open('files/test_1_difference.png', 'wb').write(r.content)
 
     # Get difference
     files = {
-        'file_old': open('files/old.png', 'rb'),
-        'file_new': open('files/difference.png', 'rb')
+        'file_old': open('files/test_1_old.png', 'rb'),
+        'file_new': open('files/test_1_difference.png', 'rb')
     }
 
-    r = requests.post(
+    r = requests.get(
         f'{compare_image_service_address}/difference', files=files)
     return float(r.text) == 0
 
@@ -86,9 +82,9 @@ def test_2():
     payload = {
         'url': 'http://www.youtube.com',
     }
-    r = requests.post(f'{screenshot_address}/screenshot', json=payload)
+    r = requests.get(f'{screenshot_address}/screenshot', json=payload)
     open('files/YT1.png', 'wb').write(r.content)
-    r = requests.post(f'{screenshot_address}/screenshot', json=payload)
+    r = requests.get(f'{screenshot_address}/screenshot', json=payload)
     open('files/YT2.png', 'wb').write(r.content)
 
     # TEST Compare
@@ -97,7 +93,7 @@ def test_2():
         'file_old': open('files/YT1.png', 'rb'),
         'file_new': open('files/YT2.png', 'rb')
     }
-    r = requests.post(
+    r = requests.get(
         f'{compare_image_service_address}/difference_image', files=files)
     open('files/YT_difference.png', 'wb').write(r.content)
 
@@ -106,7 +102,7 @@ def test_2():
         'file_old': open('files/YT1.png', 'rb'),
         'file_new': open('files/YT2.png', 'rb')
     }
-    r = requests.post(
+    r = requests.get(
         f'{compare_image_service_address}/difference', files=files)
     return float(r.text) > 0
 
