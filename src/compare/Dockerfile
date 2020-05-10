@@ -14,7 +14,7 @@ RUN pip install gunicorn
 
 RUN mkdir files
 COPY app.py .
-COPY compare_image.py .
+COPY compare.py .
 COPY patched.py .
 
 CMD gunicorn --worker-class gevent \

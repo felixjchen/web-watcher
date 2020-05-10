@@ -18,10 +18,10 @@ if production:
     cloud_object_storage_service_address = get_address(
         cloud_object_storage_service_host, cloud_object_storage_service_port)
 
-    compare_image_service_host = os.environ['COMPARE_IMAGE_SERVICE_HOST']
-    compare_image_service_port = os.environ['COMPARE_IMAGE_SERVICE_PORT']
-    compare_image_service_address = get_address(
-        compare_image_service_host, compare_image_service_port)
+    compare_service_host = os.environ['COMPARE_SERVICE_HOST']
+    compare_service_port = os.environ['COMPARE_SERVICE_PORT']
+    compare_service_address = get_address(
+        compare_service_host, compare_service_port)
 
     screenshot_host = os.environ['SCREENSHOT_SERVICE_HOST']
     screenshot_port = os.environ['SCREENSHOT_SERVICE_PORT']
@@ -29,7 +29,7 @@ if production:
         screenshot_host, screenshot_port)
 else:
     cloud_object_storage_service_address = 'http://0.0.0.0:8001'
-    compare_image_service_address = 'http://0.0.0.0:8002'
+    compare_service_address = 'http://0.0.0.0:8002'
     screenshot_address = 'http://0.0.0.0:8003'
 
 
@@ -63,7 +63,7 @@ async def test_1(session):
         'file_new': open('files/test_1.png', 'rb')
     }
 
-    async with session.get(f'{compare_image_service_address}/difference_image', data=files) as response:
+    async with session.get(f'{compare_service_address}/difference_image', data=files) as response:
         file = await response.read()
         open('files/test_1_difference.png', 'wb').write(file)
 
@@ -73,7 +73,7 @@ async def test_1(session):
         'file_new': open('files/test_1_difference.png', 'rb')
     }
     r = 1
-    async with session.get(f'{compare_image_service_address}/difference', data=files) as response:
+    async with session.get(f'{compare_service_address}/difference', data=files) as response:
         r = await response.text()
         r = float(r)
 
@@ -101,7 +101,7 @@ async def test_2(session):
         'file_old': open('files/YT1.png', 'rb'),
         'file_new': open('files/YT2.png', 'rb')
     }
-    async with session.get(f'{compare_image_service_address}/difference_image', data=files) as response:
+    async with session.get(f'{compare_service_address}/difference_image', data=files) as response:
         file = await response.read()
         open('files/YT_difference.png', 'wb').write(file)
 
@@ -111,7 +111,7 @@ async def test_2(session):
         'file_new': open('files/YT2.png', 'rb')
     }
     r = 0
-    async with session.get(f'{compare_image_service_address}/difference', data=files) as response:
+    async with session.get(f'{compare_service_address}/difference', data=files) as response:
         r = await response.text()
         r = float(r)
 

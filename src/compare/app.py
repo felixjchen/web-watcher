@@ -3,7 +3,7 @@ import io
 import uuid
 from flask import Flask, request, send_file
 from werkzeug.utils import secure_filename
-from compare_image import get_difference, create_difference_image
+from compare import get_difference, create_difference_image
 
 app = Flask(__name__)
 
@@ -68,8 +68,7 @@ def difference_image():
     file_path_new = os.path.abspath(file_path_new)
     file_new.save(file_path_new)
 
-    file_path_difference = os.path.join(
-        'files', f'{uuid.uuid4()}.png')
+    file_path_difference = os.path.join('files', f'{uuid.uuid4()}.png')
     file_path_difference = os.path.abspath(file_path_difference)
 
     create_difference_image(file_path_old, file_path_new, file_path_difference)
