@@ -134,4 +134,4 @@ kubernetes/secrets/*.yaml
 **secrets.py
 
 
-**files/
+**/files/

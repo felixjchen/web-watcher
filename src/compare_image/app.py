@@ -8,7 +8,7 @@ from compare_image import get_difference, create_difference_image
 app = Flask(__name__)
 
 
-@app.route('/difference', methods=['POST'])
+@app.route('/difference', methods=['GET'])
 def difference():
     """ Gets the structural similarity index between two images
 
@@ -43,7 +43,7 @@ def difference():
     return result
 
 
-@app.route('/difference_image', methods=['POST'])
+@app.route('/difference_image', methods=['GET'])
 def difference_image():
     """ Gets an image with bounding boxes with the difference between file_old and file_new
 

@@ -1,19 +1,19 @@
 import requests
 
 
-url = 'http://0.0.0.0:80'
+url = 'http://0.0.0.0:8002'
 files = {
-    'file_old': open('files/old_1.png', 'rb'),
-    'file_new': open('files/new_1.png', 'rb')
+    'file_old': open('required/compare_1.png', 'rb'),
+    'file_new': open('required/compare_2.png', 'rb')
 }
 
-r = requests.post(f'{url}/difference', files=files)
+r = requests.get(f'{url}/difference', files=files)
 print(r.text)
 
 
 files = {
-    'file_old': open('files/old_1.png', 'rb'),
-    'file_new': open('files/new_1.png', 'rb')
+    'file_old': open('required/compare_1.png', 'rb'),
+    'file_new': open('required/compare_2.png', 'rb')
 }
-r = requests.post(f'{url}/difference_image', files=files)
+r = requests.get(f'{url}/difference_image', files=files)
 open('files/difference_1.png', 'wb').write(r.content)
