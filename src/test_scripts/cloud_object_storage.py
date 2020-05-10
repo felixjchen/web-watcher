@@ -1,15 +1,11 @@
 import requests
 
 url = 'http://0.0.0.0:8001'
-files = {'file': open('100303030222.png', 'rb')}
+files = {'file': open('required/cos.png', 'rb')}
 
+# upload
+r = requests.post(f'{url}/file', files=files)
 
-r = requests.post(f'{url}/set', files=files)
-print(r.status_code)
-
-payload = {
-    'file_ID':  '100303030222.png'
-}
-
-r = requests.post(f'{url}/get', json=payload)
-open('test.png', 'wb').write(r.content)
+# download
+r = requests.get(f'{url}/file/cos.png')
+open('files/cos_down.png', 'wb').write(r.content)

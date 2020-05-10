@@ -10,7 +10,7 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 
 
-@app.route('/set', methods=['POST'])
+@app.route('/file', methods=['POST'])
 def set_file():
     """ Sets the file in ibm cos bucket
 
@@ -38,22 +38,20 @@ def set_file():
     return 'Success'
 
 
-@app.route('/get', methods=['POST'])
-def get_file():
-    """ GET the file in ibm cos bucket with file_ID
+@app.route('/file/<file_id>', methods=['GET'])
+def get_file(file_id):
+    """ GET the file in ibm cos bucket with file_id
 
     Args:
-        file_ID: the file_ID for file 
+        file_id: the file_id for file 
 
     Returns:
         File for success
 
     """
-    data = request.json
-    file_ID = data['file_ID']
-    server_file_path = os.path.join('files', file_ID)
+    server_file_path = os.path.join('files', file_id)
 
-    get_item(server_file_path, file_ID)
+    get_item(server_file_path, file_id)
 
     # Buffer file into memmory
     file_buffer = io.BytesIO()
