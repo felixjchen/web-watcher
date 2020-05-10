@@ -9,6 +9,7 @@ RUN pip install flask
 RUN pip install gevent
 RUN pip install gunicorn
 
+RUN mkdir files/
 COPY app.py .
 COPY configure.py .
 COPY patched.py .
