@@ -135,3 +135,5 @@ kubernetes/secrets/*.yaml
 
 
 **/files/
+**/new/
+**/old/
