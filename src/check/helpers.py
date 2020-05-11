@@ -27,12 +27,17 @@ if production:
     configure_port = os.environ['CONFIGURE_SERVICE_PORT']
     configure_address = get_address(
         configure_host, configure_port)
+
+
+    NOTIFIER_APIKEY = os.environ['SECRET_APIKEY']
 else:
     cloud_object_storage_service_address = 'http://0.0.0.0:8001'
     compare_service_address = 'http://0.0.0.0:8002'
     screenshot_address = 'http://0.0.0.0:8003'
     configure_address = 'http://0.0.0.0:8004'
     from secrets import credentials
+
+    NOTIFIER_APIKEY = credentials['apikey']
 
 def take_new_screenshot(watcher_id, url, server_file_paths):
     # print(f'{watcher_id}: New screenshot thread {threading.get_ident()}')
@@ -80,7 +85,7 @@ def notify(user_id, url):
 
         payload = {
             'alertType': 'email',
-            'apikey': credentials['apikey'],
+            'apikey': NOTIFIER_APIKEY,
             'address': email,
             'subject': 'web-watcher notification',
             'body': f'{url} has changed'
