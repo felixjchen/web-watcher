@@ -5,7 +5,7 @@ metadata:
   labels:
     app: configure-deployment
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: configure-app
@@ -17,13 +17,10 @@ spec:
       containers:
         - name: configure-container
           image: docker.io/felixchen1998/web-watcher-configure:latest
-          resources:
-            requests:
-              memory: "64Mi"
-              cpu: "250m"
-            limits:
-              memory: "128Mi"
-              cpu: "500m"
+          # resources:
+          #   limits:
+          #     memory: "128Mi"
+          #     cpu: "100m"
           ports:
             - containerPort: 80
               protocol: TCP
@@ -37,7 +34,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: configure-secret
-                  key: passowrd
+                  key: password
             - name: SECRET_URL
               valueFrom:
                 secretKeyRef:

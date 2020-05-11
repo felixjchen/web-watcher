@@ -5,7 +5,7 @@ metadata:
   labels:
     app: compare-deployment
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: compare-app
@@ -17,13 +17,10 @@ spec:
       containers:
         - name: compare-container
           image: docker.io/felixchen1998/web-watcher-compare:latest
-          resources:
-            requests:
-              memory: "64Mi"
-              cpu: "250m"
-            limits:
-              memory: "128Mi"
-              cpu: "500m"
+          # resources:
+          #   limits:
+          #     memory: "512Mi"
+          #     cpu: "400m"
           ports:
             - containerPort: 80
               protocol: TCP
