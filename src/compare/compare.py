@@ -8,10 +8,6 @@ def get_difference(file_path_old, file_path_new):
     before = cv2.imread(file_path_old)
     after = cv2.imread(file_path_new)
 
-    
-    print('Old image shape: ',type(before.shape))
-    
-    print('New image shape: ',type(after.shape))
 
     # Convert images to grayscale
     before_gray = cv2.cvtColor(before, cv2.COLOR_BGR2GRAY)
