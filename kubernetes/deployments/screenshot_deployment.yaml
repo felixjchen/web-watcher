@@ -1,3 +1,4 @@
+# https://stackoverflow.com/questions/46085748/define-size-for-dev-shm-on-container-engine/46434614#46434614 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -17,10 +18,17 @@ spec:
       containers:
         - name: screenshot-container
           image: docker.io/felixchen1998/web-watcher-screenshot:latest
-          resources:
-            limits:
-              memory: "1Gi"
-              cpu: "500m"
+          # resources:
+          #   limits:
+          #     memory: "1Gi"
+          #     cpu: "500m"
           ports:
             - containerPort: 80
               protocol: TCP
+          volumeMounts:
+            - mountPath: /dev/shm
+              name: dshm
+      volumes:
+        - name: dshm
+          emptyDir:
+            medium: Memory
