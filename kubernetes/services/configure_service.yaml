@@ -5,9 +5,11 @@ metadata:
   labels:
     app: configure
 spec:
+  type: NodePort
   ports:
     - port: 80
       protocol: TCP
       targetPort: 8004
+      nodePort: 31568
   selector:
     app: configure-app
