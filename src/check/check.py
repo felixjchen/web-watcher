@@ -15,7 +15,7 @@ production = 'KUBERNETES_SERVICE_HOST' in os.environ
 if production:
     configure_host = os.environ['CONFIGURE_SERVICE_HOST']
     configure_port = os.environ['CONFIGURE_SERVICE_PORT']
-    configuration_address = f'http://{configure_host}:{configure_port}'
+    configure_address = f'http://{configure_host}:{configure_port}'
 else:
     configure_address = 'http://0.0.0.0:8004'
 
