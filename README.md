@@ -35,14 +35,7 @@
 
 ## to do
 
-
--  services.py in kubernetes 
-    - screenshot application is crashing, lack of memory resources?  https://stackoverflow.com/questions/53902507/unknown-error-session-deleted-because-of-page-crash-from-unknown-error-cannot/53970825
-
-- test then check.py    
-
-- frontend , check if can expose first
-
+- frontend 
 - check, this will likely be better in Go , because of concurency needs maybe checkout concurent futures # https://docs.python.org/3/library/concurrent.futures.html#threadpoolexecutor-example
 - tests per application endpoint
 - use alpine image for screenshot application
