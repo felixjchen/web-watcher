@@ -22,6 +22,13 @@
 - https://0.0.0.0:8004
 - reads and writes configuration to IBM Cloud Cloudant NoSQL
 
+## Jobs
+
+### check
+
+- threaded for each watcher
+- if last_run + frequency < current epoch then check if the web page has changed, notify user if it has
+
 ---
 
 ## run an application
