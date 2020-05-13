@@ -1,7 +1,7 @@
 import os
 import requests
 import uuid
-from time import time
+import time
 from cloudant import cloudant
 from cloudant.document import Document
 
@@ -62,6 +62,42 @@ def add_user(name, email):
 
     return new_uuid
 
+def delete_user(user_id):
+
+    with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
+
+        db = client['configuration']
+
+        watchers = []
+        with Document(db, "users") as document:
+            users = document["users"]
+            watchers = users[user_id]['watchers']
+
+        for watcher_id in watchers: 
+            delete_watcher(watcher_id)
+
+        # Otherwise document conflict
+        with Document(db, "users") as document:
+            del(document["users"][user_id])
+
+def update_user(user_id, name=None, email=None):
+
+    with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
+
+        db = client['configuration']
+
+        with Document(db, "users") as document:
+
+            user = document["users"][user_id]
+
+            if name:
+                user['name'] = name
+            
+            if email:
+                user['email'] = email
+
+
+
 
 def get_user(user_id):
 
@@ -96,7 +132,7 @@ def add_watcher(user_id, url, frequency):
         'user_id': user_id,
         'url': url,
         'frequency': frequency,
-        'last_run': int(time())
+        'last_run': int(time.time())
     }
 
     # FIRST TIME SCREENSHOT
@@ -200,12 +236,13 @@ def list_watchers():
 
 if __name__ == "__main__":
     # add_user("Felix", "felixchen1998@gmail.com")
-    felix_id = "0f5e3e25-9cc6-4d60-9faf-f7157abc1b69"
-    # print(list_users())
-    # print(get_user(felix_id))
+    # felix_id = "0f5e3e25-9cc6-4d60-9faf-f7157abc1b69"
+    # # print(list_users())
+    # # print(get_user(felix_id))
 
+    # # print(list_watchers())
+    # # add_watcher(felix_id, 'http://www.youtube.com', 86400)
+    # print(list_users())
     # print(list_watchers())
-    # add_watcher(felix_id, 'http://www.youtube.com', 86400)
-    print(list_users())
-    print(list_watchers())
-    print(get_watcher('e0aab339-7572-489d-8e8e-50fe741697a6'))
+    # print(get_watcher('e0aab339-7572-489d-8e8e-50fe741697a6'))
+    pass

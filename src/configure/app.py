@@ -2,7 +2,7 @@ from gevent import monkey
 monkey.patch_all()
 
 from flask import Flask, jsonify, request
-from configure import add_user, list_users, get_user, add_watcher, list_watchers, get_watcher, update_watcher, delete_watcher
+from configure import add_user, list_users, get_user, add_watcher, list_watchers, get_watcher, update_watcher, delete_watcher, update_user, delete_user
 
 app = Flask(__name__)
 
@@ -23,10 +23,23 @@ def users():
     return f'CREATED user {user_id}'
 
 
-@app.route('/users/<user_id>')
+@app.route('/users/<user_id>', methods=['GET', 'PUT', 'DELETE'])
 def user_profile(user_id):
-    return jsonify(get_user(user_id))
 
+    if request.method == 'GET':
+        return jsonify(get_user(user_id))
+
+    if request.method == 'PUT':
+        update_user(user_id, **request.json)
+
+        return f'UPDATED user {user_id}'
+
+    if request.method == 'DELETE':
+        delete_user(user_id)
+        
+        return f'DELETED user {user_id}'
+
+    return 'Error'
 
 @app.route('/watchers', methods=['GET', 'POST'])
 def watchers():
@@ -65,7 +78,7 @@ def watcher_profile(watcher_id):
 
         update_watcher(watcher_id, last_run, frequency, url)
 
-        return f'Succesfully updated watcher {watcher_id}'
+        return f'UPDATED watcher {watcher_id}'
 
     if request.method == 'DELETE':
         delete_watcher(watcher_id)
