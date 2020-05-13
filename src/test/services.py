@@ -49,10 +49,10 @@ async def test_1(session):
     # UP
     files = {'file': open('files/test_1.png', 'rb')}
     r = await session.post(
-        f'{cloud_object_storage_service_address}/file', data=files)
+        f'{cloud_object_storage_service_address}/files', data=files)
 
     # DOWN
-    async with session.get(f'{cloud_object_storage_service_address}/file/test_1.png') as response:
+    async with session.get(f'{cloud_object_storage_service_address}/files/test_1.png') as response:
         file = await response.read()
         open('files/test_1_old.png', 'wb').write(file)
 
