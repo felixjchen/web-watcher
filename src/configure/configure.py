@@ -1,4 +1,5 @@
 import os
+import requests
 import uuid
 from time import time
 from cloudant import cloudant
@@ -6,17 +7,29 @@ from cloudant.document import Document
 
 production = 'KUBERNETES_SERVICE_HOST' in os.environ
 
-credentials = {}
 if production:
-    # TODO
+    def get_address(host, port):
+        return f'http://{host}:{port}'
+
+    cloud_object_storage_service_host = os.environ['CLOUD_OBJECT_STORAGE_SERVICE_HOST']
+    cloud_object_storage_service_port = os.environ['CLOUD_OBJECT_STORAGE_SERVICE_PORT']
+    cloud_object_storage_service_address = get_address(
+        cloud_object_storage_service_host, cloud_object_storage_service_port)
+
+    screenshot_host = os.environ['SCREENSHOT_SERVICE_HOST']
+    screenshot_port = os.environ['SCREENSHOT_SERVICE_PORT']
+    screenshot_address = get_address(
+        screenshot_host, screenshot_port)
+
     USERNAME = os.environ['SECRET_USERNAME']
     PASSWORD = os.environ['SECRET_PASSWORD']
     URL = os.environ['SECRET_URL']
-
 else:
-    import secrets
+    cloud_object_storage_service_address = 'http://0.0.0.0:8001'
+    screenshot_address = 'http://0.0.0.0:8003'
+
+    from secrets import credentials
     # Credentials for db
-    credentials = secrets.credentials
     USERNAME = credentials['username']
     PASSWORD = credentials['password']
     URL = credentials['url']
@@ -80,11 +93,22 @@ def add_watcher(user_id, url, frequency):
 
     watcher_uuid = str(uuid.uuid4())
     new_watcher = {
-        'user_id' : user_id,
+        'user_id': user_id,
         'url': url,
         'frequency': frequency,
         'last_run': int(time())
     }
+
+    # FIRST TIME SCREENSHOT
+    server_file_path = os.path.join('files', f'{watcher_uuid}.png')
+    r = requests.get(f'{screenshot_address}/screenshot', json={'url': url})
+    open(server_file_path, 'wb').write(r.content)
+
+    # Upload to COS
+    files = {'file': open(server_file_path, 'rb')}
+    r = requests.post(
+        f'{cloud_object_storage_service_address}/files', files=files)
+    os.remove(server_file_path)
 
     # Add watcher to use
     with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
@@ -101,6 +125,28 @@ def add_watcher(user_id, url, frequency):
             watchers[watcher_uuid] = new_watcher
 
     return watcher_uuid
+
+def delete_watcher(watcher_id):
+    requests.delete(f'{cloud_object_storage_service_address}/files/{watcher_id}.png')
+
+    # Add watcher to use
+    with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
+
+        db = client['configuration']
+
+        user_id = ''
+
+        # Add watcher to watchers
+        with Document(db, "watchers") as document:
+            user_id = document['watchers'][watcher_id]['user_id']
+            del(document['watchers'][watcher_id])
+
+        with Document(db, "users") as document:
+            users = document["users"]
+            users[user_id]["watchers"].remove(watcher_id)
+        
+    return True
+
 
 def update_watcher(watcher_id, last_run=None, frequency=None, url=None):
 
@@ -123,8 +169,8 @@ def update_watcher(watcher_id, last_run=None, frequency=None, url=None):
             if url:
                 watcher['url'] = url
 
-
     return True
+
 
 def get_watcher(watcher_id):
 
