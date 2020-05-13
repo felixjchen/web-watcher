@@ -13,15 +13,20 @@ def users():
     if request.method == 'GET':
         return jsonify(list_users())
 
-    # Add new user
-    data = request.json
-    name = data['name']
-    email = data['email']
+    if request.method == 'POST':
+        # Add new user
+        data = request.json
+        name = data['name']
+        email = data['email']
 
-    user_id = add_user(name, email)
+        user_id = add_user(name, email)
 
-    return f'CREATED user {user_id}'
+        return jsonify({
+            'message': f'CREATED user {user_id}',
+            'user_id': user_id
+        })
 
+    return 'Error'
 
 @app.route('/users/<user_id>', methods=['GET', 'PUT', 'DELETE'])
 def user_profile(user_id):
@@ -32,12 +37,18 @@ def user_profile(user_id):
     if request.method == 'PUT':
         update_user(user_id, **request.json)
 
-        return f'UPDATED user {user_id}'
+        return jsonify({
+            'message': f'UPDATED user {user_id}',
+            'user_id': user_id
+        })
 
     if request.method == 'DELETE':
         delete_user(user_id)
         
-        return f'DELETED user {user_id}'
+        return jsonify({
+            'message': f'DELETED user {user_id}',
+            'user_id': user_id
+        })
 
     return 'Error'
 
@@ -57,7 +68,10 @@ def watchers():
 
         watcher_id = add_watcher(user_id, url, frequency)
 
-        return f'CREATED watcher {watcher_id}'
+        return jsonify({
+            'message': f'CREATED watcher {watcher_id}',
+            'watcher_id': watcher_id
+        })
 
     return 'Error'
 
@@ -78,12 +92,18 @@ def watcher_profile(watcher_id):
 
         update_watcher(watcher_id, last_run, frequency, url)
 
-        return f'UPDATED watcher {watcher_id}'
+        return jsonify({
+            'message': f'UPDATED watcher {watcher_id}',
+            'watcher_id': watcher_id
+        })
 
     if request.method == 'DELETE':
         delete_watcher(watcher_id)
 
-        return f'DELETED watcher {watcher_id}'
+        return jsonify({
+            'message': f'DELETED watcher {watcher_id}',
+            'watcher_id': watcher_id
+        })
 
     return 'Error'
 
