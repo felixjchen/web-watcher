@@ -33,8 +33,6 @@ cos = ibm_boto3.resource("s3",
 
 def get_item(file_path, item_name):
 
-    print("Retrieving item from bucket: {0}, key: {1}".format(
-        file_bucket, item_name))
     try:
         file = cos.Object(file_bucket, item_name)
 
@@ -51,11 +49,21 @@ def get_item(file_path, item_name):
 
     return False
 
+def delete_item(item_name):
+    try:
+        cos.Object(file_bucket, item_name).delete()
+        print("Item: {0} deleted!".format(item_name))
+        return True
+
+    except ClientError as be:
+        print("CLIENT ERROR: {0}\n".format(be))
+    except Exception as e:
+        print("Unable to delete item: {0}".format(e))
+
+    return False
 
 def multi_part_upload(file_path, item_name):
     try:
-        print("Starting file transfer for {0} to bucket: {1}\n".format(
-            item_name, file_bucket))
         # set 5 MB chunks
         part_size = 1024 * 1024 * 5
 
@@ -88,3 +96,4 @@ def multi_part_upload(file_path, item_name):
 
 
 # print(get_bucket_contents())
+print(delete_item('index.js'))

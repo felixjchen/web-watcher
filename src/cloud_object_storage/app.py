@@ -4,7 +4,7 @@ monkey.patch_all()
 import os
 import uuid
 import io
-from cos import multi_part_upload, get_item
+from cos import multi_part_upload, get_item, delete_item
 
 from flask import Flask, request, send_file
 from werkzeug.utils import secure_filename
@@ -12,7 +12,7 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 
 
-@app.route('/file', methods=['POST'])
+@app.route('/files', methods=['POST'])
 def set_file():
     """ Sets the file in ibm cos bucket
 
@@ -40,7 +40,7 @@ def set_file():
     return 'Success'
 
 
-@app.route('/file/<file_id>', methods=['GET'])
+@app.route('/files/<file_id>', methods=['GET', 'DELETE'])
 def get_file(file_id):
     """ GET the file in ibm cos bucket with file_id
 
@@ -51,18 +51,29 @@ def get_file(file_id):
         File for success
 
     """
-    server_file_path = os.path.join('files', file_id)
 
-    get_item(server_file_path, file_id)
+    if request.method == 'GET':
+        server_file_path = os.path.join('files', file_id)
 
-    # Buffer file into memmory
-    file_buffer = io.BytesIO()
-    with open(server_file_path, 'rb') as f:
-        file_buffer.write(f.read())
-    file_buffer.seek(0)
-    os.remove(server_file_path)
+        get_item(server_file_path, file_id)
 
-    return send_file(file_buffer, mimetype='image/gif')
+        # Buffer file into memmory
+        file_buffer = io.BytesIO()
+        with open(server_file_path, 'rb') as f:
+            file_buffer.write(f.read())
+        file_buffer.seek(0)
+        os.remove(server_file_path)
+
+        return send_file(file_buffer, mimetype='image/gif')
+
+    if request.method == 'DELETE':
+
+        result = delete_item(file_id)
+
+        if result:
+            return f'Succesfully deleted {file_id}'
+
+    return 'Something went wrong'
 
 
 if __name__ == "__main__":

@@ -35,7 +35,7 @@
 
 ## to do
 
-- frontend 
+- frontend: https://material.io/develop/web/docs/getting-started/
 - check, this will likely be better in Go , because of concurency needs maybe checkout concurent futures # https://docs.python.org/3/library/concurrent.futures.html#threadpoolexecutor-example
 - tests per application endpoint
 - use alpine image for screenshot application
