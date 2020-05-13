@@ -55,7 +55,7 @@ def get_old_screenshot(watcher_id, server_file_paths):
     # print(f'{watcher_id}: Old screenshot thread {threading.get_ident()}')
     server_file_path_old_screenshot = os.path.join('files', f'{watcher_id}_old.png')
     server_file_path_old_screenshot = os.path.abspath(server_file_path_old_screenshot)
-    with requests.get(f'{cloud_object_storage_service_address}/file/{watcher_id}.png') as response:
+    with requests.get(f'{cloud_object_storage_service_address}/files/{watcher_id}.png') as response:
         with open(server_file_path_old_screenshot, 'wb') as file:
             file.write(response.content)
 
@@ -64,7 +64,7 @@ def get_old_screenshot(watcher_id, server_file_paths):
 
 def update_old_screenshot(server_file_path):
     files = {'file': open(server_file_path, 'rb')}
-    requests.post(f'{cloud_object_storage_service_address}/file', files=files) 
+    requests.post(f'{cloud_object_storage_service_address}/files', files=files) 
 
 def get_difference(server_file_paths):
     files = {
