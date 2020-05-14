@@ -188,27 +188,32 @@
               ></th>
             </tr>
           </thead>
+
           <tbody class="mdc-data-table__content">
+            {% for watcher_id, data in watchers %}
             <tr class="mdc-data-table__row">
-              <td class="mdc-data-table__cell">Felix</td>
-              <td class="mdc-data-table__cell">http://www.youtube.com</td>
+              <td class="mdc-data-table__cell">{{users[data.user_id].name}}</td>
+              <td class="mdc-data-table__cell">{{data.url}}</td>
               <td class="mdc-data-table__cell mdc-data-table__cell--numeric">
-                4
+                {{data.frequency}}
               </td>
               <td class="mdc-data-table__cell mdc-data-table__cell--numeric">
-                100002290
+                {{data.last_run}}
               </td>
               <td class="mdc-data-table__cell">
-                <span id="3Anchor" class="anchor material-icons">
+                <span id="{{watcher_id}}Anchor" class="anchor material-icons">
                   more_vert</span
                 >
               </td>
             </tr>
+            {% endfor %}
           </tbody>
+
         </table>
       </div>
 
-      <div id="3" class="mdc-menu mdc-menu-surface">
+      {% for watcher_id, data in watchers %}
+      <div id="{{watcher_id}}" class="mdc-menu mdc-menu-surface">
         <ul
           class="mdc-list"
           role="menu"
@@ -226,6 +231,8 @@
           </li>
         </ul>
       </div>
+      {% endfor %}
+
     </div>
 
     <script src="bundle.js" async></script>

@@ -26,8 +26,8 @@ app.get('/', function(req, res) {
     }
 
     axios.all([getUsers(), getWatchers()]).then(axios.spread(function (users, watchers) {
-        console.log(users.data)
-        console.log(watchers.data)
+        // console.log(users.data)
+        // console.log(watchers.data)
 
         res.render('index.html', {
             users: users.data,
