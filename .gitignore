@@ -138,4 +138,4 @@ kubernetes/secrets/*.yaml
 **/new/
 **/old/
 
-**/node_modules/*
+**/node_modules/

@@ -1,0 +1,52 @@
+// Tables
+@use '@material/data-table/mdc-data-table';
+@use '@material/data-table';
+
+// Menu
+@use "@material/list/mdc-list";
+@use "@material/menu-surface/mdc-menu-surface";
+@use "@material/menu/mdc-menu";
+@use "@material/menu";
+
+// TABS
+@use "@material/tab-bar/mdc-tab-bar";
+@use "@material/tab-scroller/mdc-tab-scroller";
+@use "@material/tab-indicator/mdc-tab-indicator";
+@use "@material/tab/mdc-tab";
+
+// Buttons
+@use "@material/button";
+@use "@material/button/mdc-button";
+@include button.core-styles;
+
+.tabcontent {
+  display: none;
+  margin: 1rem;
+  padding: 0 16px;
+}
+
+.table {
+  width: 100%;
+}
+
+.anchor {
+  float: right;
+  cursor: pointer;
+}
+
+.mdc-button {
+  margin-bottom: 8px;
+  float: right;
+}
+
+.mdc-button__ripple {
+  border: 1px solid #6200ee !important;
+}
+
+.mdc-menu {
+  @include menu.width(3);
+}
+
+.mdc-list-item .material-icons {
+  margin-right: 1rem;
+}
