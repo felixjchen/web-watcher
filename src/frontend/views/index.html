@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <title>web-watcher</title>
     <!-- https://material.io/resources/icons/?icon=more_vert&style=baseline -->
     <link
       rel="stylesheet"
@@ -60,7 +61,6 @@
     </div>
 
     <div id="UsersTabContent" class="tabcontent">
-      {{title}}
       <button class="mdc-button mdc-button--outlined">
         <div class="mdc-button__ripple"></div>
         <i class="material-icons mdc-button__icon" aria-hidden="true">add</i>
@@ -100,35 +100,27 @@
             </tr>
           </thead>
           <tbody class="mdc-data-table__content">
+
+            {% for user_id, data in users %}
             <tr class="mdc-data-table__row">
-              <td class="mdc-data-table__cell">Felix</td>
-              <td class="mdc-data-table__cell">felixchen1998@gmail.com</td>
+              <td class="mdc-data-table__cell">{{data.name}}</td>
+              <td class="mdc-data-table__cell">{{data.email}}</td>
               <td class="mdc-data-table__cell mdc-data-table__cell--numeric">
-                4
+                {{data.watchers | length}}
               </td>
               <td class="mdc-data-table__cell">
-                <span id="1Anchor" class="anchor material-icons">
+                <span id="{{user_id}}Anchor" class="anchor material-icons">
                   more_vert</span
                 >
               </td>
             </tr>
-            <tr class="mdc-data-table__row">
-              <td class="mdc-data-table__cell">Dude</td>
-              <td class="mdc-data-table__cell">dude!@gmail.com</td>
-              <td class="mdc-data-table__cell mdc-data-table__cell--numeric">
-                2
-              </td>
-              <td class="mdc-data-table__cell">
-                <span id="2Anchor" class="anchor material-icons">
-                  more_vert</span
-                >
-              </td>
-            </tr>
+            {% endfor %}
           </tbody>
         </table>
       </div>
 
-      <div id="1" class="mdc-menu mdc-menu-surface">
+      {% for user_id, data in users %}
+      <div id="{{user_id}}" class="mdc-menu mdc-menu-surface">
         <ul
           class="mdc-list"
           role="menu"
@@ -146,25 +138,8 @@
           </li>
         </ul>
       </div>
+      {% endfor %}
 
-      <div id="2" class="mdc-menu mdc-menu-surface">
-        <ul
-          class="mdc-list"
-          role="menu"
-          aria-hidden="true"
-          aria-orientation="vertical"
-          tabindex="-1"
-        >
-          <li class="mdc-list-item" role="menuitem">
-            <span class="material-icons">edit</span>
-            <span class="mdc-list-item__text">Edit</span>
-          </li>
-          <li class="mdc-list-item" role="menuitem">
-            <span class="material-icons">delete</span>
-            <span class="mdc-list-item__text">Delete</span>
-          </li>
-        </ul>
-      </div>
     </div>
 
     <div id="WatchersTabContent" class="tabcontent">

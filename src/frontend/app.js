@@ -1,3 +1,4 @@
+const axios = require('axios');
 const nunjucks = require('nunjucks')
 const express = require('express')
 const app = express()
@@ -16,9 +17,25 @@ nunjucks.configure('views', {
 });
 
 app.get('/', function(req, res) {
-    res.render('index.html', {
-        title : 'My First Nunjucks Page'
-      });
+
+    function getUsers(){
+        return axios.get(configure_adddress + '/users');
+    }
+    function getWatchers(){
+        return axios.get(configure_adddress + '/watchers');
+    }
+
+    axios.all([getUsers(), getWatchers()]).then(axios.spread(function (users, watchers) {
+        console.log(users.data)
+        console.log(watchers.data)
+
+        res.render('index.html', {
+            users: users.data,
+            watchers: watchers.data
+        });
+
+    }));
+
 });
 
 app.use(express.static('views'))
