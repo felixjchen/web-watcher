@@ -1,5 +1,3 @@
-const configure_address = 'http://0.0.0.0:8004';
-
 import {
   MDCDataTable
 } from "@material/data-table";
@@ -12,7 +10,12 @@ import {
 import {
   MDCTextField
 } from "@material/textfield";
-import { MDCLinearProgress } from '@material/linear-progress';
+import {
+  MDCLinearProgress
+} from '@material/linear-progress';
+import {
+  MDCMenu
+} from "@material/menu";
 
 const linearProgress = new MDCLinearProgress(document.querySelector('.mdc-linear-progress'));
 
@@ -32,7 +35,6 @@ function initTextFields() {
     new MDCTextField(field);
   });
 }
-// const textField = new MDCTextField(document.querySelector('.mdc-text-field'));
 
 function initTabs() {
   const tabs = document.getElementsByClassName("mdc-tab");
@@ -56,9 +58,6 @@ function initTabs() {
   tabs[0].click();
 }
 
-import {
-  MDCMenu
-} from "@material/menu";
 
 function initMenu(id) {
   const menu = new MDCMenu(document.getElementById(id));
@@ -69,6 +68,26 @@ function initMenu(id) {
   button.addEventListener("click", function () {
     menu.open = true;
   });
+
+  const deleteButton = document.getElementById(id).childNodes[1].childNodes[1];
+  deleteButton.addEventListener("click", function () {
+
+    const userDelete = deleteButton.classList.contains("deleteUser");
+
+    const request = new XMLHttpRequest();
+    if (userDelete) {
+      request.open('DELETE', configure_address + '/users/' + id, false)
+    } else {
+      request.open('DELETE', configure_address + '/watchers/' + id, false)
+    }
+
+    request.send();
+    if (request.status === 200) {
+      location.reload();
+    }
+
+  })
+
 }
 
 function initAllMenus() {
@@ -173,7 +192,7 @@ function initAddUser() {
         watcherCountCell.innerHTML = "0";
 
         const menuIcon = document.createElement('span');
-        menuIcon.id = 'Anchor' + response['user_id'] 
+        menuIcon.id = 'Anchor' + response['user_id']
         menuIcon.innerHTML = "more_vert";
         menuIcon.classList.add("anchor");
         menuIcon.classList.add("material-icons");
@@ -204,7 +223,7 @@ function initAddWatcher() {
 
   button.addEventListener("click", function () {
     form.style.paddingTop = "56px";
-    loading.style.display="block";
+    loading.style.display = "block";
     // Get form data
     const user_id = document.getElementById("AddWatcherUserID");
     const url = document.getElementById("AddWatcherUrl");
@@ -246,7 +265,6 @@ function initAddWatcher() {
         const menuCell = row.insertCell(4);
         menuCell.classList.add("mdc-data-table__cell");
 
-        console.log(getUserName(user_id.value))
         userCell.innerHTML = getUserName(user_id.value);
 
         const a = document.createElement('a');
@@ -258,7 +276,7 @@ function initAddWatcher() {
         lastRunCell.innerHTML = response['last_run'];
 
         const menuIcon = document.createElement('span');
-        menuIcon.id = 'Anchor' + response['watcher_id'] 
+        menuIcon.id = 'Anchor' + response['watcher_id']
         menuIcon.innerHTML = "more_vert";
         menuIcon.classList.add("anchor");
         menuIcon.classList.add("material-icons");
@@ -276,14 +294,14 @@ function initAddWatcher() {
         url.value = "";
         frequency.value = "";
         form.style.paddingTop = "60px";
-        loading.style.display="none";
+        loading.style.display = "none";
       }
     }
     http.send(JSON.stringify(payload));
   });
 }
 
-function getUserName(user_id){
+function getUserName(user_id) {
   // POST to configure service
   const http = new XMLHttpRequest();
   http.open('GET', configure_address + '/users/' + user_id, false)
@@ -303,4 +321,10 @@ function main() {
   initAddWatcher();
 }
 
+function setConfigureAddress(address) {
+  console.log(address)
+}
+
 main();
+
+const configure_address = 'http://0.0.0.0:8004';
