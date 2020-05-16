@@ -68,11 +68,12 @@ def watchers():
         url = data['url']
         frequency = data['frequency']
 
-        watcher_id = add_watcher(user_id, url, frequency)
+        watcher_id, last_run = add_watcher(user_id, url, frequency)
 
         return jsonify({
             'message': f'CREATED watcher {watcher_id}',
-            'watcher_id': watcher_id
+            'watcher_id': watcher_id,
+            'last_run': last_run
         })
 
     return 'Error'

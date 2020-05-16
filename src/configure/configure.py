@@ -128,11 +128,12 @@ def list_users():
 def add_watcher(user_id, url, frequency):
 
     watcher_uuid = str(uuid.uuid4())
+    last_run = int(time.time())
     new_watcher = {
         'user_id': user_id,
         'url': url,
         'frequency': frequency,
-        'last_run': int(time.time())
+        'last_run': last_run
     }
 
     # FIRST TIME SCREENSHOT
@@ -160,7 +161,7 @@ def add_watcher(user_id, url, frequency):
             watchers = document['watchers']
             watchers[watcher_uuid] = new_watcher
 
-    return watcher_uuid
+    return watcher_uuid, last_run
 
 def delete_watcher(watcher_id):
     requests.delete(f'{cloud_object_storage_service_address}/files/{watcher_id}.png')
