@@ -2,9 +2,11 @@ from gevent import monkey
 monkey.patch_all()
 
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 from configure import add_user, list_users, get_user, add_watcher, list_watchers, get_watcher, update_watcher, delete_watcher, update_user, delete_user
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/users', methods=['GET', 'POST'])
 def users():

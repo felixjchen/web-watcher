@@ -6,6 +6,7 @@ RUN apk add --no-cache python3-dev libffi-dev gcc musl-dev make
 RUN pip install --upgrade pip
 RUN pip install cloudant
 RUN pip install flask
+RUN pip install flask-cors
 RUN pip install gevent
 RUN pip install gunicorn
 
