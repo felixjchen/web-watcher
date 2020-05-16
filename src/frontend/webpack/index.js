@@ -1,3 +1,5 @@
+const configure_address = 'http://0.0.0.0:8004';
+
 import {
   MDCDataTable
 } from "@material/data-table";
@@ -19,7 +21,6 @@ const ripples = [].map.call(document.querySelectorAll(selector), function (el) {
   return new MDCRipple(el);
 });
 
-const configure_address = 'http://0.0.0.0:8004';
 
 function initTextFields() {
   const fields = document.getElementsByClassName("mdc-text-field");
@@ -193,12 +194,92 @@ function initAddUser() {
   });
 }
 
+function initAddWatcher() {
+  const button = document.getElementById("AddWatcherButton");
+
+  button.addEventListener("click", function () {
+    // Get form data
+    const user_id = document.getElementById("AddWatcherUserID");
+    const url = document.getElementById("AddWatcherUrl");
+    const frequency = document.getElementById("AddWatcherFrequency");
+    const payload = {
+      user_id: user_id.value,
+      url: url.value,
+      frequency: frequency.value,
+    };
+
+    const table = document.getElementById("WatchersTable");
+
+    // POST to configure service
+    const http = new XMLHttpRequest();
+    http.open('POST', configure_address + '/watchers', true)
+    http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    http.onreadystatechange = function () {
+      if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+        const response = JSON.parse(this.responseText);
+
+        // Adding Row to table
+        const row = table.insertRow();
+        row.classList.add("mdc-data-table__row");
+
+        const userCell = row.insertCell(0);
+        userCell.classList.add("mdc-data-table__cell");
+
+        const urlCell = row.insertCell(1);
+        urlCell.classList.add("mdc-data-table__cell");
+
+        const frequencyCell = row.insertCell(2);
+        frequencyCell.classList.add("mdc-data-table__cell");
+        frequencyCell.classList.add("mdc-data-table__cell--numeric");
+
+        const lastRunCell = row.insertCell(3);
+        lastRunCell.classList.add("mdc-data-table__cell");
+        lastRunCell.classList.add("mdc-data-table__cell--numeric");
+
+        const menuCell = row.insertCell(4);
+        menuCell.classList.add("mdc-data-table__cell");
+
+        userCell.innerHTML = 'PLACEHOLDER';
+
+        const a = document.createElement('a');
+        a.href = url.value;
+        a.innerHTML = url.value;
+        urlCell.appendChild(a);
+
+        frequencyCell.innerHTML = frequency.value;;
+        lastRunCell.innerHTML = response['last_run'];
+
+        const menuIcon = document.createElement('span');
+        menuIcon.id = 'Anchor' + response['watcher_id'] 
+        menuIcon.innerHTML = "more_vert";
+        menuIcon.classList.add("anchor");
+        menuIcon.classList.add("material-icons");
+        menuCell.appendChild(menuIcon);
+
+        // Adding Menu
+        const menus = document.getElementById("WatcherMenus");
+        const menu = document.getElementsByClassName("WatcherMenu")[0].cloneNode(true);
+        menu.id = response['watcher_id']
+        menus.appendChild(menu)
+
+        initMenu(response['watcher_id']);
+        closeForms();
+        user_id.value = "";
+        url.value = "";
+        frequency.value = "";
+      }
+    }
+    http.send(JSON.stringify(payload));
+  });
+}
+
 function main() {
   initTabs();
   initAllMenus();
   initAddForms();
   initTextFields();
   initAddUser();
+  initAddWatcher();
 }
 
 main();
