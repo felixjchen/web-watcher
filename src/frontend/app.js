@@ -26,17 +26,17 @@ app.get('/', function (req, res) {
     }
 
     axios.all([getUsers(), getWatchers()]).then(axios.spread(function (users, watchers) {
-        console.log(watchers.data)
+        // console.log(watchers.data)
         // Convert epoch to date
         for (watcher_id in watchers.data) {
             epoch = watchers.data[watcher_id].last_run
-            // console.log(new Date(epoch * 1000))
             watchers.data[watcher_id].last_run = new Date(epoch * 1000)
         }
 
         res.render('index.html', {
             users: users.data,
-            watchers: watchers.data
+            watchers: watchers.data,
+            configure_adddress: configure_adddress,
         });
 
     }));
