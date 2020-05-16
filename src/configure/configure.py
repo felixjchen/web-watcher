@@ -62,6 +62,7 @@ def add_user(name, email):
 
     return new_uuid
 
+
 def delete_user(user_id):
 
     with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
@@ -73,12 +74,26 @@ def delete_user(user_id):
             users = document["users"]
             watchers = users[user_id]['watchers']
 
-        for watcher_id in watchers: 
+        for watcher_id in watchers:
             delete_watcher(watcher_id)
 
         # Otherwise document conflict
         with Document(db, "users") as document:
             del(document["users"][user_id])
+
+
+def _deleteAll():
+    users = []
+    with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
+
+        db = client['configuration']
+
+        with Document(db, "users") as document:
+            users = document["users"]
+
+    for user_id in users:
+        delete_user(user_id)
+
 
 def update_user(user_id, name=None, email=None):
 
@@ -92,11 +107,9 @@ def update_user(user_id, name=None, email=None):
 
             if name:
                 user['name'] = name
-            
+
             if email:
                 user['email'] = email
-
-
 
 
 def get_user(user_id):
@@ -163,8 +176,10 @@ def add_watcher(user_id, url, frequency):
 
     return watcher_uuid, last_run
 
+
 def delete_watcher(watcher_id):
-    requests.delete(f'{cloud_object_storage_service_address}/files/{watcher_id}.png')
+    requests.delete(
+        f'{cloud_object_storage_service_address}/files/{watcher_id}.png')
 
     # Add watcher to use
     with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
@@ -181,7 +196,7 @@ def delete_watcher(watcher_id):
         with Document(db, "users") as document:
             users = document["users"]
             users[user_id]["watchers"].remove(watcher_id)
-        
+
     return True
 
 
@@ -236,6 +251,7 @@ def list_watchers():
 
 
 if __name__ == "__main__":
+    _deleteAll()
     # add_user("Felix", "felixchen1998@gmail.com")
     # felix_id = "0f5e3e25-9cc6-4d60-9faf-f7157abc1b69"
     # # print(list_users())
