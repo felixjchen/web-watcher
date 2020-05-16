@@ -275,7 +275,7 @@ function initAddWatcher() {
         urlCell.appendChild(a);
 
         frequencyCell.innerHTML = frequency.value;;
-        lastRunCell.innerHTML = response['last_run'];
+        lastRunCell.innerHTML = new Date(response['last_run'] * 1000);
 
         const menuIcon = document.createElement('span');
         menuIcon.id = 'Anchor' + response['watcher_id']
