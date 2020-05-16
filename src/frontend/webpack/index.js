@@ -126,12 +126,13 @@ function initAddForms() {
     formCloseButton.addEventListener("click", function () {
       closeForms();
     });
-    main.addEventListener("click", function () {
-      const isOpen = form.offsetWidth > 0;
-      if (isOpen) {
-        closeForms();
-      }
-    });
+    // Yeah bad idea
+    // main.addEventListener("click", function () {
+    //   const isOpen = form.offsetWidth > 0;
+    //   if (isOpen) {
+    //     closeForms();
+    //   }
+    // });
   });
 }
 
