@@ -12,6 +12,9 @@ import {
 import {
   MDCTextField
 } from "@material/textfield";
+import { MDCLinearProgress } from '@material/linear-progress';
+
+const linearProgress = new MDCLinearProgress(document.querySelector('.mdc-linear-progress'));
 
 // Init Material components
 const dataTable = new MDCDataTable(document.querySelector(".mdc-data-table"));
@@ -195,9 +198,13 @@ function initAddUser() {
 }
 
 function initAddWatcher() {
+  const form = document.getElementById("WatcherForm");
   const button = document.getElementById("AddWatcherButton");
+  const loading = document.getElementById("loading")
 
   button.addEventListener("click", function () {
+    form.style.paddingTop = "56px";
+    loading.style.display="block";
     // Get form data
     const user_id = document.getElementById("AddWatcherUserID");
     const url = document.getElementById("AddWatcherUrl");
@@ -239,7 +246,8 @@ function initAddWatcher() {
         const menuCell = row.insertCell(4);
         menuCell.classList.add("mdc-data-table__cell");
 
-        userCell.innerHTML = 'PLACEHOLDER';
+        console.log(getUserName(user_id.value))
+        userCell.innerHTML = getUserName(user_id.value);
 
         const a = document.createElement('a');
         a.href = url.value;
@@ -267,10 +275,23 @@ function initAddWatcher() {
         user_id.value = "";
         url.value = "";
         frequency.value = "";
+        form.style.paddingTop = "60px";
+        loading.style.display="none";
       }
     }
     http.send(JSON.stringify(payload));
   });
+}
+
+function getUserName(user_id){
+  // POST to configure service
+  const http = new XMLHttpRequest();
+  http.open('GET', configure_address + '/users/' + user_id, false)
+  http.send();
+  if (http.status === 200) {
+    const response = JSON.parse(http.responseText);
+    return response['name']
+  }
 }
 
 function main() {

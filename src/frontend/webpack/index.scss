@@ -20,6 +20,7 @@
 
 @use "@material/textfield";
 @use "@material/textfield/mdc-text-field";
+@use "@material/linear-progress/mdc-linear-progress";
 
 @include button.core-styles;
 @include textfield.core-styles;
@@ -69,6 +70,7 @@
   top: 0;
   /* Stay at the top */
   // left: 0;
+  padding-top: 60px;
   right: 0;
   background-color: #F5F5F5;
 
@@ -76,10 +78,15 @@
   /* Black*/
   overflow-x: hidden;
   /* Disable horizontal scroll */
-  padding-top: 60px;
   /* Place content 60px from the top */
   transition: 0.5s;
 }
+
+#loading{
+  top: -56px;
+  display: none;
+}
+
 
 
 .form label {

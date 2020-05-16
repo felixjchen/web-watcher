@@ -28,6 +28,7 @@
     "@material/button": "^6.0.0",
     "@material/card": "^6.0.0",
     "@material/data-table": "^6.0.0",
+    "@material/linear-progress": "^6.0.0",
     "@material/menu": "^6.0.0",
     "@material/tab-bar": "^6.0.0",
     "@material/textfield": "^6.0.0",
