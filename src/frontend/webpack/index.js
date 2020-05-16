@@ -1,37 +1,36 @@
 import {
   MDCDataTable
 } from "@material/data-table";
-const dataTable = new MDCDataTable(document.querySelector(".mdc-data-table"));
-
 import {
   MDCTabBar
 } from "@material/tab-bar";
-const tabBar = new MDCTabBar(document.querySelector(".mdc-tab-bar"));
-
-
 import {
   MDCRipple
 } from "@material/ripple";
+import {
+  MDCTextField
+} from "@material/textfield";
+
+// Init Material components
+const dataTable = new MDCDataTable(document.querySelector(".mdc-data-table"));
+const tabBar = new MDCTabBar(document.querySelector(".mdc-tab-bar"));
 const selector = ".mdc-button, .mdc-icon-button, .mdc-card__primary-action";
 const ripples = [].map.call(document.querySelectorAll(selector), function (el) {
   return new MDCRipple(el);
 });
 
-import {
-  MDCTextField
-} from '@material/textfield';
+const configure_address = 'http://0.0.0.0:8004';
 
 function initTextFields() {
   const fields = document.getElementsByClassName("mdc-text-field");
 
   Array.from(fields).forEach(function (field) {
     new MDCTextField(field);
-  })
+  });
 }
 // const textField = new MDCTextField(document.querySelector('.mdc-text-field'));
 
-
-function initTab() {
+function initTabs() {
   const tabs = document.getElementsByClassName("mdc-tab");
 
   Array.from(tabs).forEach(function (element) {
@@ -45,7 +44,7 @@ function initTab() {
 
       document.getElementById(tabcontentid).style.display = "block";
       try {
-        closeForms()
+        closeForms();
       } catch {}
     });
   });
@@ -59,8 +58,7 @@ import {
 
 function initMenu(id) {
   const menu = new MDCMenu(document.getElementById(id));
-  const button = document.getElementById(id + "Anchor");
-
+  const button = document.getElementById("Anchor" + id);
   menu.setAnchorElement(button);
   menu.setIsHoisted(true);
 
@@ -73,14 +71,12 @@ function initAllMenus() {
   const elements = document.getElementsByClassName("mdc-menu");
 
   Array.from(elements).forEach(function (element) {
-    initMenu(element.id)
+    initMenu(element.id);
   });
 }
 
-function initForm() {
-
-  const tabs = ['User', 'Watcher']
-
+function initAddForms() {
+  const tabs = ["User", "Watcher"];
   Array.from(tabs).forEach(function (tab) {
     const button = document.getElementById(tab + "FormButton");
     const buttonIcon = button.childNodes[3];
@@ -88,27 +84,25 @@ function initForm() {
     const formCloseButton = document.getElementById(tab + "FormCloseButton");
     const main = document.getElementById("main");
 
-    button.addEventListener('click', function () {
-      const isOpen = (form.offsetWidth > 0);
+    button.addEventListener("click", function () {
+      const isOpen = form.offsetWidth > 0;
       if (isOpen) {
         form.style.width = "0";
         main.style.marginRight = "0";
-        buttonIcon.innerHTML = 'chevron_left'
+        buttonIcon.innerHTML = "chevron_left";
       } else {
         form.style.width = "320px";
         main.style.marginRight = "320px";
-        buttonIcon.innerHTML = 'chevron_right'
+        buttonIcon.innerHTML = "chevron_right";
       }
     });
 
-    formCloseButton.addEventListener('click', function () {
+    // Two other close form options
+    formCloseButton.addEventListener("click", function () {
       closeForms();
     });
-
-    main.addEventListener('click', function () {
-
-      const isOpen = (form.offsetWidth > 0);
-      console.log(12)
+    main.addEventListener("click", function () {
+      const isOpen = form.offsetWidth > 0;
       if (isOpen) {
         closeForms();
       }
@@ -117,26 +111,94 @@ function initForm() {
 }
 
 function closeForms() {
-  const forms = document.getElementsByClassName("form")
+  const forms = document.getElementsByClassName("form");
   const main = document.getElementById("main");
-  const chevrons = document.getElementsByClassName("chevronIcon")
+  const chevrons = document.getElementsByClassName("chevronIcon");
 
   Array.from(chevrons).forEach(function (chevron) {
-    chevron.innerHTML = 'chevron_left';
-  })
+    chevron.innerHTML = "chevron_left";
+  });
 
   Array.from(forms).forEach(function (form) {
     form.style.width = "0";
     main.style.marginRight = "0";
   });
-};
+}
 
+function initAddUser() {
+  const button = document.getElementById("AddUserButton");
+
+  button.addEventListener("click", function () {
+    // Get form data
+    const name = document.getElementById("AddUserName");
+    const email = document.getElementById("AddUserEmail");
+    const payload = {
+      name: name.value,
+      email: email.value,
+    };
+
+    const table = document.getElementById("UsersTable");
+
+    // POST to configure service
+    const http = new XMLHttpRequest();
+    http.open('POST', configure_address + '/users', true)
+    http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    http.onreadystatechange = function () {
+      if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+        const response = JSON.parse(this.responseText);
+
+        // Adding Row to table
+        const row = table.insertRow();
+        row.classList.add("mdc-data-table__row");
+
+        const userCell = row.insertCell(0);
+        userCell.classList.add("mdc-data-table__cell");
+        const userIDCell = row.insertCell(1);
+        userIDCell.classList.add("mdc-data-table__cell");
+        const emailCell = row.insertCell(2);
+        emailCell.classList.add("mdc-data-table__cell");
+        const watcherCountCell = row.insertCell(3);
+        watcherCountCell.classList.add("mdc-data-table__cell");
+        watcherCountCell.classList.add("mdc-data-table__cell--numeric");
+        const menuCell = row.insertCell(4);
+        menuCell.classList.add("mdc-data-table__cell");
+
+        userCell.innerHTML = name.value;
+        userIDCell.innerHTML = response['user_id'];
+        emailCell.innerHTML = email.value;
+        watcherCountCell.innerHTML = "0";
+
+        const menuIcon = document.createElement('span');
+        menuIcon.id = 'Anchor' + response['user_id'] 
+        menuIcon.innerHTML = "more_vert";
+        menuIcon.classList.add("anchor");
+        menuIcon.classList.add("material-icons");
+        menuCell.appendChild(menuIcon);
+
+        // Adding Menu
+        const menus = document.getElementById("UserMenus");
+        const menu = document.getElementsByClassName("UserMenu")[0].cloneNode(true);
+        menu.id = response['user_id']
+        menus.appendChild(menu)
+
+        initMenu(response['user_id']);
+        closeForms();
+        name.value = "";
+        email.value = "";
+      }
+    }
+    http.send(JSON.stringify(payload));
+
+    console.log(payload);
+  });
+}
 
 function main() {
-  initTab();
+  initTabs();
   initAllMenus();
-  initForm();
+  initAddForms();
   initTextFields();
+  initAddUser();
 }
 
 main();
