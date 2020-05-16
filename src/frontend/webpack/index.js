@@ -17,6 +17,8 @@ import {
   MDCMenu
 } from "@material/menu";
 
+var configure_address = 'http://0.0.0.0:8004';
+
 const linearProgress = new MDCLinearProgress(document.querySelector('.mdc-linear-progress'));
 
 // Init Material components
@@ -312,6 +314,10 @@ function getUserName(user_id) {
   }
 }
 
+function setConfigureAddress() {
+  configure_address = document.getElementById("configureAddress").innerHTML;
+  console.log(configure_address)
+}
 function main() {
   initTabs();
   initAllMenus();
@@ -319,12 +325,8 @@ function main() {
   initTextFields();
   initAddUser();
   initAddWatcher();
+  setConfigureAddress()
 }
 
-function setConfigureAddress(address) {
-  console.log(address)
-}
 
 main();
-
-const configure_address = 'http://0.0.0.0:8004';
