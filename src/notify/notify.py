@@ -19,7 +19,7 @@ else:
 def send_email(to, url_changed, difference_image_path):
 
 	msg = MIMEMultipart()
-	msg['Subject'] = 'web-watcher notificaiton'
+	msg['Subject'] = 'web-watcher notification'
 	msg['From'] = USER
 	msg['To'] = to
 
