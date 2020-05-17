@@ -126,13 +126,6 @@ function initAddForms() {
     formCloseButton.addEventListener("click", function () {
       closeForms();
     });
-    // Yeah bad idea
-    // main.addEventListener("click", function () {
-    //   const isOpen = form.offsetWidth > 0;
-    //   if (isOpen) {
-    //     closeForms();
-    //   }
-    // });
   });
 }
 
@@ -234,8 +227,10 @@ function initAddWatcher() {
     const payload = {
       user_id: user_id.value,
       url: url.value,
-      frequency: frequency.value,
+      frequency: parseInt(frequency.value),
     };
+
+    console.log(payload)
 
     const table = document.getElementById("WatchersTable");
 
@@ -319,6 +314,7 @@ function setConfigureAddress() {
   configure_address = document.getElementById("configureAddress").innerHTML;
   console.log(configure_address)
 }
+
 function main() {
   initTabs();
   initAllMenus();
