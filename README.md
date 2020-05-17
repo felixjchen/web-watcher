@@ -36,8 +36,8 @@
     | To                         | Method | URL                             | Body          | Body Type | Response Type |
     | -------------------------- | ------ | ------------------------------- | ------------- | --------- | ------------- |
     | Upload file _F_ to COS     | POST   | http://0.0.0.0:8001/files       | {"file": _F_} | Form      | JSON          |
-    | Download file _F_ from COS | GET    | http://0.0.0.0:8001/files/{*F*} | .             | .         | File          |
-    | Delete file _F_ in COS     | DELETE | http://0.0.0.0:8001/files/{*F*} | .             | .         | JSON             |
+    | Download file _F_ from COS | GET    | http://0.0.0.0:8001/files/{F} | .             | .         | File          |
+    | Delete file _F_ in COS     | DELETE | http://0.0.0.0:8001/files/{F} | .             | .         | JSON             |
 
 ### compare
 
@@ -101,14 +101,14 @@
     | ------------------------------------------------------------------------- | ------ | ------------------------------------ | ----------------------------------------------- | --------- | ------------- |
     | List all users                                                            | GET    | http://0.0.0.0:8004/users            | .                                               | .         | JSON          |
     | Create new user with name _N_ and email _E_                               | POST   | http://0.0.0.0:8004/users            | {"name": _N_, "email": _E_}                     | JSON      | JSON          |
-    | Describe user with user id *UID*                                         | GET    | http://0.0.0.0:8004/users/{_UID_}    | .                                               | .         | JSON          |
-    | Update user with user id *UID*                                           | PUT    | http://0.0.0.0:8004/users/{_UID_}    | {"name": _N_, "email": _E_}                     | JSON      | JSON          |
-    | Delete user with user id *UID*                                           | DELETE | http://0.0.0.0:8004/users/{_UID_}    | .                                               | .         | JSON          |
+    | Describe user with user id *UID*                                         | GET    | http://0.0.0.0:8004/users/{UID}    | .                                               | .         | JSON          |
+    | Update user with user id *UID*                                           | PUT    | http://0.0.0.0:8004/users/{UID}    | {"name": _N_, "email": _E_}                     | JSON      | JSON          |
+    | Delete user with user id *UID*                                           | DELETE | http://0.0.0.0:8004/users/{UID}    | .                                               | .         | JSON          |
     | List all watchers                                                         | GET    | http://0.0.0.0:8004/watchers         | .                                               | .         | JSON          |
     | Create new watcher for user _UID_ at URL _U_ with frequency _F_ (seconds) | POST   | http://0.0.0.0:8004/watchers         | {"user_id": _UID_, "url":_U_, "frequency": _F_} | JSON      | JSON          |
-    | Describe watcher with watcher id *WID*                                   | GET    | http://0.0.0.0:8004/watchers/{_WID_} | .                                               | .         | JSON          |
-    | Update watcher with watcher id *WID*                                     | PUT    | http://0.0.0.0:8004/watchers/{_WID_} | {"user_id": _UID_, "url":_U_, "frequency": _F_} | JSON      | JSON          |
-    | Delete watcher with watcher id *WID*                                     | DELETE | http://0.0.0.0:8004/watchers/{_WID_} | .                                               | .         | JSON          |
+    | Describe watcher with watcher id *WID*                                   | GET    | http://0.0.0.0:8004/watchers/{WID} | .                                               | .         | JSON          |
+    | Update watcher with watcher id *WID*                                     | PUT    | http://0.0.0.0:8004/watchers/{WID} | {"user_id": _UID_, "url":_U_, "frequency": _F_} | JSON      | JSON          |
+    | Delete watcher with watcher id *WID*                                     | DELETE | http://0.0.0.0:8004/watchers/{WID} | .                                               | .         | JSON          |
 
 ### notify
 
