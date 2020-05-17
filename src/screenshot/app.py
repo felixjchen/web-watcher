@@ -15,7 +15,6 @@ def screenshot():
     """ Return an screenshot file with name file_ID at url 
 
     Args:
-        file_ID: the file_ID for file 
         url: url for screenshot
 
     Returns:

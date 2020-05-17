@@ -18,15 +18,18 @@ ENV PRODUCTION=1
 # upgrade pip
 RUN pip install --upgrade pip
 
-# install selenium
-RUN pip install selenium
-RUN pip install flask
-RUN pip install gevent
-RUN pip install gunicorn
+
+# RUN pip install selenium
+# RUN pip install flask
+# RUN pip install gevent
+# RUN pip install gunicorn
 
 RUN mkdir files
+COPY requirements.txt .
 COPY screenshot.py .
 COPY app.py .
+
+RUN pip install -r requirements.txt
 
 CMD gunicorn --worker-class gevent \
     --workers 2 \
