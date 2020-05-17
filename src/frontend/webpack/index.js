@@ -152,8 +152,8 @@ function initAddUser() {
     const name = document.getElementById("AddUserName");
     const email = document.getElementById("AddUserEmail");
     const payload = {
-      name: name.value,
-      email: email.value,
+      name: name.value.trim(),
+      email: email.value.trim(),
     };
 
     const table = document.getElementById("UsersTable");
@@ -225,9 +225,9 @@ function initAddWatcher() {
     const url = document.getElementById("AddWatcherUrl");
     const frequency = document.getElementById("AddWatcherFrequency");
     const payload = {
-      user_id: user_id.value,
-      url: url.value,
-      frequency: parseInt(frequency.value),
+      user_id: user_id.value.trim(),
+      url: url.value.trim(),
+      frequency: parseInt(frequency.value.trim()),
     };
 
     console.log(payload)
