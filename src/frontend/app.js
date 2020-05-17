@@ -20,11 +20,15 @@ nunjucks.configure('views', {
 app.get('/', function (req, res) {
 
     function getUsers() {
-        return axios.get(configure_address + '/users');
+        return axios.get(configure_address + '/users').catch(function(error){
+            console.log(error.toJSON());
+        });
     }
 
     function getWatchers() {
-        return axios.get(configure_address + '/watchers');
+        return axios.get(configure_address + '/watchers').catch(function(error){
+            console.log(error.toJSON());
+        });
     }
 
     axios.all([getUsers(), getWatchers()]).then(axios.spread(function (users, watchers) {
