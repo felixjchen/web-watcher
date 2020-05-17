@@ -48,7 +48,7 @@ def run_watcher(watcher_id, data):
         difference = get_difference(server_file_paths)
         threads = []
         if difference > threshold:
-            print(f'{watcher_id}: Difference detected')
+            print(f'{watcher_id}: Difference detected, notifying')
 
             # Create difference image and notify
             t1 = Thread(target=notify, args=(user_id, url, server_file_paths, ))
@@ -65,6 +65,8 @@ def run_watcher(watcher_id, data):
         t3.start()
         threads += [t3]
 
+        print(f'{watcher_id}: Finished in {time.perf_counter() - start} seconds')
+
         # Cleanup after all work is done
         for t in threads:
             t.join()
@@ -72,7 +74,8 @@ def run_watcher(watcher_id, data):
         t = Thread(target=cleanup, args=(server_file_paths,))
         t.start()
 
-        print(f'{watcher_id}: Finished in {time.perf_counter() - start} seconds')
+        print(f'{watcher_id}: Done cleanup')
+
         
     else:
         print(f'{watcher_id}: {seconds_since_last_run} < {frequency}')
