@@ -5,10 +5,10 @@ const app = express()
 
 const production = (typeof process.env.KUBERNETES_SERVICE_HOST !== 'undefined');
 console.log(process.env)
-var configure_adddress = 'http://0.0.0.0:8004';
+var configure_address = 'http://0.0.0.0:8004';
 if (production) {
-    // configure_adddress = 'http://' + process.env.CONFIGURE_SERVICE_HOST + ':' + process.env.CONFIGURE_SERVICE_PORT
-    configure_adddress = 'http://184.172.252.145:30001/'
+    // configure_address = 'http://' + process.env.CONFIGURE_SERVICE_HOST + ':' + process.env.CONFIGURE_SERVICE_PORT
+    configure_address = 'http://184.172.252.145:30001/'
 }
 
 
@@ -20,11 +20,11 @@ nunjucks.configure('views', {
 app.get('/', function (req, res) {
 
     function getUsers() {
-        return axios.get(configure_adddress + '/users');
+        return axios.get(configure_address + '/users');
     }
 
     function getWatchers() {
-        return axios.get(configure_adddress + '/watchers');
+        return axios.get(configure_address + '/watchers');
     }
 
     axios.all([getUsers(), getWatchers()]).then(axios.spread(function (users, watchers) {
@@ -38,7 +38,7 @@ app.get('/', function (req, res) {
         res.render('index.html', {
             users: users.data,
             watchers: watchers.data,
-            configure_adddress: configure_adddress,
+            configure_address: configure_address,
         });
 
     }));
