@@ -8,8 +8,8 @@ from email.mime.multipart import MIMEMultipart
 production = 'KUBERNETES_SERVICE_HOST' in os.environ
 
 if production:
-	COS_API_KEY_ID = os.environ['SECRET_APIKEY']
-	COS_RESOURCE_CRN = os.environ['SECRET_RESOURCE_INSTANCE_ID']
+	USER = os.environ['SECRET_USERNAME']
+	PASSWORD = os.environ['SECRET_PASSWORD']
 else:
 	import secrets
 	USER = secrets.credentials['user']
