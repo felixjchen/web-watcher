@@ -2,7 +2,7 @@
 
 - application to notify users by email whenever a webpage changes, screenshots entire webpage and creates bounding boxes to show the user what has changed
 
-- implemented with microservice architecture, 4 Python services, 2 Javascript services and one cronjob script; all containerized and ready to be deployed to a K8 Cluster 
+- microservice architecture, 4 Python services, 2 Javascript services and one Python cronjob script; all containerized and ready to be deployed to a K8 Cluster 
 
 - interactable by Material Design frontend or REST API 
 
