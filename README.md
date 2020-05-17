@@ -157,11 +157,12 @@
 - threaded for each watcher, check if the web page has changed, notify user with difference image on change
 - [Docker image](https://hub.docker.com/repository/docker/felixchen1998/web-watcher-check)
 - requires:
-  - cloud-object-storage service
-  - compare service
-  - screenshot service
-  - configure service
-  - notify service
+    - python3.7 with requests
+    - cloud-object-storage service
+    - compare service
+    - screenshot service
+    - configure service
+    - notify service
 
 ---
 
