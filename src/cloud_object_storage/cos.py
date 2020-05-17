@@ -5,7 +5,6 @@ from ibm_botocore.client import Config, ClientError
 
 production = 'KUBERNETES_SERVICE_HOST' in os.environ
 
-credentials = {}
 if production:
     COS_API_KEY_ID = os.environ['SECRET_APIKEY']
     COS_RESOURCE_CRN = os.environ['SECRET_RESOURCE_INSTANCE_ID']
