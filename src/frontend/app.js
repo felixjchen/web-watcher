@@ -8,7 +8,7 @@ console.log(process.env)
 var configure_address = 'http://0.0.0.0:8004';
 if (production) {
     // configure_address = 'http://' + process.env.CONFIGURE_SERVICE_HOST + ':' + process.env.CONFIGURE_SERVICE_PORT
-    configure_address = 'http://184.172.252.145:30001'
+    configure_address = 'http://184.172.252.145:30000'
 }
 
 
