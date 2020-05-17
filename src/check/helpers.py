@@ -1,6 +1,7 @@
 import requests
 import os
 import threading
+import uuid 
 
 production = 'KUBERNETES_SERVICE_HOST' in os.environ
 
@@ -28,16 +29,17 @@ if production:
     configure_address = get_address(
         configure_host, configure_port)
 
+    notify_host = os.environ['NOTIFY_SERVICE_HOST']
+    notify_port = os.environ['NOTIFY_SERVICE_PORT']
+    notify_address = get_address(
+        notify_host, notify_port)
 
-    NOTIFIER_APIKEY = os.environ['SECRET_APIKEY']
 else:
     cloud_object_storage_service_address = 'http://0.0.0.0:8001'
     compare_service_address = 'http://0.0.0.0:8002'
     screenshot_address = 'http://0.0.0.0:8003'
     configure_address = 'http://0.0.0.0:8004'
-    from secrets import credentials
-
-    NOTIFIER_APIKEY = credentials['apikey']
+    notify_address = 'http://0.0.0.0:8006'
 
 def take_new_screenshot(watcher_id, url, server_file_paths):
     # print(f'{watcher_id}: New screenshot thread {threading.get_ident()}')
@@ -76,22 +78,34 @@ def get_difference(server_file_paths):
     
     return difference
 
-def notify(user_id, url):
-    # print(f'NOTIFYING USER {user_id}')
+def notify(user_id, url, server_file_paths):
+
+    # Get difference image
+    files = {
+        'file_old': open(server_file_paths['old'], 'rb'),
+        'file_new': open(server_file_paths['new'], 'rb')
+    }
+    difference_image_path = os.path.join('files', f'{uuid.uuid4()}.png')
+    with requests.get(f'{compare_service_address}/difference_image', files=files) as response:
+        open(difference_image_path, 'wb').write(response.content)
+
+
+    files = {
+            'file': open(difference_image_path, 'rb')
+    }
+    payload = {
+        'url': url,
+        'email': ''
+    }
+    # user email
     with requests.get(f'{configure_address}/users/{user_id}') as response:
         data = response.json()
+        payload['email'] = data['email']
 
-        email = data['email']
+    # Notify
+    r = requests.post(f'{notify_address}/notify', files=files, data=payload)
 
-        payload = {
-            'alertType': 'email',
-            'apikey': NOTIFIER_APIKEY,
-            'address': email,
-            'subject': 'web-watcher notification',
-            'body': f'{url} has changed'
-        }
-        response = requests.post("https://us-east.functions.cloud.ibm.com/api/v1/web/f20b7584-b5de-4512-b3fa-904a2ca64acd/default/alerter", data=payload)
-
+    os.remove(difference_image_path)
 
 def update_last_run(watcher_id, now):
     payload = {

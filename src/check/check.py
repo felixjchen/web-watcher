@@ -9,7 +9,6 @@ from helpers import take_new_screenshot, get_old_screenshot, update_old_screensh
 threshold = 0
 now = int(time.time())
 
-
 production = 'KUBERNETES_SERVICE_HOST' in os.environ
 
 if production:
@@ -47,22 +46,28 @@ def run_watcher(watcher_id, data):
 
         # Get difference and notify if appropriate
         difference = get_difference(server_file_paths)
-
+        threads = []
         if difference > threshold:
             print(f'{watcher_id}: Difference detected')
 
-            # Notify
-            t = Thread(target=notify, args=(user_id, url, ))
-            t.start()
+            # Create difference image and notify
+            t1 = Thread(target=notify, args=(user_id, url, server_file_paths, ))
+            t1.start()
             
             # Update COS image
-            t = Thread(target=update_old_screenshot, args=(server_file_paths['new'],))
-            t.start()
+            t2 = Thread(target=update_old_screenshot, args=(server_file_paths['new'],))
+            t2.start()
 
+            threads += [t1, t2]
 
         # Update last_run time  
-        t = Thread(target=update_last_run, args=(watcher_id, now,))
-        t.start()
+        t3 = Thread(target=update_last_run, args=(watcher_id, now,))
+        t3.start()
+        threads += [t3]
+
+        # Cleanup after all work is done
+        for t in threads:
+            t.join()
         # Cleanup
         t = Thread(target=cleanup, args=(server_file_paths,))
         t.start()
