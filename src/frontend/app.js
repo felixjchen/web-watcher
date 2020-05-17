@@ -4,9 +4,11 @@ const express = require('express')
 const app = express()
 
 const production = (typeof process.env.KUBERNETES_SERVICE_HOST !== 'undefined');
+console.log(process.env)
 var configure_adddress = 'http://0.0.0.0:8004';
 if (production) {
-    configure_adddress = 'http://' + process.env.CONFIGURE_SERVICE_HOST + ':' + process.env.CONFIGURE_SERVICE_PORT
+    // configure_adddress = 'http://' + process.env.CONFIGURE_SERVICE_HOST + ':' + process.env.CONFIGURE_SERVICE_PORT
+    configure_adddress = 'http://184.172.252.145:30001/'
 }
 
 
