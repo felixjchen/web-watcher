@@ -34,7 +34,6 @@ def set_file():
     multi_part_upload(server_file_path, file_ID)
 
     # Remove file
-    print(server_file_path)
     os.remove(server_file_path)
 
     return 'Success'
