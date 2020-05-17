@@ -1,6 +1,5 @@
 from skimage.metrics import structural_similarity
 import cv2
-# import numpy as np
 
 
 def get_difference(file_path_old, file_path_new):
@@ -8,6 +7,7 @@ def get_difference(file_path_old, file_path_new):
     before = cv2.imread(file_path_old)
     after = cv2.imread(file_path_new)
 
+    if before.shape != after.shape: return 1
 
     # Convert images to grayscale
     before_gray = cv2.cvtColor(before, cv2.COLOR_BGR2GRAY)
@@ -22,6 +22,13 @@ def create_difference_image(file_path_old, file_path_new, file_path_target):
     
     before = cv2.imread(file_path_old)
     after = cv2.imread(file_path_new)
+
+
+    if before.shape != after.shape: 
+        cv2.waitKey(0)
+        cv2.imwrite(file_path_target, after)
+        return 1
+
 
     # Convert images to grayscale
     before_gray = cv2.cvtColor(before, cv2.COLOR_BGR2GRAY)
