@@ -315,6 +315,14 @@
                   role="columnheader"
                   scope="col"
                 >
+                  User ID
+                </th>
+
+                <th
+                  class="mdc-data-table__header-cell"
+                  role="columnheader"
+                  scope="col"
+                >
                   URL
                 </th>
                 <th
@@ -342,6 +350,7 @@
               {% for watcher_id, data in watchers %}
               <tr id="Watcher{{watcher_id}}" class="mdc-data-table__row">
                 <td class="mdc-data-table__cell">{{users[data.user_id].name}}</td>
+                <td class="mdc-data-table__cell">{{data.user_id}}</td>
                 <td class="mdc-data-table__cell"><a href="{{data.url}}">{{data.url}}</a></td>
                 <td class="mdc-data-table__cell mdc-data-table__cell--numeric">
                   {{data.frequency}}

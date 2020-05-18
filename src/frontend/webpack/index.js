@@ -249,29 +249,34 @@ function initAddWatcher() {
         const userCell = row.insertCell(0);
         userCell.classList.add("mdc-data-table__cell");
 
-        const urlCell = row.insertCell(1);
+        const userIDCell = row.insertCell(2);
+        userIDCell.classList.add("mdc-data-table__cell");
+
+        const urlCell = row.insertCell(3);
         urlCell.classList.add("mdc-data-table__cell");
 
-        const frequencyCell = row.insertCell(2);
+        const frequencyCell = row.insertCell(4);
         frequencyCell.classList.add("mdc-data-table__cell");
         frequencyCell.classList.add("mdc-data-table__cell--numeric");
 
-        const lastRunCell = row.insertCell(3);
+        const lastRunCell = row.insertCell(5);
         lastRunCell.classList.add("mdc-data-table__cell");
         lastRunCell.classList.add("mdc-data-table__cell--numeric");
 
-        const menuCell = row.insertCell(4);
+        const menuCell = row.insertCell(6);
         menuCell.classList.add("mdc-data-table__cell");
 
-        userCell.innerHTML = getUserName(user_id.value);
+        userCell.innerHTML = getUserName(user_id.value.trim());
+
+        userIDCell.innerHTML = user_id.value.trim();
 
         const a = document.createElement('a');
-        a.href = url.value;
-        a.innerHTML = url.value;
+        a.href = url.value.trim();
+        a.innerHTML = url.value.trim();
         urlCell.appendChild(a);
 
-        frequencyCell.innerHTML = frequency.value;;
-        lastRunCell.innerHTML = new Date(response['last_run'] * 1000);
+        frequencyCell.innerHTML = frequency.value.trim();;
+        lastRunCell.innerHTML = new Date(response['last_run'] * 1000).toLocaleString("en-US", {timeZone: "America/New_York"});
 
         const menuIcon = document.createElement('span');
         menuIcon.id = 'Anchor' + response['watcher_id']
