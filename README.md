@@ -11,8 +11,6 @@
 - course work websites
 - job postings
 
----
-
 ## Services
 
 ### cloud_object_storage
@@ -148,7 +146,6 @@
 
     - view at https://0.0.0.0:8005
 
----
 
 ## Jobs
 
@@ -164,7 +161,6 @@
     - configure service
     - notify service
 
----
 
 ## Production
 
@@ -182,7 +178,6 @@
     - frontend at http://CLUSTER_PUBLIC_IP:30001
     - configure API at http://CLUSTER_PUBLIC_IP:30000
 
----
 
 ## to do
 
