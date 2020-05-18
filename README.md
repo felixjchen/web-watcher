@@ -39,7 +39,7 @@
 
 ### compare
 
-- find difference between two images
+- find difference between two images using opencv2 and scikit-image
 - [Docker image](https://hub.docker.com/repository/docker/felixchen1998/web-watcher-compare)
 - to run locally:
 
@@ -110,7 +110,7 @@
 
 ### notify
 
-- notifies users by email 
+- notifies users by email using smtplib
 - [Docker image](https://hub.docker.com/repository/docker/felixchen1998/web-watcher-notify)
 - to run locally:
 
@@ -130,7 +130,7 @@
 
 ### frontend
 
-- UI to add/delete users and watchers
+- UI to add/delete users and watchers using Google's Material Design
 - [Docker image](https://hub.docker.com/repository/docker/felixchen1998/web-watcher-frontend)
 - to run locally:
 
