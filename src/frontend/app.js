@@ -36,7 +36,7 @@ app.get('/', function (req, res) {
         // Convert epoch to date
         for (watcher_id in watchers.data) {
             epoch = watchers.data[watcher_id].last_run
-            watchers.data[watcher_id].last_run = new Date(epoch * 1000)
+            watchers.data[watcher_id].last_run = new Date(epoch * 1000).toLocaleString("en-US", {timeZone: "America/New_York"})
         }
 
         res.render('index.html', {
