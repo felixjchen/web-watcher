@@ -181,7 +181,7 @@
     - configure API at http://CLUSTER_PUBLIC_IP:30000
 
 
-## to do
+## To do
 
 - check: this will likely be faster and cheaper in Go , because of concurency oppurtinities in script
 - tests for every application for every endpoint
