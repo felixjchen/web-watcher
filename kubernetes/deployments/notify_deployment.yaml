@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notify-deployment
+  labels:
+    app: notify-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notify-app
+  template:
+    metadata:
+      labels:
+        app: notify-app
+    spec:
+      containers:
+        - name: notify-container
+          image: docker.io/felixchen1998/web-watcher-notify:latest
+          # resources:
+          #   limits:
+          #     memory: "128Mi"
+          #     cpu: "100m"
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          env:
+            - name: SECRET_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: notify-secret
+                  key: username
+            - name: SECRET_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: notify-secret
+                  key: password

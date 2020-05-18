@@ -11,11 +11,5 @@ spec:
           containers:
             - name: check-script
               image: docker.io/felixchen1998/web-watcher-check:latest
-              env:
-                - name: SECRET_APIKEY
-                  valueFrom:
-                    secretKeyRef: 
-                      name: notifier-secret
-                      key: apikey
 
           restartPolicy: OnFailure
