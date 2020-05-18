@@ -4,7 +4,9 @@
 
 - microservice architecture, 4 Python services, 2 Javascript services and one Python cronjob script; all containerized and ready to be deployed to a K8 Cluster 
 
-- interactable by Material Design frontend or REST API 
+- interactable by Material Design frontend or REST API
+
+- for current cluster ip, find frontend at http://184.172.252.145:30001/ and REST API at http://184.172.252.145:30000/
 
 ## Motivation
 
