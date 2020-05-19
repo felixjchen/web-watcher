@@ -249,21 +249,21 @@ function initAddWatcher() {
         const userCell = row.insertCell(0);
         userCell.classList.add("mdc-data-table__cell");
 
-        const userIDCell = row.insertCell(2);
+        const userIDCell = row.insertCell(1);
         userIDCell.classList.add("mdc-data-table__cell");
 
-        const urlCell = row.insertCell(3);
+        const urlCell = row.insertCell(2);
         urlCell.classList.add("mdc-data-table__cell");
 
-        const frequencyCell = row.insertCell(4);
+        const frequencyCell = row.insertCell(3);
         frequencyCell.classList.add("mdc-data-table__cell");
         frequencyCell.classList.add("mdc-data-table__cell--numeric");
 
-        const lastRunCell = row.insertCell(5);
+        const lastRunCell = row.insertCell(4);
         lastRunCell.classList.add("mdc-data-table__cell");
         lastRunCell.classList.add("mdc-data-table__cell--numeric");
 
-        const menuCell = row.insertCell(6);
+        const menuCell = row.insertCell(5);
         menuCell.classList.add("mdc-data-table__cell");
 
         userCell.innerHTML = getUserName(user_id.value.trim());
