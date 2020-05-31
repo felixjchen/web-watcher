@@ -12,6 +12,7 @@
 
 - course work websites
 - job postings
+- shopping
 - upcoming release
 
 ## Services
