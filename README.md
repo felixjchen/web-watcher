@@ -186,7 +186,7 @@
 ## To do
 
 - check: this will likely be faster and cheaper in Go , because of concurency oppurtinities in script
+- frontend: add editing, react, user auth, graphQL (maybe)
 - tests for every application for every endpoint
 - error checking and handling
 - use alpine images 
-- frontend: add editing, react may have been a better choice for this app
