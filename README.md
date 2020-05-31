@@ -6,7 +6,7 @@
 
 - interactable by Material Design frontend or REST API
 
-- for current cluster ip, find frontend at http://184.172.252.145:30001/ and REST API at http://184.172.252.145:30000/
+- find frontend at http://184.172.252.145:30001/ and REST API at http://184.172.252.145:30000/
 
 ## Motivation
 
