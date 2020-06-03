@@ -1,10 +1,7 @@
-FROM python:3.7-alpine
-
-RUN pip install --upgrade pip
-RUN pip install requests
+FROM golang:1.14
 
 RUN mkdir files
-COPY helpers.py . 
-COPY check.py . 
+COPY check.go .
+COPY service_handlers.go .
 
-CMD python check.py
+CMD go run check.go service_handlers.go
