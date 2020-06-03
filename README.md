@@ -2,9 +2,9 @@
 
 - application to notify users by email whenever a webpage changes, screenshots entire webpage and creates bounding boxes to show the user what has changed
 
-- microservice architecture, 4 Python services, 2 Javascript services and one Python Cronjob script; all containerized and ready to be deployed to a K8 Cluster
+- microservice architecture, 4 Python services, 2 Javascript services and one Golang Cronjob script; all containerized and ready to be deployed to a K8 Cluster
 
-- interactable by Material Design frontend or REST API
+- interact by Material Design frontend or REST API (configure service)
 
 - currently frontend at http://184.172.252.145:30001/ and REST API at http://184.172.252.145:30000/
 
@@ -19,13 +19,12 @@
 
 ### cloud_object_storage
 
-- uploads and downloads files from IBM COS (Cloud Object Storage)
 - [Docker image](https://hub.docker.com/repository/docker/felixchen1998/web-watcher-cloud-object-storage)
+- uploads and downloads files from IBM COS (Cloud Object Storage)
+- requires:
+  - python3.7
+  - IBM COS, src/cloud_object_storage/secrets.py populated with service credentials & bucket named *web-watcher-files*
 - to run locally:
-
-  - requires:
-    - python3.7
-    - IBM COS, src/cloud/object*storage/secrets.py populated with service credentials & bucket named \_web-watcher-files*
     ```
     cd src/cloud_object_storage
     pip install -r requirements.txt
@@ -33,7 +32,7 @@
     # secrets.py populated with service credentials
     python app.py
     ```
-
+- endpoints
   | To                         | Method | URL                           | Body          | Body Type | Response Type |
   | -------------------------- | ------ | ----------------------------- | ------------- | --------- | ------------- |
   | Upload file _F_ to COS     | POST   | http://0.0.0.0:8001/files     | {"file": _F_} | Form      | JSON          |
@@ -42,21 +41,18 @@
 
 ### compare
 
-- find difference between two images using opencv2 and scikit-image
 - [Docker image](https://hub.docker.com/repository/docker/felixchen1998/web-watcher-compare)
-- to run locally:
-
-  - requires:
-
+- find difference between two images using opencv2 and scikit-image
+- requires
     - python3.7
-
+- to run locally
     ```
     cd src/compare
     pip install -r requirements.txt
     mkdir files
     python app.py
     ```
-
+- endpoints
   | To                                                                | Method | URL                                  | Body                                 | Body Type | Response Type |
   | ----------------------------------------------------------------- | ------ | ------------------------------------ | ------------------------------------ | --------- | ------------- |
   | Get structural similarity index between images _P_ and _Q_        | GET    | http://0.0.0.0:8002/difference       | {"file*old": \_P*, "file*new": \_Q*} | Form      | JSON          |
@@ -64,42 +60,38 @@
 
 ### screenshot
 
-- uses Puppeteer to screenshot an entire webpage
 - [Docker image](https://hub.docker.com/repository/docker/felixchen1998/web-watcher-screenshot)
-- to run locally:
-
-  - requires:
-    - nodejs 12.16.3
-    - npm 6.14.5
-    ```
-    cd src/screenshot
-    npm install
-    node app.js
-    ```
-
+- uses Puppeteer to screenshot an entire webpage
+- requires
+  - nodejs 12.16.3
+  - npm 6.14.5
+- to run locally
+  ```
+  cd src/screenshot
+  npm install
+  node app.js
+  ```
+- endpoints
   | To                    | Method | URL                            | Body         | Body Type | Response Type |
   | --------------------- | ------ | ------------------------------ | ------------ | --------- | ------------- |
   | Screenshot at URL _U_ | GET    | http://0.0.0.0:8003/screenshot | {"url": _U_} | JSON      | File          |
 
 ### configure
 
-- reads and writes configuration to IBM Cloud Cloudant NoSQL
 - [Docker image](https://hub.docker.com/repository/docker/felixchen1998/web-watcher-configure)
-- to run locally:
-
-  - requires:
-
-    - python3.7
-    - IBM Cloudant DB, src/configure/secrets.py populated with service credentials & database named _configuration_
-
-    ```
-    cd src/configure
-    pip install -r requirements.txt
-    mkdir files
-    # populate secrets.py with service credentials
-    python app.py
-    ```
-
+- reads and writes configuration to IBM Cloud Cloudant NoSQL
+- requires
+  - python3.7
+  - IBM Cloudant DB, src/configure/secrets.py populated with service credentials & database named _configuration_
+- to run locally
+  ```
+  cd src/configure
+  pip install -r requirements.txt
+  mkdir files
+  # populate secrets.py with service credentials
+  python app.py
+  ```
+- endpoints
   | To                                                                        | Method | URL                                | Body                                             | Body Type | Response Type |
   | ------------------------------------------------------------------------- | ------ | ---------------------------------- | ------------------------------------------------ | --------- | ------------- |
   | List all users                                                            | GET    | http://0.0.0.0:8004/users          | .                                                | .         | JSON          |
@@ -115,53 +107,46 @@
 
 ### notify
 
-- notifies users by email using smtplib
 - [Docker image](https://hub.docker.com/repository/docker/felixchen1998/web-watcher-notify)
-- to run locally:
-
-  - requires:
-
-    - python3.7
-
+- notifies users by email using smtplib and Gmail account
+- requires
+  - python3.7
+- to run locally
     ```
     cd src/notify
     pip install -r requirements.txt
     mkdir files
     python app.py
     ```
-
+- endpoints
   | To                                                                | Method | URL                        | Body                                   | Body Type | Response Type |
   | ----------------------------------------------------------------- | ------ | -------------------------- | -------------------------------------- | --------- | ------------- |
   | Notify email _E_ of a change at URL _U_ with difference image _D_ | POST   | http://0.0.0.0:8006/notify | {"email": _E_, "url":_U_, "file": _D_} | FORM      | JSON          |
 
 ### frontend
 
-- UI to add/delete users and watchers using Google's Material Design
 - [Docker image](https://hub.docker.com/repository/docker/felixchen1998/web-watcher-frontend)
-- to run locally:
-
-  - requires:
-
-    - nodejs 12.16.3
-    - npm 6.14.5
-    - configure service
-
+- UI to add/delete users and watchers using Google's Material Design
+- requires
+  - nodejs 12.16.3
+  - npm 6.14.5
+  - configure service
+- to run locally
     ```
     cd src/frontend
     npm install
     node app.js
     ```
+  - visit https://0.0.0.0:8005
 
-  - view at https://0.0.0.0:8005
-
-## Jobs
+## Cron Jobs
 
 ### check
 
-- threaded for each watcher, check if the web page has changed, notify user with difference image on change
 - [Docker image](https://hub.docker.com/repository/docker/felixchen1998/web-watcher-check)
-- requires:
-  - python3.7 with requests
+- threaded for each watcher, check if the web page has changed, notify user with difference image on change
+- requires
+  - go 1.14
   - cloud-object-storage service
   - compare service
   - screenshot service
@@ -170,22 +155,18 @@
 
 ## Production
 
-- to deploy:
-
-  - requires:
-
-    - kubectl configured pointing at cluster
-    - service credentials for IBM COS and IBM Cloudant database in kubernetes/secrets & email username and password in kubernetes/secrets
-
+- requires
+  - kubectl configured pointing at cluster
+  - service credentials for IBM COS and IBM Cloudant database in kubernetes/secrets & Gmail username and password in kubernetes/secrets
+- to deploy
     ```
     kubectl apply -f kubernetes/secrets
     kubectl apply -f kubernetes/services
     kubectl apply -f kubernetes/deployments
     kubectl apply -f kubernetes/jobs
     ```
-
-  - frontend at http://CLUSTER_PUBLIC_IP:30001
-  - configure API at http://CLUSTER_PUBLIC_IP:30000
+- frontend at http://CLUSTER_PUBLIC_IP:30001
+- configure API at http://CLUSTER_PUBLIC_IP:30000
 
 ## To do
 
