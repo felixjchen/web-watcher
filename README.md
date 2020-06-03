@@ -137,7 +137,7 @@
     npm install
     node app.js
     ```
-  - visit https://0.0.0.0:8005
+- view at https://0.0.0.0:8005
 
 ## Cron Jobs
 
