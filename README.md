@@ -53,10 +53,10 @@
     python app.py
     ```
 - endpoints
-  | To                                                                | Method | URL                                  | Body                                 | Body Type | Response Type |
-  | ----------------------------------------------------------------- | ------ | ------------------------------------ | ------------------------------------ | --------- | ------------- |
-  | Get structural similarity index between images _P_ and _Q_        | GET    | http://0.0.0.0:8002/difference       | {"file*old": \_P*, "file*new": \_Q*} | Form      | JSON          |
-  | Create bounding boxes around the difference of images _P_ and _Q_ | GET    | http://0.0.0.0:8002/difference_image | {"file*old": \_P*, "file*new": \_Q*} | Form      | File          |
+  | To                                                                | Method | URL                                  | Body                               | Body Type | Response Type |
+  | ----------------------------------------------------------------- | ------ | ------------------------------------ | ---------------------------------- | --------- | ------------- |
+  | Get structural similarity index between images _P_ and _Q_        | GET    | http://0.0.0.0:8002/difference       | {"file_old": *P*, "file_new": *Q*} | Form      | JSON          |
+  | Create bounding boxes around the difference of images _P_ and _Q_ | GET    | http://0.0.0.0:8002/difference_image | {"file_old": *P*, "file_new": *Q*} | Form      | File          |
 
 ### screenshot
 
@@ -92,18 +92,18 @@
   python app.py
   ```
 - endpoints
-  | To                                                                        | Method | URL                                | Body                                             | Body Type | Response Type |
-  | ------------------------------------------------------------------------- | ------ | ---------------------------------- | ------------------------------------------------ | --------- | ------------- |
-  | List all users                                                            | GET    | http://0.0.0.0:8004/users          | .                                                | .         | JSON          |
-  | Create new user with name _N_ and email _E_                               | POST   | http://0.0.0.0:8004/users          | {"name": _N_, "email": _E_}                      | JSON      | JSON          |
-  | Describe user with user id _UID_                                          | GET    | http://0.0.0.0:8004/users/{UID}    | .                                                | .         | JSON          |
-  | Update user with user id _UID_                                            | PUT    | http://0.0.0.0:8004/users/{UID}    | {"name": _N_, "email": _E_}                      | JSON      | JSON          |
-  | Delete user with user id _UID_                                            | DELETE | http://0.0.0.0:8004/users/{UID}    | .                                                | .         | JSON          |
-  | List all watchers                                                         | GET    | http://0.0.0.0:8004/watchers       | .                                                | .         | JSON          |
-  | Create new watcher for user _UID_ at URL _U_ with frequency _F_ (seconds) | POST   | http://0.0.0.0:8004/watchers       | {"user*id": \_UID*, "url":_U_, "frequency": _F_} | JSON      | JSON          |
-  | Describe watcher with watcher id _WID_                                    | GET    | http://0.0.0.0:8004/watchers/{WID} | .                                                | .         | JSON          |
-  | Update watcher with watcher id _WID_                                      | PUT    | http://0.0.0.0:8004/watchers/{WID} | {"user*id": \_UID*, "url":_U_, "frequency": _F_} | JSON      | JSON          |
-  | Delete watcher with watcher id _WID_                                      | DELETE | http://0.0.0.0:8004/watchers/{WID} | .                                                | .         | JSON          |
+  | To                                                                        | Method | URL                                | Body                                            | Body Type | Response Type |
+  | ------------------------------------------------------------------------- | ------ | ---------------------------------- | ----------------------------------------------- | --------- | ------------- |
+  | List all users                                                            | GET    | http://0.0.0.0:8004/users          | .                                               | .         | JSON          |
+  | Create new user with name _N_ and email _E_                               | POST   | http://0.0.0.0:8004/users          | {"name": _N_, "email": _E_}                     | JSON      | JSON          |
+  | Describe user with user id _UID_                                          | GET    | http://0.0.0.0:8004/users/{UID}    | .                                               | .         | JSON          |
+  | Update user with user id _UID_                                            | PUT    | http://0.0.0.0:8004/users/{UID}    | {"name": _N_, "email": _E_}                     | JSON      | JSON          |
+  | Delete user with user id _UID_                                            | DELETE | http://0.0.0.0:8004/users/{UID}    | .                                               | .         | JSON          |
+  | List all watchers                                                         | GET    | http://0.0.0.0:8004/watchers       | .                                               | .         | JSON          |
+  | Create new watcher for user _UID_ at URL _U_ with frequency _F_ (seconds) | POST   | http://0.0.0.0:8004/watchers       | {"user_id": *UID*, "url":_U_, "frequency": _F_} | JSON      | JSON          |
+  | Describe watcher with watcher id _WID_                                    | GET    | http://0.0.0.0:8004/watchers/{WID} | .                                               | .         | JSON          |
+  | Update watcher with watcher id _WID_                                      | PUT    | http://0.0.0.0:8004/watchers/{WID} | {"user_id": *UID*, "url":_U_, "frequency": _F_} | JSON      | JSON          |
+  | Delete watcher with watcher id _WID_                                      | DELETE | http://0.0.0.0:8004/watchers/{WID} | .                                               | .         | JSON          |
 
 ### notify
 
