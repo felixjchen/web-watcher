@@ -58,7 +58,6 @@ func handle_watcher(wid string, data map[string]interface{}, wg *sync.WaitGroup)
 			url = configure_address+"/users"
 			uid := data["user_id"].(string)
 			email := getUserEmail(url, uid)
-			email = "felixchen1998@gmail.com"
 	
 			url = notify_address+"/notify"
 			notifyUser(url, email, watcherUrl, DFilePath)
