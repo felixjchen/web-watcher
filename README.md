@@ -175,3 +175,13 @@
 - tests for every application for every endpoint
 - error checking and handling
 - use alpine images
+
+## Takeaways
+
+- Create seperate development/production database enviroments
+- Vanilla frontend is painful, React may excel here
+- Puppeteer can take full screen screenshots, Selenium cannot
+- Golang's goroutines are easier to use then Python threading
+- Golang's defer keyword is very useful for deleting files
+- Microservice architecure allowed me to replace services seemlessly
+- Microservice architecure allowed me to use different programming languages together 
