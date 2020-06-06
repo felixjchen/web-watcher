@@ -171,6 +171,7 @@
 ## To do
 
 - create a development environment
+- better logging
 - compare service quickly gives up on image with different sizes, can pad with white space
 - frontend: add editing, react, user auth, graphQL (maybe)
 - tests for every application for every endpoint
@@ -180,6 +181,7 @@
 ## Takeaways
 
 - Create seperate development/production database enviroments
+- log everything
 - Vanilla frontend is painful, React may excel here
 - Puppeteer can take full screen screenshots, Selenium cannot
 - Golang's goroutines are easier to use then Python threading
