@@ -171,6 +171,7 @@
 ## To do
 
 - create a development environment
+- compare service quickly gives up on image with different sizes, can pad with white space
 - frontend: add editing, react, user auth, graphQL (maybe)
 - tests for every application for every endpoint
 - error checking and handling
