@@ -6,7 +6,6 @@
 
 - interact by Material Design frontend or REST API (configure service)
 
-- currently frontend at http://184.172.252.145:30001/ and REST API at http://184.172.252.145:30000/
 
 ## Motivation
 
