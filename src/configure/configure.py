@@ -6,6 +6,7 @@ from cloudant import cloudant
 from cloudant.document import Document
 
 production = 'KUBERNETES_SERVICE_HOST' in os.environ
+db_client = 'production' if production else 'development'
 
 if production:
     def get_address(host, port):
@@ -53,7 +54,7 @@ def add_user(name, email):
 
     with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
 
-        db = client['configuration']
+        db = client[db_client]
 
         with Document(db, "users") as document:
 
@@ -67,7 +68,7 @@ def delete_user(user_id):
 
     with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
 
-        db = client['configuration']
+        db = client[db_client]
 
         watchers = []
         with Document(db, "users") as document:
@@ -86,7 +87,7 @@ def _deleteAll():
     users = []
     with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
 
-        db = client['configuration']
+        db = client[db_client]
 
         with Document(db, "users") as document:
             users = document["users"]
@@ -99,7 +100,7 @@ def update_user(user_id, name=None, email=None):
 
     with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
 
-        db = client['configuration']
+        db = client[db_client]
 
         with Document(db, "users") as document:
 
@@ -116,7 +117,7 @@ def get_user(user_id):
 
     with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
 
-        db = client['configuration']
+        db = client[db_client]
 
         with Document(db, "users") as document:
 
@@ -132,7 +133,7 @@ def list_users():
 
     with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
 
-        db = client['configuration']
+        db = client[db_client]
 
         with Document(db, "users") as document:
             return document["users"]
@@ -163,7 +164,7 @@ def add_watcher(user_id, url, frequency):
     # Add watcher to use
     with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
 
-        db = client['configuration']
+        db = client[db_client]
 
         with Document(db, "users") as document:
             users = document["users"]
@@ -184,7 +185,7 @@ def delete_watcher(watcher_id):
     # Add watcher to use
     with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
 
-        db = client['configuration']
+        db = client[db_client]
 
         user_id = ''
 
@@ -205,7 +206,7 @@ def update_watcher(watcher_id, last_run=None, frequency=None, url=None):
     # Add watcher to use
     with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
 
-        db = client['configuration']
+        db = client[db_client]
 
         # Add watcher to watchers
         with Document(db, "watchers") as document:
@@ -228,7 +229,7 @@ def get_watcher(watcher_id):
 
     with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
 
-        db = client['configuration']
+        db = client[db_client]
 
         with Document(db, "watchers") as document:
 
@@ -244,7 +245,7 @@ def list_watchers():
 
     with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
 
-        db = client['configuration']
+        db = client[db_client]
 
         with Document(db, "watchers") as document:
             return document['watchers']

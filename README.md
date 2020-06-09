@@ -179,7 +179,6 @@
 
 ## Takeaways
 
-- Create seperate development/production database enviroments
 - log everything
 - Vanilla frontend is painful, React may excel here
 - Puppeteer can take full screen screenshots, Selenium cannot
