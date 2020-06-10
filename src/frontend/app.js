@@ -8,7 +8,7 @@ const production = (typeof process.env.KUBERNETES_SERVICE_HOST !== 'undefined');
 var configure_address = 'http://0.0.0.0:8004';
 if (production) {
     // configure_address = 'http://' + process.env.CONFIGURE_SERVICE_HOST + ':' + process.env.CONFIGURE_SERVICE_PORT
-    configure_address = 'http://184.172.252.145:30000'
+    configure_address = 'http://159.122.174.161:30000'
 }
 
 
@@ -20,13 +20,13 @@ nunjucks.configure('views', {
 app.get('/', function (req, res) {
 
     function getUsers() {
-        return axios.get(configure_address + '/users').catch(function(error){
+        return axios.get(configure_address + '/users').catch(function (error) {
             console.log(error.toJSON());
         });
     }
 
     function getWatchers() {
-        return axios.get(configure_address + '/watchers').catch(function(error){
+        return axios.get(configure_address + '/watchers').catch(function (error) {
             console.log(error.toJSON());
         });
     }
@@ -36,7 +36,9 @@ app.get('/', function (req, res) {
         // Convert epoch to date
         for (watcher_id in watchers.data) {
             epoch = watchers.data[watcher_id].last_run
-            watchers.data[watcher_id].last_run = new Date(epoch * 1000).toLocaleString("en-US", {timeZone: "America/New_York"})
+            watchers.data[watcher_id].last_run = new Date(epoch * 1000).toLocaleString("en-US", {
+                timeZone: "America/New_York"
+            })
         }
 
         res.render('index.html', {

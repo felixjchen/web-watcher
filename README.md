@@ -169,10 +169,9 @@
 
 ## To do
 
-- create a development environment
 - better logging
 - compare service quickly gives up on image with different sizes, can pad with white space
-- frontend: add editing, react, user auth, graphQL (maybe)
+- frontend: add editing, react, user auth
 - tests for every application for every endpoint
 - error checking and handling
 - use alpine images
