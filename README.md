@@ -4,7 +4,7 @@
 
 - microservice architecture, 4 Python services, 2 Javascript services and one Golang Cronjob script; all containerized and ready to be deployed to a K8 Cluster
 
-- interact by Material Design frontend or REST API (configure service)
+- interact by Material Design [frontend](http://159.122.174.161:30001/) or REST API (configure service)
 
 ## Motivation
 
