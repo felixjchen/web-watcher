@@ -21,7 +21,7 @@
 - uploads and downloads files from IBM COS (Cloud Object Storage)
 - requires:
   - python3.7
-  - IBM COS, src/cloud*object_storage/secrets.py populated with service credentials & bucket named \_web-watcher-files*
+  - IBM COS, src/cloud_object_storage/secrets.py populated with service credentials & bucket named \_web-watcher-files*
 - to run locally:
   ```
   cd src/cloud_object_storage
@@ -53,8 +53,8 @@
 - endpoints
   | To | Method | URL | Body | Body Type | Response Type |
   | ----------------------------------------------------------------- | ------ | ------------------------------------ | ---------------------------------- | --------- | ------------- |
-  | Get structural similarity index between images _P_ and _Q_ | GET | http://0.0.0.0:8002/difference | {"file*old": *P*, "file_new": *Q*} | Form | JSON |
-  | Create bounding boxes around the difference of images \_P* and _Q_ | GET | http://0.0.0.0:8002/difference_image | {"file*old": \_P*, "file*new": \_Q*} | Form | File |
+  | Get structural similarity index between images _P_ and _Q_ | GET | http://0.0.0.0:8002/difference | {"file_old": *P*, "file_new": *Q*} | Form | JSON |
+  | Create bounding boxes around the difference of images _P_ and _Q_ | GET | http://0.0.0.0:8002/difference_image | {"file_old": _P_, "file_new": _Q_} | Form | File |
 
 ### screenshot
 
@@ -98,9 +98,9 @@
   | Update user with user id _UID_ | PUT | http://0.0.0.0:8004/users/{UID} | {"name": _N_, "email": _E_} | JSON | JSON |
   | Delete user with user id _UID_ | DELETE | http://0.0.0.0:8004/users/{UID} | . | . | JSON |
   | List all watchers | GET | http://0.0.0.0:8004/watchers | . | . | JSON |
-  | Create new watcher for user _UID_ at URL _U_ with frequency _F_ (seconds) | POST | http://0.0.0.0:8004/watchers | {"user*id": *UID*, "url":\_U*, "frequency": _F_} | JSON | JSON |
+  | Create new watcher for user _UID_ at URL _U_ with frequency _F_ (seconds) | POST | http://0.0.0.0:8004/watchers | {"user_id": *UID*, "url":_U_, "frequency": _F_} | JSON | JSON |
   | Describe watcher with watcher id _WID_ | GET | http://0.0.0.0:8004/watchers/{WID} | . | . | JSON |
-  | Update watcher with watcher id _WID_ | PUT | http://0.0.0.0:8004/watchers/{WID} | {"user*id": *UID*, "url":\_U*, "frequency": _F_} | JSON | JSON |
+  | Update watcher with watcher id _WID_ | PUT | http://0.0.0.0:8004/watchers/{WID} | {"user_id": *UID*, "url":_U_, "frequency": _F_} | JSON | JSON |
   | Delete watcher with watcher id _WID_ | DELETE | http://0.0.0.0:8004/watchers/{WID} | . | . | JSON |
 
 ### notify

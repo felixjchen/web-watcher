@@ -35,12 +35,12 @@ func handle_watcher(wid string, data map[string]interface{}, wg *sync.WaitGroup)
 		defer os.Remove(COSFilePath)
 		// Take new SS
 		wg2.Add(1)
-		SSFilePath := "files/SS" + wid + ".png"
+		SSFilePath := "files/" + wid + ".png"
 		url = screenshot_address + "/screenshot"
 		watcherUrl := data["url"].(string)
 		payload := strings.NewReader("{\n   \"url\":\"" + watcherUrl + "\"\n}")
 		go getRequestToFile(url, SSFilePath, payload, &wg2)
-		defer os.Remove(SSFilePath)
+		// defer os.Remove(SSFilePath)
 		wg2.Wait()
 		////////////////////////////////////////
 
@@ -54,14 +54,16 @@ func handle_watcher(wid string, data map[string]interface{}, wg *sync.WaitGroup)
 			getDifferenceImage(url, COSFilePath, SSFilePath, DFilePath)
 			defer os.Remove(DFilePath)
 
+			// Mail with boundind box photo
 			url = configure_address + "/users"
 			uid := data["user_id"].(string)
 			email := getUserEmail(url, uid)
-
 			fmt.Println(wid, "difference found, mailing", email)
-
 			url = notify_address + "/notify"
-			notifyUser(url, email, watcherUrl, DFilePath)
+			go notifyUser(url, email, watcherUrl, DFilePath)
+
+			// Upload new SS
+			go uploadCOS(cloud_object_storage_address+"/files", SSFilePath)
 		}
 
 		url = configure_address + "/watchers/" + wid

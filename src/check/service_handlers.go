@@ -1,30 +1,30 @@
 package main
 
 import (
+	"bytes"
 	"io"
 	"io/ioutil"
-	"os"
 	"log"
-	"sync"	
-	"bytes"
+	"os"
 	"strconv"
 	"strings"
+	"sync"
 
 	"mime/multipart"
 	"path/filepath"
 
-	"net/http"
 	"encoding/json"
+	"net/http"
 )
 
 // Get address in cluster
-func getProdServiceAddress(service string) string{
+func getProdServiceAddress(service string) string {
 	host := os.Getenv(service + "_SERVICE_HOST")
 	port := os.Getenv(service + "_SERVICE_PORT")
 	return "http://" + host + ":" + port
 }
 
-func getRequestToInterface(url string) interface{}{
+func getRequestToInterface(url string) interface{} {
 	response, err := http.Get(url)
 	if err != nil {
 		log.Fatal(err)
@@ -41,7 +41,7 @@ func getRequestToInterface(url string) interface{}{
 }
 
 // Configure Handler
-func getUserEmail(url string, uid string) string{
+func getUserEmail(url string, uid string) string {
 	users := getRequestToInterface(url).(map[string]interface{})
 	userData := users[uid].(map[string]interface{})
 	email := userData["email"].(string)
@@ -50,9 +50,9 @@ func getUserEmail(url string, uid string) string{
 
 func updateWatcher(url string, now int64) {
 	i := int(now)
-	payload := strings.NewReader("{\n   \"last_run\":"+strconv.Itoa(i)+"\n}")
+	payload := strings.NewReader("{\n   \"last_run\":" + strconv.Itoa(i) + "\n}")
 
-	client := &http.Client {}
+	client := &http.Client{}
 	req, err := http.NewRequest("PUT", url, payload)
 	req.Header.Add("Content-Type", "application/json")
 	res, err := client.Do(req)
@@ -62,11 +62,11 @@ func updateWatcher(url string, now int64) {
 }
 
 // COS and SS handlers
-func getRequestToFile(url string, filePath string, payload io.Reader, wg *sync.WaitGroup){
+func getRequestToFile(url string, filePath string, payload io.Reader, wg *sync.WaitGroup) {
 	defer wg.Done()
-  
+
 	// Get the data
-	client := &http.Client {}
+	client := &http.Client{}
 	req, err := http.NewRequest("GET", url, payload)
 	req.Header.Add("Content-Type", "application/json")
 	resp, err := client.Do(req)
@@ -74,24 +74,24 @@ func getRequestToFile(url string, filePath string, payload io.Reader, wg *sync.W
 		log.Fatal(err)
 	}
 	defer resp.Body.Close()
-  
+
 	// Writer the body to file
 	out, err := os.Create(filePath)
 	defer out.Close()
 	_, err = io.Copy(out, resp.Body)
-	if err != nil  {
+	if err != nil {
 		log.Fatal(err)
-	} 
+	}
 }
 
 // Get difference
-func getDifference(url string, filePath1 string, filePath2 string) float64{
+func getDifference(url string, filePath1 string, filePath2 string) float64 {
 	payload := &bytes.Buffer{}
 	writer := multipart.NewWriter(payload)
 
 	file, err := os.Open(filePath1)
 	defer file.Close()
-	part1, err := writer.CreateFormFile("file_old",filepath.Base(filePath1))
+	part1, err := writer.CreateFormFile("file_old", filepath.Base(filePath1))
 	_, err = io.Copy(part1, file)
 	if err != nil {
 		log.Fatal(err)
@@ -108,7 +108,7 @@ func getDifference(url string, filePath1 string, filePath2 string) float64{
 	writer.Close()
 
 	// Get difference float
-	client := &http.Client {}
+	client := &http.Client{}
 	req, err := http.NewRequest("GET", url, payload)
 	req.Header.Set("Content-Type", writer.FormDataContentType())
 	res, err := client.Do(req)
@@ -128,7 +128,7 @@ func getDifferenceImage(url string, filePath1 string, filePath2 string, DFilePat
 
 	file, err := os.Open(filePath1)
 	defer file.Close()
-	part1, err := writer.CreateFormFile("file_old",filepath.Base(filePath1))
+	part1, err := writer.CreateFormFile("file_old", filepath.Base(filePath1))
 	_, err = io.Copy(part1, file)
 	if err != nil {
 		log.Fatal(err)
@@ -145,7 +145,7 @@ func getDifferenceImage(url string, filePath1 string, filePath2 string, DFilePat
 	writer.Close()
 
 	// Get difference float
-	client := &http.Client {}
+	client := &http.Client{}
 	req, err := http.NewRequest("GET", url, payload)
 	req.Header.Set("Content-Type", writer.FormDataContentType())
 	resp, err := client.Do(req)
@@ -153,14 +153,14 @@ func getDifferenceImage(url string, filePath1 string, filePath2 string, DFilePat
 		log.Fatal(err)
 	}
 	defer resp.Body.Close()
-  
+
 	// Writer the body to file
 	out, err := os.Create(DFilePath)
 	defer out.Close()
 	_, err = io.Copy(out, resp.Body)
-	if err != nil  {
+	if err != nil {
 		log.Fatal(err)
-	} 
+	}
 }
 
 func notifyUser(url string, email string, watcherUrl string, filePath string) {
@@ -173,7 +173,7 @@ func notifyUser(url string, email string, watcherUrl string, filePath string) {
 	_, err = io.Copy(part1, file)
 	_ = writer.WriteField("url", watcherUrl)
 	_ = writer.WriteField("email", email)
-	writer.Close()
+	err = writer.Close()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -185,4 +185,27 @@ func notifyUser(url string, email string, watcherUrl string, filePath string) {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func uploadCOS(url string, filePath string) {
+	payload := &bytes.Buffer{}
+	writer := multipart.NewWriter(payload)
+
+	file, err := os.Open(filePath)
+	defer file.Close()
+	part, err := writer.CreateFormFile("file", filepath.Base(filePath))
+	_, err = io.Copy(part, file)
+	err = writer.Close()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	client := &http.Client{}
+	req, err := http.NewRequest("POST", url, payload)
+	req.Header.Set("Content-Type", writer.FormDataContentType())
+	_, err = client.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 }
