@@ -7,7 +7,7 @@ def get_difference(file_path_old, file_path_new):
     before = cv2.imread(file_path_old)
     after = cv2.imread(file_path_new)
 
-    if before.shape != after.shape: return 1
+    before, after = pad_images(before, after)
 
     # Convert images to grayscale
     before_gray = cv2.cvtColor(before, cv2.COLOR_BGR2GRAY)
@@ -19,15 +19,11 @@ def get_difference(file_path_old, file_path_new):
 
 
 def create_difference_image(file_path_old, file_path_new, file_path_target):
-    
+
     before = cv2.imread(file_path_old)
     after = cv2.imread(file_path_new)
 
-
-    if before.shape != after.shape: 
-        cv2.waitKey(0)
-        cv2.imwrite(file_path_target, after)
-        return 1
+    before, after = pad_images(before, after)
 
 
     # Convert images to grayscale
@@ -68,12 +64,34 @@ def create_difference_image(file_path_old, file_path_new, file_path_target):
     # cv2.imshow('diff', diff)
     # cv2.imshow('mask', mask)
     # cv2.imshow('filled after', filled_after)
-    cv2.waitKey(0)
+    # cv2.waitKey(0)
     cv2.imwrite(file_path_target, after)
+
+
+def pad_images(image1, image2):
+    image1H, image1W, _ = image1.shape
+    image2H, image2W, _ = image2.shape
+
+    maxH = max(image1H, image2H)
+    maxW = max(image1W, image2W)
+
+    pad1H = maxH - image1H
+    pad1W = maxW - image1W
+
+    pad2H = maxH - image2H
+    pad2W = maxW - image2W
+
+    image1 = cv2.copyMakeBorder(
+        image1, 0, pad1H, 0, pad1W, cv2.BORDER_CONSTANT)
+
+    image2 = cv2.copyMakeBorder(
+        image2, 0, pad2H, 0, pad2W, cv2.BORDER_CONSTANT)
+
+    return image1, image2
 
 
 if __name__ == "__main__":
     # print(get_difference('files/old_1.png', 'files/new_1.png'))
-    print(create_difference_image('files/old_1.png',
-                                  'files/new_1.png', 'files/difference_1.png'))
+    print(create_difference_image('files/old.png',
+                                  'files/new.png', 'files/difference.png'))
     pass
