@@ -40,7 +40,7 @@ func handle_watcher(wid string, data map[string]interface{}, wg *sync.WaitGroup)
 		watcherUrl := data["url"].(string)
 		payload := strings.NewReader("{\n   \"url\":\"" + watcherUrl + "\"\n}")
 		go getRequestToFile(url, SSFilePath, payload, &wg2)
-		// defer os.Remove(SSFilePath)
+		defer os.Remove(SSFilePath)
 		wg2.Wait()
 		////////////////////////////////////////
 
