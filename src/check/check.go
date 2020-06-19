@@ -47,6 +47,7 @@ func handle_watcher(wid string, data map[string]interface{}, wg *sync.WaitGroup)
 		// Get difference, notify user if over threshold
 		url = compare_address + "/difference"
 		d := getDifference(url, COSFilePath, SSFilePath)
+		fmt.Println(wid, " difference: ", d)
 		if d >= threshold {
 			// Get bounding box photo
 			DFilePath := "files/D" + wid + ".png"
@@ -58,7 +59,7 @@ func handle_watcher(wid string, data map[string]interface{}, wg *sync.WaitGroup)
 			url = configure_address + "/users"
 			uid := data["user_id"].(string)
 			email := getUserEmail(url, uid)
-			fmt.Println(wid, "difference found ", d, ", mailing", email)
+			fmt.Println(wid, "difference found, mailing", email)
 			url = notify_address + "/notify"
 			go notifyUser(url, email, watcherUrl, DFilePath)
 
