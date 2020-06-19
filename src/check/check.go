@@ -9,7 +9,7 @@ import (
 )
 
 var now = time.Now().Unix()
-var threshold = 0.0
+var threshold = 0.01
 var cloud_object_storage_address = "http://0.0.0.0:8001"
 var compare_address = "http://0.0.0.0:8002"
 var screenshot_address = "http://0.0.0.0:8003"
@@ -58,7 +58,7 @@ func handle_watcher(wid string, data map[string]interface{}, wg *sync.WaitGroup)
 			url = configure_address + "/users"
 			uid := data["user_id"].(string)
 			email := getUserEmail(url, uid)
-			fmt.Println(wid, "difference found, mailing", email)
+			fmt.Println(wid, "difference found ", d, ", mailing", email)
 			url = notify_address + "/notify"
 			go notifyUser(url, email, watcherUrl, DFilePath)
 
