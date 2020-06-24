@@ -52,7 +52,7 @@ def create_difference_image(file_path_old, file_path_new, file_path_target):
 
     for c in contours:
         area = cv2.contourArea(c)
-        if area > 40:
+        if area > 50:
             x, y, w, h = cv2.boundingRect(c)
             cv2.rectangle(before, (x, y), (x + w, y + h), (36, 255, 12), 2)
             cv2.rectangle(after, (x, y), (x + w, y + h), (36, 255, 12), 2)

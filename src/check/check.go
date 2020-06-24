@@ -9,7 +9,7 @@ import (
 )
 
 var now = time.Now().Unix()
-var threshold = 0.01
+var threshold = 0.02
 var cloudObjectStorageAddress = "http://0.0.0.0:8001"
 var compareAddress = "http://0.0.0.0:8002"
 var screenshotAddress = "http://0.0.0.0:8003"
