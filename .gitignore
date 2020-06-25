@@ -132,6 +132,7 @@ dmypy.json
 
 kubernetes/secrets/*.yaml
 **secrets.py
+**secrets.json
 
 
 **/files/

@@ -1,0 +1,17 @@
+{
+  "name": "token",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "@cloudant/cloudant": "^4.2.4",
+    "cloudant": "^1.10.0-NOTICE",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
