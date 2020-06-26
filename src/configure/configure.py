@@ -4,13 +4,15 @@ import uuid
 import time
 import bcrypt
 
-from theading import Thread
+from threading import Thread
 
 from cloudant import cloudant
 from cloudant.document import Document
 
 production = 'KUBERNETES_SERVICE_HOST' in os.environ
 db_client = 'production' if production else 'development'
+user_document = 'user'
+watcher_document = 'watcher'
 
 if production:
     def get_address(host, port):
@@ -63,13 +65,13 @@ def first_screenshot(watcher_uuid, url):
 def add_user(email, password):
     with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
         db = client[db_client]
-        with Document(db, "user") as document:
+        with Document(db, user_document) as document:
             users = document["users"]
             if email in users:
                 return -1
             hashed_password = hash_string(password)
             new_user = {
-                'password': password,
+                'password': hashed_password,
                 "watchers": []
             }
             users[email] = new_user
@@ -80,7 +82,7 @@ def add_user(email, password):
 def update_password(email, password):
     with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
         db = client[db_client]
-        with Document(db, "user") as document:
+        with Document(db, user_document) as document:
             document["users"][email]["password"] = hash_string(password)
     return True
 
@@ -88,7 +90,7 @@ def update_password(email, password):
 def check_password(email, password):
     with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
         db = client[db_client]
-        with Document(db, "user") as document:
+        with Document(db, user_document) as document:
 
             users = document["users"]
 
@@ -109,7 +111,7 @@ def check_password(email, password):
 def get_user(email):
     with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
         db = client[db_client]
-        with Document(db, "user") as document:
+        with Document(db, user_document) as document:
             users = document["users"]
             if email not in users:
                 return -1
@@ -121,13 +123,13 @@ def delete_user(email):
     with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
         db = client[db_client]
         watchers = []
-        with Document(db, "user") as document:
+        with Document(db, user_document) as document:
             watchers = document["users"][email]['watchers']
 
         for watcher_id in watchers:
             delete_watcher(watcher_id)
 
-        with Document(db, "users") as document:
+        with Document(db, user_document) as document:
             del(document["users"][email])
 
 
@@ -149,11 +151,11 @@ def add_watcher(email, url, frequency):
         db = client[db_client]
 
         # Add watcher to user
-        with Document(db, "user") as document:
+        with Document(db, user_document) as document:
             document["users"][email]['watchers'] += [watcher_uuid]
 
         # Add watcher to watchers
-        with Document(db, "watcher") as document:
+        with Document(db, watcher_document) as document:
             watchers = document['watchers']
             watchers[watcher_uuid] = new_watcher
 
@@ -171,17 +173,17 @@ def delete_watcher(watcher_id):
         email = ''
 
         # Remove watcher to watchers
-        with Document(db, "watchers") as document:
+        with Document(db, watcher_document) as document:
             email = document['watchers'][watcher_id]['email']
             del(document['watchers'][watcher_id])
 
-        with Document(db, "user") as document:
+        with Document(db, user_document) as document:
             document["users"][email]["watchers"].remove(watcher_id)
 
     return True
 
 
-def update_watcher(watcher_id, last_run=None, frequency=None, url=None):
+def update_watcher(watcher_id, last_run=None, frequency=None):
 
     # Add watcher to use
     with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
@@ -189,7 +191,7 @@ def update_watcher(watcher_id, last_run=None, frequency=None, url=None):
         db = client[db_client]
 
         # Add watcher to watchers
-        with Document(db, "watchers") as document:
+        with Document(db, watcher_document) as document:
             watchers = document['watchers']
             watcher = watchers[watcher_id]
 
@@ -197,8 +199,6 @@ def update_watcher(watcher_id, last_run=None, frequency=None, url=None):
                 watcher['last_run'] = last_run
             if frequency:
                 watcher['frequency'] = frequency
-            if url:
-                watcher['url'] = url
 
     return True
 
@@ -209,7 +209,7 @@ def get_watcher(watcher_id):
 
         db = client[db_client]
 
-        with Document(db, "watchers") as document:
+        with Document(db, watcher_document) as document:
 
             watchers = document["watchers"]
 
@@ -225,10 +225,10 @@ def _delete_all():
 
         db = client[db_client]
 
-        with Document(db, "user") as document:
+        with Document(db, user_document) as document:
             document["users"] = {}
 
-        with Document(db, "watcher") as document:
+        with Document(db, watcher_document) as document:
             document["watchers"] = {}
 
 
@@ -238,7 +238,7 @@ def list_users():
 
         db = client[db_client]
 
-        with Document(db, "users") as document:
+        with Document(db, user_document) as document:
             return document["users"]
 
 
@@ -248,7 +248,7 @@ def list_watchers():
 
         db = client[db_client]
 
-        with Document(db, "watchers") as document:
+        with Document(db, watcher_document) as document:
             return document['watchers']
 
 
