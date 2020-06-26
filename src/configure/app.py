@@ -1,12 +1,13 @@
+from configure import add_user, update_password, check_password, get_user, delete_user, add_watcher, delete_watcher, get_watcher, update_watcher, update_user, list_users, list_watchers
+from flask_cors import CORS
+from flask import Flask, jsonify, request
 from gevent import monkey
 monkey.patch_all()
 
-from flask import Flask, jsonify, request
-from flask_cors import CORS
-from configure import add_user, list_users, get_user, add_watcher, list_watchers, get_watcher, update_watcher, delete_watcher, update_user, delete_user
 
 app = Flask(__name__)
 CORS(app)
+
 
 @app.route('/users', methods=['GET', 'POST'])
 def users():
@@ -30,6 +31,7 @@ def users():
 
     return 'Error'
 
+
 @app.route('/users/<user_id>', methods=['GET', 'PUT', 'DELETE'])
 def user_profile(user_id):
 
@@ -46,13 +48,14 @@ def user_profile(user_id):
 
     if request.method == 'DELETE':
         delete_user(user_id)
-        
+
         return jsonify({
             'message': f'DELETED user {user_id}',
             'user_id': user_id
         })
 
     return 'Error'
+
 
 @app.route('/watchers', methods=['GET', 'POST'])
 def watchers():
