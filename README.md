@@ -179,6 +179,7 @@
 
 ## Takeaways
 
+- take only what you need from client
 - log everything
 - Vanilla frontend is painful, React may excel here
 - Puppeteer can take full screen screenshots, Selenium cannot

@@ -19,39 +19,39 @@ def users():
     if request.method == 'POST':
         # Add new user
         data = request.json
-        name = data['name']
         email = data['email']
+        password = data['password']
 
-        user_id = add_user(name, email)
+        user_id = add_user(email, password)
 
         return jsonify({
-            'message': f'CREATED user {user_id}',
-            'user_id': user_id
+            'message': f'CREATED with email {email}',
+            'email': email
         })
 
     return 'Error'
 
 
-@app.route('/users/<user_id>', methods=['GET', 'PUT', 'DELETE'])
-def user_profile(user_id):
+@app.route('/users/<email>', methods=['GET', 'PUT', 'DELETE'])
+def user_profile(email):
 
     if request.method == 'GET':
-        return jsonify(get_user(user_id))
+        return jsonify(get_user(email))
 
     if request.method == 'PUT':
-        update_user(user_id, **request.json)
+        update_user(email, request['password'])
 
         return jsonify({
-            'message': f'UPDATED user {user_id}',
-            'user_id': user_id
+            'message': f'UPDATED user {email}',
+            'user_id': email
         })
 
     if request.method == 'DELETE':
-        delete_user(user_id)
+        delete_user(email)
 
         return jsonify({
-            'message': f'DELETED user {user_id}',
-            'user_id': user_id
+            'message': f'DELETED user {email}',
+            'user_id': email
         })
 
     return 'Error'
@@ -67,11 +67,11 @@ def watchers():
     # Create new watcher
     if request.method == 'POST':
         data = request.json
-        user_id = data['user_id']
+        email = data['email']
         url = data['url']
         frequency = data['frequency']
 
-        watcher_id, last_run = add_watcher(user_id, url, frequency)
+        watcher_id, last_run = add_watcher(email, url, frequency)
 
         return jsonify({
             'message': f'CREATED watcher {watcher_id}',
