@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -57,8 +58,7 @@ func handleWatcher(wid string, data map[string]interface{}, wg *sync.WaitGroup) 
 
 			// Mail with boundind box photo
 			url = configureAddress + "/users"
-			uid := data["user_id"].(string)
-			email := getUserEmail(url, uid)
+			email := data["email"].(string)
 			fmt.Println(wid, "difference found, mailing", email)
 			url = notifyAddress + "/notify"
 			go notifyUser(url, email, watcherURL, DFilePath)
@@ -67,8 +67,9 @@ func handleWatcher(wid string, data map[string]interface{}, wg *sync.WaitGroup) 
 			go uploadCOS(cloudObjectStorageAddress+"/files", SSFilePath)
 		}
 
-		url = configureAddress + "/watchers/" + wid
-		updateWatcher(url, now)
+		url = configureAddress + "/watchers/" + wid + "?last_run=" + strconv.FormatInt(now, 10)
+		fmt.Println(url)
+		updateWatcher(url)
 
 	} else {
 		fmt.Println(wid, "< frequency")

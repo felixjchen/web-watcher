@@ -7,7 +7,6 @@ import (
 	"log"
 	"os"
 	"strconv"
-	"strings"
 	"sync"
 
 	"mime/multipart"
@@ -40,21 +39,10 @@ func getRequestToInterface(url string) interface{} {
 	return i
 }
 
-// Configure Handler
-func getUserEmail(url string, uid string) string {
-	users := getRequestToInterface(url).(map[string]interface{})
-	userData := users[uid].(map[string]interface{})
-	email := userData["email"].(string)
-	return email
-}
-
-func updateWatcher(url string, now int64) {
-	i := int(now)
-	payload := strings.NewReader("{\n   \"last_run\":" + strconv.Itoa(i) + "\n}")
+func updateWatcher(url string) {
 
 	client := &http.Client{}
-	req, err := http.NewRequest("PUT", url, payload)
-	req.Header.Add("Content-Type", "application/json")
+	req, err := http.NewRequest("PUT", url, nil)
 	res, err := client.Do(req)
 	if err != nil {
 		log.Fatal(res)
