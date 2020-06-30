@@ -20,7 +20,7 @@ if (production) {
     process.env.CONFIGURE_SERVICE_PORT;
 }
 
-const authRequest = (email, password) => {
+const authDB = (email, password) => {
   let options = {
     method: "GET",
     url: configure_address + "/auth?email=" + email + "&password=" + password,
@@ -36,7 +36,7 @@ const authRequest = (email, password) => {
   });
 };
 
-const auth = async (req, res) => {
+const authHandler = async (req, res) => {
   let {
     email,
     password
@@ -49,7 +49,7 @@ const auth = async (req, res) => {
   }
 
   // Auth against db
-  let r = await authRequest(email, password);
+  let r = await authDB(email, password);
   if (r != "Authenticated") {
     res.send("Incorrect password");
     return res.status(401).end();
@@ -59,7 +59,7 @@ const auth = async (req, res) => {
     email
   }, HMAC_KEY, {
     algorithm: "HS256",
-    expiresIn: 0,
+    expiresIn: accessTokenExpiry,
   })
   let refreshToken = jwt.sign({
     email
@@ -84,7 +84,8 @@ const auth = async (req, res) => {
   res.end();
 };
 
-const refresh = (req, res) => {
+
+const refreshHandler = (req, res) => {
   const refreshToken = req.cookies.refreshToken
 
   // No refresh token
@@ -140,7 +141,7 @@ const refresh = (req, res) => {
   res.end();
 }
 
-const use = (req, res) => {
+const useHandler = (req, res) => {
   const token = req.cookies.accessToken;
 
   if (!token) {
@@ -166,7 +167,7 @@ const use = (req, res) => {
 
 
 module.exports = {
-  auth,
-  refresh,
-  use
+  authHandler,
+  refreshHandler,
+  useHandler
 };

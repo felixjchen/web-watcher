@@ -3,18 +3,17 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 
 const {
-    auth,
-    refresh,
-    use
-
+    authHandler,
+    refreshHandler,
+    useHandler
 } = require("./handlers");
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-app.post("/auth", auth);
-app.post("/refresh", refresh)
-app.get("/use", use)
+app.post("/auth", authHandler);
+app.post("/refresh", refreshHandler)
+app.get("/use", useHandler)
 
 app.listen(8007, "0.0.0.0");
