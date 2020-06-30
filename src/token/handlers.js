@@ -2,8 +2,11 @@ const request = require("request");
 const jwt = require("jsonwebtoken");
 const production = typeof process.env.KUBERNETES_SERVICE_HOST !== "undefined";
 
-const accessTokenExpiry = '3';
-const refreshTokenExpiry = '7d'
+// 15 min
+const accessTokenExpiry = 900;
+// 7 days
+const refreshTokenExpiry = 604800;
+
 var configure_address = "http://0.0.0.0:8004";
 var {
   HMAC_KEY
@@ -38,6 +41,7 @@ const auth = async (req, res) => {
     email,
     password
   } = req.body;
+
   // Invalid form
   if (!email || !password) {
     res.send("Missing email or password");
@@ -55,9 +59,8 @@ const auth = async (req, res) => {
     email
   }, HMAC_KEY, {
     algorithm: "HS256",
-    expiresIn: accessTokenExpiry,
+    expiresIn: 0,
   })
-
   let refreshToken = jwt.sign({
     email
   }, HMAC_KEY, {
@@ -65,45 +68,105 @@ const auth = async (req, res) => {
     expiresIn: refreshTokenExpiry,
   })
 
-  console.log(accessToken, refreshToken);
-
-  res.cookie("refreshToken", accessToken, {
-    httpOnly: true
+  // accessToken can go stale
+  res.cookie("accessToken", accessToken, {
+    httpOnly: true,
   });
+  // refreshToken expires
+  res.cookie("refreshToken", refreshToken, {
+    httpOnly: true,
+    maxAge: refreshTokenExpiry * 1000
+  });
+
   res.send({
-    accessToken,
     accessTokenExpiry,
   });
   res.end();
 };
 
-const verify = (req, res) => {
-  console.log(req.cookies.token)
-  const token = req.cookies.token;
+const refresh = (req, res) => {
+  const refreshToken = req.cookies.refreshToken
 
-  if (!token) {
-    return res.status(401).end();
+  // No refresh token
+  if (!refreshToken) {
+    return res.status(401).end()
   }
 
-  var payload;
+  let payload;
   try {
-    payload = jwt.verify(token, HMAC_KEY);
+    payload = jwt.verify(refreshToken, HMAC_KEY)
   } catch (e) {
-    console.log(e)
-    if (e instanceof jwt.JsonWebTokenError) {
-      // if the error thrown is because the JWT is unauthorized, return a 401 error
+    if (e instanceof jwt.TokenExpiredError) {
+      res.send('Expired Access Token')
+      return res.status(401).end();
+    } else if (e instanceof jwt.JsonWebTokenError) {
+      res.send('Invalid Refresh Token')
       return res.status(401).end();
     }
     // otherwise, return a bad request error
     return res.status(400).end();
   }
-  console.log(payload)
+
+  let {
+    email
+  } = payload;
+
+  let accessToken = jwt.sign({
+    email
+  }, HMAC_KEY, {
+    algorithm: "HS256",
+    expiresIn: accessTokenExpiry,
+  })
+  let newRefreshToken = jwt.sign({
+    email
+  }, HMAC_KEY, {
+    algorithm: "HS256",
+    expiresIn: refreshTokenExpiry,
+  })
+
+  // accessToken can go stale
+  res.cookie("accessToken", accessToken, {
+    httpOnly: true,
+  });
+  // refreshToken expires
+  res.cookie("refreshToken", newRefreshToken, {
+    httpOnly: true,
+    maxAge: refreshTokenExpiry * 1000
+  });
+
+  res.send({
+    accessTokenExpiry,
+  });
+  res.end();
+}
+
+const use = (req, res) => {
+  const token = req.cookies.accessToken;
+
+  if (!token) {
+    return res.status(401).end();
+  }
+
+  let payload;
+  try {
+    payload = jwt.verify(token, HMAC_KEY);
+  } catch (e) {
+    if (e instanceof jwt.TokenExpiredError) {
+      res.send('Expired Access Token')
+      return res.status(401).end();
+    } else if (e instanceof jwt.JsonWebTokenError) {
+      res.send('Invalid Access Token')
+      return res.status(401).end();
+    }
+    // otherwise, return a bad request error
+    return res.status(400).end();
+  }
   res.send(`Welcome ${payload.email}`);
 };
 
-const refresh = async (req, res) => {};
 
 module.exports = {
   auth,
-  verify
+  refresh,
+  use
 };
