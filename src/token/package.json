@@ -6,7 +6,9 @@
   "dependencies": {
     "@cloudant/cloudant": "^4.2.4",
     "cloudant": "^1.10.0-NOTICE",
-    "express": "^4.17.1"
+    "cookie-parser": "^1.4.5",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1"
   },
   "devDependencies": {},
   "scripts": {
