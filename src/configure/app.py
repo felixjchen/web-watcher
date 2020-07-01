@@ -3,12 +3,10 @@ if True:
     monkey.patch_all()
 
 from configure import add_user, update_password, check_password, get_user, delete_user, add_watcher, delete_watcher, get_watcher, update_watcher,  list_users, list_watchers
-from flask_cors import CORS
 from flask import Flask, jsonify, request
 
 
 app = Flask(__name__)
-CORS(app)
 
 
 @app.route('/users', methods=['GET', 'POST'])
