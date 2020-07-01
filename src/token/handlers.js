@@ -18,7 +18,7 @@ if (production) {
     process.env.CONFIGURE_SERVICE_PORT;
 }
 
-const authDB = async (email, password) => {
+const authDB = (email, password) => {
   let url =
     configure_address + "/auth?email=" + email + "&password=" + password;
 
@@ -26,7 +26,7 @@ const authDB = async (email, password) => {
     method: "GET",
     redirect: "follow",
   };
-  return await fetch(url, requestOptions);
+  return fetch(url, requestOptions);
 };
 
 const authHandler = async (req, res) => {
