@@ -8,7 +8,9 @@ const accessTokenExpiry = 900;
 const refreshTokenExpiry = 604800;
 
 var configure_address = "http://0.0.0.0:8004";
-var { HMAC_KEY } = require("./secrets.json");
+var {
+  HMAC_KEY
+} = require("./secrets.json");
 
 if (production) {
   configure_address =
@@ -30,7 +32,10 @@ const authDB = (email, password) => {
 };
 
 const authHandler = async (req, res) => {
-  let { email, password } = req.body;
+  let {
+    email,
+    password
+  } = req.body;
 
   // Invalid form
   if (!email || !password) {
@@ -51,45 +56,45 @@ const authHandler = async (req, res) => {
     return res.status(401).end();
   }
 
-  let accessToken = jwt.sign(
-    {
+  let accessToken = jwt.sign({
       email,
     },
-    HMAC_KEY,
-    {
+    HMAC_KEY, {
       algorithm: "HS256",
       expiresIn: accessTokenExpiry,
     }
   );
-  let refreshToken = jwt.sign(
-    {
+  let refreshToken = jwt.sign({
       email,
     },
-    HMAC_KEY,
-    {
+    HMAC_KEY, {
       algorithm: "HS256",
       expiresIn: refreshTokenExpiry,
     }
   );
 
   // accessToken can go stale
-  res.cookie("accessToken", accessToken, {
-    httpOnly: true,
-  });
-  // refreshToken expires
-  res.cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    maxAge: refreshTokenExpiry * 1000,
-  });
+  // res.cookie("accessToken", accessToken, {
+  //   httpOnly: true,
+  // });
+  // // refreshToken expires
+  // res.cookie("refreshToken", refreshToken, {
+  //   httpOnly: true,
+  //   maxAge: refreshTokenExpiry * 1000,
+  // });
 
   res.send({
+    accessToken,
+    refreshToken,
     accessTokenExpiry,
   });
   res.end();
 };
 
 const refreshHandler = (req, res) => {
-  const refreshToken = req.cookies.refreshToken;
+  const {
+    refreshToken
+  } = req.body;
 
   // No refresh token
   if (!refreshToken) {
@@ -111,40 +116,30 @@ const refreshHandler = (req, res) => {
     return res.status(400).end();
   }
 
-  let { email } = payload;
+  let {
+    email
+  } = payload;
 
-  let accessToken = jwt.sign(
-    {
+  let accessToken = jwt.sign({
       email,
     },
-    HMAC_KEY,
-    {
+    HMAC_KEY, {
       algorithm: "HS256",
       expiresIn: accessTokenExpiry,
     }
   );
-  let newRefreshToken = jwt.sign(
-    {
+  let newRefreshToken = jwt.sign({
       email,
     },
-    HMAC_KEY,
-    {
+    HMAC_KEY, {
       algorithm: "HS256",
       expiresIn: refreshTokenExpiry,
     }
   );
 
-  // accessToken can go stale
-  res.cookie("accessToken", accessToken, {
-    httpOnly: true,
-  });
-  // refreshToken expires
-  res.cookie("refreshToken", newRefreshToken, {
-    httpOnly: true,
-    maxAge: refreshTokenExpiry * 1000,
-  });
-
   res.send({
+    accessToken,
+    newRefreshToken,
     accessTokenExpiry,
   });
   res.end();
