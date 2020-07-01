@@ -40,14 +40,11 @@ const authHandler = async (req, res) => {
 
   // Auth against db
   let resText;
-
   await authDB(email, password)
     .then((res) => res.text())
     .then((text) => {
-      console.log(text);
       resText = text;
     });
-  console.log(resText);
 
   if (resText != "Authenticated") {
     res.send("Incorrect password");
