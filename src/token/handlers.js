@@ -3,7 +3,9 @@ const jwt = require("jsonwebtoken");
 
 const production = typeof process.env.KUBERNETES_SERVICE_HOST !== "undefined";
 var configure_address = "http://0.0.0.0:8004";
-var { HMAC_KEY } = require("./secrets.json");
+var {
+  HMAC_KEY
+} = require("./secrets.json");
 
 if (production) {
   configure_address =
@@ -30,7 +32,16 @@ const authDB = (email, password) => {
 };
 
 const authHandler = async (req, res) => {
-  let { email, password } = req.body;
+  let {
+    email,
+    password
+  } = req.body;
+
+  // Invalid form
+  if (!email || !password) {
+    res.send("Missing email or password");
+    return res.status(401).end();
+  }
 
   // Auth against db
   let resText;
@@ -45,22 +56,18 @@ const authHandler = async (req, res) => {
     return res.status(401).end();
   }
 
-  let accessToken = jwt.sign(
-    {
+  let accessToken = jwt.sign({
       email,
     },
-    HMAC_KEY,
-    {
+    HMAC_KEY, {
       algorithm: "HS256",
       expiresIn: accessTokenExpiry,
     }
   );
-  let refreshToken = jwt.sign(
-    {
+  let refreshToken = jwt.sign({
       email,
     },
-    HMAC_KEY,
-    {
+    HMAC_KEY, {
       algorithm: "HS256",
       expiresIn: refreshTokenExpiry,
     }
@@ -80,12 +87,15 @@ const authHandler = async (req, res) => {
     accessToken,
     refreshToken,
     accessTokenExpiry,
+    refreshTokenExpiry,
   });
   res.end();
 };
 
 const refreshHandler = (req, res) => {
-  const { refreshToken } = req.body;
+  const {
+    refreshToken
+  } = req.body;
 
   // No refresh token
   if (!refreshToken) {
@@ -107,24 +117,22 @@ const refreshHandler = (req, res) => {
     return res.status(400).end();
   }
 
-  let { email } = payload;
+  let {
+    email
+  } = payload;
 
-  let accessToken = jwt.sign(
-    {
+  let accessToken = jwt.sign({
       email,
     },
-    HMAC_KEY,
-    {
+    HMAC_KEY, {
       algorithm: "HS256",
       expiresIn: accessTokenExpiry,
     }
   );
-  let newRefreshToken = jwt.sign(
-    {
+  let newRefreshToken = jwt.sign({
       email,
     },
-    HMAC_KEY,
-    {
+    HMAC_KEY, {
       algorithm: "HS256",
       expiresIn: refreshTokenExpiry,
     }
@@ -134,37 +142,38 @@ const refreshHandler = (req, res) => {
     accessToken,
     newRefreshToken,
     accessTokenExpiry,
+    refreshTokenExpiry,
   });
   res.end();
 };
 
-const useHandler = (req, res) => {
-  const token = req.cookies.accessToken;
+// const useHandler = (req, res) => {
+//   const token = req.cookies.accessToken;
 
-  if (!token) {
-    return res.status(401).end();
-  }
+//   if (!token) {
+//     return res.status(401).end();
+//   }
 
-  let payload;
-  try {
-    payload = jwt.verify(token, HMAC_KEY);
-  } catch (e) {
-    if (e instanceof jwt.TokenExpiredError) {
-      res.send("Expired Access Token");
-      return res.status(401).end();
-    } else if (e instanceof jwt.JsonWebTokenError) {
-      res.send("Invalid Access Token");
-      return res.status(401).end();
-    }
-    // otherwise, return a bad request error
-    return res.status(400).end();
-  }
-  res.send(`Welcome ${payload.email}`);
-  res.end();
-};
+//   let payload;
+//   try {
+//     payload = jwt.verify(token, HMAC_KEY);
+//   } catch (e) {
+//     if (e instanceof jwt.TokenExpiredError) {
+//       res.send("Expired Access Token");
+//       return res.status(401).end();
+//     } else if (e instanceof jwt.JsonWebTokenError) {
+//       res.send("Invalid Access Token");
+//       return res.status(401).end();
+//     }
+//     // otherwise, return a bad request error
+//     return res.status(400).end();
+//   }
+//   res.send(`Welcome ${payload.email}`);
+//   res.end();
+// };
 
 module.exports = {
   authHandler,
   refreshHandler,
-  useHandler,
+  // useHandler,
 };

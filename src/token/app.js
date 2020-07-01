@@ -5,7 +5,7 @@ const cookieParser = require("cookie-parser");
 const {
     authHandler,
     refreshHandler,
-    useHandler
+    // useHandler
 } = require("./handlers");
 
 const app = express();
@@ -14,6 +14,6 @@ app.use(cookieParser());
 
 app.post("/auth", authHandler);
 app.post("/refresh", refreshHandler)
-app.get("/use", useHandler)
+// app.get("/use", useHandler)
 
 app.listen(8007, "0.0.0.0");
