@@ -16,11 +16,9 @@ if (production) {
 }
 
 // 15 min
-// const accessTokenExpiry = 900;
-const accessTokenExpiry = 10;
+const accessTokenExpiry = 900;
 // 7 days
 const refreshTokenExpiry = 604800;
-// const refreshTokenExpiry = 10;
 
 const authDB = (email, password) => {
   let url =
@@ -83,7 +81,6 @@ const authHandler = async (req, res) => {
     accessToken,
     refreshToken,
     accessTokenExpiry,
-    refreshTokenExpiry,
   });
   res.end();
 };
@@ -138,35 +135,9 @@ const refreshHandler = (req, res) => {
     accessToken,
     newRefreshToken,
     accessTokenExpiry,
-    refreshTokenExpiry,
   });
   res.end();
 };
-
-// const useHandler = (req, res) => {
-//   const token = req.cookies.accessToken;
-
-//   if (!token) {
-//     return res.status(401).end();
-//   }
-
-//   let payload;
-//   try {
-//     payload = jwt.verify(token, HMAC_KEY);
-//   } catch (e) {
-//     if (e instanceof jwt.TokenExpiredError) {
-//       res.send("Expired Access Token");
-//       return res.status(401).end();
-//     } else if (e instanceof jwt.JsonWebTokenError) {
-//       res.send("Invalid Access Token");
-//       return res.status(401).end();
-//     }
-//     // otherwise, return a bad request error
-//     return res.status(400).end();
-//   }
-//   res.send(`Welcome ${payload.email}`);
-//   res.end();
-// };
 
 module.exports = {
   authHandler,

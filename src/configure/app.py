@@ -37,7 +37,10 @@ def users():
 def user_profile(email):
 
     if request.method == 'GET':
-        return jsonify(get_user(email))
+        # Don't show password
+        user = get_user(email)
+        del user['password']
+        return jsonify(user)
 
     if request.method == 'PUT':
         update_password(email, request.args.get('password'))

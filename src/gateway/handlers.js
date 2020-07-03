@@ -1,29 +1,20 @@
 const fetch = require("node-fetch");
 const {
-    verify
+    verify,
+    TokenExpiredError,
+    JsonWebTokenError,
 } = require("jsonwebtoken");
 
-const production = typeof process.env.KUBERNETES_SERVICE_HOST !== "undefined";
-var token_address = "http://0.0.0.0:8007";
-var {
-    HMAC_KEY
-} = require("./secrets.json");
 const {
-    response
-} = require("express");
+    hmac_key,
+    token_address,
+    configure_address
+} = require('./globals')
 
-if (production) {
-    token_address =
-        "http://" +
-        process.env.TOKEN_SERVICE_HOST +
-        ":" +
-        process.env.TOKEN_SERVICE_PORT;
-}
 
 const loginRequest = (email, password) => {
     let url = `${token_address}/auth`
-
-    let requestOptions = {
+    let options = {
         method: "POST",
         body: JSON.stringify({
             email,
@@ -34,7 +25,7 @@ const loginRequest = (email, password) => {
         },
         redirect: "follow",
     };
-    return fetch(url, requestOptions);
+    return fetch(url, options);
 };
 
 const loginHandler = async (req, res) => {
@@ -67,16 +58,17 @@ const loginHandler = async (req, res) => {
     let {
         accessToken,
         refreshToken,
-        accessTokenExpiry,
-        refreshTokenExpiry
+        accessTokenExpiry
     } = JSON.parse(responseText)
 
+    res.cookie("accessToken", accessToken, {
+        httpOnly: true,
+    });
     res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
-        // maxAge: refreshTokenExpiry * 1000,
     });
+
     res.send({
-        accessToken,
         accessTokenExpiry,
     });
     res.end();
@@ -136,29 +128,82 @@ const refreshHandler = async (req, res) => {
         accessToken,
         newRefreshToken,
         accessTokenExpiry,
-        refreshTokenExpiry,
     } = JSON.parse(responseText)
 
+    res.cookie("accessToken", accessToken, {
+        httpOnly: true,
+    });
     res.cookie("refreshToken", newRefreshToken, {
         httpOnly: true,
     });
 
     res.send({
-        accessToken,
         accessTokenExpiry,
     });
     res.end();
 }
 
-const use = (req, res) => {
+
+const getProfileRequest = (email) => {
+    let url = `${configure_address}/users/${email}`
+    let options = {
+        method: "GET",
+        redirect: "follow",
+    }
+    return fetch(url, options)
+}
+const getUserHandler = async (req, res) => {
+
+    // No token at all
+    if (!req.cookies) {
+        res.send("No Tokens")
+        return res.end();
+    }
+
     let {
         accessToken
-    } = req.body
+    } = req.cookies
 
+    // No refresh token
+    if (!accessToken) {
+        res.send("No Access Token")
+        return res.end();
+    }
 
+    let payload;
+    try {
+        payload = verify(accessToken, hmac_key);
+    } catch (e) {
+        if (e instanceof TokenExpiredError) {
+            res.send("Expired Access Token");
+            return res.status(401).end();
+        } else if (e instanceof JsonWebTokenError) {
+            res.send("Invalid Access Token");
+            return res.status(401).end();
+        }
+        // otherwise, return a bad request error
+        console.log(e)
+        return res.status(400).end();
+    }
+
+    let responseText
+    await getProfileRequest(payload.email).then(
+        async response => {
+            responseText = await response.text()
+        }).catch(e => {
+        console.log(e)
+    })
+
+    responseText = JSON.parse(responseText)
+
+    console.log(responseText)
+
+    res.send("Welcome " + JSON.stringify(payload))
+    res.end()
 }
 
 module.exports = {
     loginHandler,
-    refreshHandler
+    refreshHandler,
+    getUserHandler,
 };
