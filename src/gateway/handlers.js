@@ -1,11 +1,16 @@
 const fetch = require("node-fetch");
-const jwt = require("jsonwebtoken");
+const {
+    verify
+} = require("jsonwebtoken");
 
 const production = typeof process.env.KUBERNETES_SERVICE_HOST !== "undefined";
 var token_address = "http://0.0.0.0:8007";
 var {
     HMAC_KEY
 } = require("./secrets.json");
+const {
+    response
+} = require("express");
 
 if (production) {
     token_address =
@@ -44,28 +49,34 @@ const loginHandler = async (req, res) => {
         return res.status(401).end();
     }
 
-    let accessToken, refreshToken, accessTokenExpiry, refreshTokenExpiry
-    await loginRequest(email, password).then(response => response.text())
-        .then(result => {
-            ({
-                accessToken,
-                refreshToken,
-                accessTokenExpiry,
-                refreshTokenExpiry
-            } = JSON.parse(result))
+    let responseText
+    await loginRequest(email, password)
+        .then(async response => {
+            responseText = await response.text()
+        }).catch(e => {
+            console.log(e)
         })
 
-    //   accessToken can go stale
-    res.cookie("accessToken", accessToken, {
-        httpOnly: true,
-    });
-    // refreshToken expires
+    // Incorrect password
+    if (responseText == "Incorrect password") {
+        res.send("Incorrect password")
+        return res.end()
+    }
+
+    // Correct password
+    let {
+        accessToken,
+        refreshToken,
+        accessTokenExpiry,
+        refreshTokenExpiry
+    } = JSON.parse(responseText)
+
     res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
-        maxAge: refreshTokenExpiry * 1000,
+        // maxAge: refreshTokenExpiry * 1000,
     });
-
     res.send({
+        accessToken,
         accessTokenExpiry,
     });
     res.end();
@@ -73,30 +84,77 @@ const loginHandler = async (req, res) => {
 
 const refreshRequest = (refreshToken) => {
     let url = `${token_address}/refresh`
+
     let options = {
         method: "POST",
-        body: JSON.stringify(refreshToken),
-        redirect: "follow",
+        body: JSON.stringify({
+            refreshToken
+        }),
         headers: {
             'Content-Type': 'application/json'
         },
-    }
-    return fetch(url, options)
+        redirect: "follow",
+    };
+    return fetch(url, options);
 
 }
 
 const refreshHandler = async (req, res) => {
+
+    // No token at all
+    if (!req.cookies) {
+        res.send("No Tokens")
+        return res.end();
+    }
+
     let {
         refreshToken
-    } = req.cookie
+    } = req.cookies
 
     // No refresh token
     if (!refreshToken) {
         res.send("No Refresh Token")
-        return res.status(401).end();
+        return res.end();
     }
 
+    let responseText
     await refreshRequest(refreshToken)
+        .then(async res => {
+            responseText = await res.text()
+        }).catch(e => {
+            console.log(e)
+        })
+
+    // refreshToken expired
+    if (responseText == 'Expired Refresh Token') {
+        res.send('Expired Refresh Token')
+        return res.end();
+    }
+
+    // refreshToken not expired, good for new accessToken
+    let {
+        accessToken,
+        newRefreshToken,
+        accessTokenExpiry,
+        refreshTokenExpiry,
+    } = JSON.parse(responseText)
+
+    res.cookie("refreshToken", newRefreshToken, {
+        httpOnly: true,
+    });
+
+    res.send({
+        accessToken,
+        accessTokenExpiry,
+    });
+    res.end();
+}
+
+const use = (req, res) => {
+    let {
+        accessToken
+    } = req.body
+
 
 }
 

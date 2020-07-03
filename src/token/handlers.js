@@ -16,9 +16,11 @@ if (production) {
 }
 
 // 15 min
-const accessTokenExpiry = 900;
+// const accessTokenExpiry = 900;
+const accessTokenExpiry = 10;
 // 7 days
 const refreshTokenExpiry = 604800;
+// const refreshTokenExpiry = 10;
 
 const authDB = (email, password) => {
   let url =
@@ -49,13 +51,17 @@ const authHandler = async (req, res) => {
     .then((res) => res.text())
     .then((text) => {
       resText = text;
+    }).catch(e => {
+      console.log(e)
     });
 
+  // Incorrect password
   if (resText != "Authenticated") {
     res.send("Incorrect password");
     return res.status(401).end();
   }
 
+  // Correct password
   let accessToken = jwt.sign({
       email,
     },
@@ -73,16 +79,6 @@ const authHandler = async (req, res) => {
     }
   );
 
-  // accessToken can go stale
-  // res.cookie("accessToken", accessToken, {
-  //   httpOnly: true,
-  // });
-  // // refreshToken expires
-  // res.cookie("refreshToken", refreshToken, {
-  //   httpOnly: true,
-  //   maxAge: refreshTokenExpiry * 1000,
-  // });
-
   res.send({
     accessToken,
     refreshToken,
@@ -93,7 +89,7 @@ const authHandler = async (req, res) => {
 };
 
 const refreshHandler = (req, res) => {
-  const {
+  let {
     refreshToken
   } = req.body;
 
@@ -107,7 +103,7 @@ const refreshHandler = (req, res) => {
     payload = jwt.verify(refreshToken, HMAC_KEY);
   } catch (e) {
     if (e instanceof jwt.TokenExpiredError) {
-      res.send("Expired Access Token");
+      res.send("Expired Refresh Token");
       return res.status(401).end();
     } else if (e instanceof jwt.JsonWebTokenError) {
       res.send("Invalid Refresh Token");
@@ -175,5 +171,4 @@ const refreshHandler = (req, res) => {
 module.exports = {
   authHandler,
   refreshHandler,
-  // useHandler,
 };
