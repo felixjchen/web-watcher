@@ -18,9 +18,10 @@ def users():
 
     if request.method == 'POST':
         # Add new user
-        email = request.args.get('email')
+        body = request.json
+        email = body.get('email')
         if not email: return 'Missing email'
-        password = request.args.get('password')
+        password = body.get('password')
         if not password: return 'Missing password'
 
         user_id = add_user(email, password)
@@ -90,13 +91,15 @@ def watchers():
     # Create new watcher
     if request.method == 'POST':
 
-        email = request.args.get('email')
+        data = request.json
+
+        email = data.get('email')
         if not email: return 'Missing email'
 
-        url = request.args.get('url')
+        url = data.get('url')
         if not url: return 'Missing url'
 
-        frequency = request.args.get('frequency')
+        frequency = data.get('frequency')
         if frequency is not int: frequency = int(frequency)
         if not frequency: return 'Missing frequency'
 
