@@ -20,9 +20,11 @@ def users():
         # Add new user
         body = request.json
         email = body.get('email')
-        if not email: return 'Missing email'
+        if not email: 
+            return 'Missing email'
         password = body.get('password')
-        if not password: return 'Missing password'
+        if not password: 
+            return 'Missing password'
 
         user_id = add_user(email, password)
 

@@ -9,7 +9,7 @@ const {
     hmac_key,
     token_address,
     configure_address
-} = require('./globals')
+} = require('./globals');
 
 
 const loginRequest = (email, password) => {
@@ -37,7 +37,7 @@ const loginHandler = async (req, res) => {
     // Invalid form
     if (!email || !password) {
         res.send("Missing email or password");
-        return res.status(401).end();
+        return res.end();
     }
 
     let responseText
@@ -144,7 +144,7 @@ const refreshHandler = async (req, res) => {
 }
 
 
-const getProfileRequest = (email) => {
+const getUserRequest = (email) => {
     let url = `${configure_address}/users/${email}`
     let options = {
         method: "GET",
@@ -187,7 +187,7 @@ const getUserHandler = async (req, res) => {
     }
 
     let responseText
-    await getProfileRequest(payload.email).then(
+    await getUserRequest(payload.email).then(
         async response => {
             responseText = await response.text()
         }).catch(e => {
@@ -202,8 +202,77 @@ const getUserHandler = async (req, res) => {
     res.end()
 }
 
+const addUserRequest = (email, password) => {
+    let url = `${configure_address}/users`
+    let options = {
+        method: "POST",
+        body: JSON.stringify({
+            email,
+            password,
+        }),
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        redirect: "follow",
+    }
+
+    return fetch(url, options)
+}
+
+const addUserHandler = async (req, res) => {
+    let {
+        email,
+        password
+    } = req.body;
+
+    // Invalid form
+    if (!email || !password) {
+        res.send("Missing email or password");
+        return res.end();
+    }
+
+    let responseText
+    await addUserRequest(email, password).then(async res => {
+        responseText = await res.text()
+    })
+
+    res.send(responseText)
+    res.end()
+}
+
+
+const deleteUserRequest = (email) => {
+    let url = `${configure_address}/users/${email}`
+    let options = {
+        method: "DELETE",
+        redirect: "follow",
+    }
+    return fetch(url, options)
+}
+const deleteUserHandler = async (req, res) => {
+    let {
+        email
+    } = req.body
+
+    if (!email) {
+        res.send("Missing email")
+        return res.end()
+    }
+
+    let responseText
+    await deleteUserRequest(email).then(async res => {
+        responseText = await res.text()
+    })
+
+    res.send(responseText)
+    res.end()
+}
+
 module.exports = {
     loginHandler,
     refreshHandler,
+    getUserHandler,
+    addUserHandler,
+    deleteUserHandler,
     getUserHandler,
 };
