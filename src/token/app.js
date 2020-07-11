@@ -14,6 +14,4 @@ app.use(cookieParser());
 
 app.post("/auth", authHandler);
 app.post("/refresh", refreshHandler)
-// app.get("/use", useHandler)
-
 app.listen(8007, "0.0.0.0");

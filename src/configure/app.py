@@ -22,14 +22,13 @@ def users():
         email = body.get('email')
         if not email: 
             return 'Missing email'
+
         password = body.get('password')
         if not password: 
             return 'Missing password'
 
-        user_id = add_user(email, password)
-
         return jsonify({
-            'message': f'CREATED with email {email}',
+            'message': add_user(email, password),
             'email': email
         })
 
@@ -54,10 +53,8 @@ def user_profile(email):
         })
 
     if request.method == 'DELETE':
-        delete_user(email)
-
         return jsonify({
-            'message': f'DELETED user {email}',
+            'message': delete_user(email),
             'user_id': email
         })
 

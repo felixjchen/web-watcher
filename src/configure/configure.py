@@ -3,6 +3,7 @@ import requests
 import uuid
 import time
 import bcrypt
+import re
 
 from threading import Thread
 
@@ -63,12 +64,16 @@ def first_screenshot(watcher_uuid, url):
 
 
 def add_user(email, password):
+
+    if not re.search('^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$', email):
+        return "Invalid email address"
+
     with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
         db = client[db_client]
         with Document(db, user_document) as document:
             users = document["users"]
             if email in users:
-                return -1
+                return "User already exists"
             hashed_password = hash_string(password)
             new_user = {
                 'password': hashed_password,
@@ -76,7 +81,7 @@ def add_user(email, password):
             }
             users[email] = new_user
 
-    return 1
+    return f"Created user with email {email}"
 
 
 def update_password(email, password):
@@ -124,6 +129,10 @@ def delete_user(email):
         db = client[db_client]
         watchers = []
         with Document(db, user_document) as document:
+
+            if email not in document["users"]:
+                return "User does not exist"
+
             watchers = document["users"][email]['watchers']
 
         for watcher_id in watchers:
@@ -131,6 +140,8 @@ def delete_user(email):
 
         with Document(db, user_document) as document:
             del(document["users"][email])
+
+    return "Deleted user"
 
 
 def add_watcher(email, url, frequency):
