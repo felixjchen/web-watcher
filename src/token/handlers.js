@@ -22,10 +22,17 @@ const refreshTokenExpiry = 604800;
 
 const authDB = (email, password) => {
   let url =
-    configure_address + "/auth?email=" + email + "&password=" + password;
+    configure_address + "/authenticate";
 
   let requestOptions = {
-    method: "GET",
+    method: "POST",
+    body: JSON.stringify({
+      email,
+      password
+    }),
+    headers: {
+      'Content-Type': 'application/json'
+    },
     redirect: "follow",
   };
   return fetch(url, requestOptions);

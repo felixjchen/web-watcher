@@ -110,7 +110,7 @@ def check_password(email, password):
             else:
                 return 'Wrong password'
 
-    return 'Something wentwrong'
+    return 'Something went wrong'
 
 
 def get_user(email):

@@ -16,8 +16,8 @@ app.use(cookieParser());
 
 app.post("/add-user", addUserHandler)
 app.delete("/delete-user", deleteUserHandler)
-app.post("/login", loginHandler);
+app.all("/login", loginHandler);
 app.get("/refresh", refreshHandler)
-app.get("/get-user", getUserHandler)
+app.get("/user", getUserHandler)
 
 app.listen(8008, "0.0.0.0");

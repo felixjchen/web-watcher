@@ -45,7 +45,9 @@ def user_profile(email):
         return jsonify(user)
 
     if request.method == 'PUT':
-        update_password(email, request.args.get('password'))
+        body = request.json
+        password = body.get('password')
+        update_password(email, password)
 
         return jsonify({
             'message': f'UPDATED user {email}',
@@ -60,19 +62,20 @@ def user_profile(email):
 
     return 'Error'
 
-@app.route('/auth', methods=['GET'])
-def auth():
-    if request.method == 'GET':
-        email = request.args.get('email')
+@app.route('/authenticate', methods=['POST'])
+def authenticate():
+    if request.method == 'POST':
+        body = request.json
+        email = body.get("email")
+        password = body.get("password")
+        
         if not email: return 'Missing email'
-        password = request.args.get('password')
         if not password: return 'Missing password'
 
         return jsonify({
             'message': check_password(email, password),
             'email': email
         })
-
 
     return 'Error' 
 
