@@ -53,21 +53,21 @@ const authHandler = async (req, res) => {
 	}
 
 	// Auth against db
-	let responseText;
+	let configureResponse;
 	await authDB(email, password)
 		.then(async response => {
-			responseText = await response.text()
-			responseText = JSON.parse(responseText)
+			configureResponse = await response.text()
+			configureResponse = JSON.parse(configureResponse)
 		})
 		.catch(e => {
 			console.log(e)
 		});
 
 	// Incorrect password
-	if (resText.message != "Authenticated") {
+	if (configureResponse.message != "Authenticated") {
 		return res.status(400).json({
 			success: false,
-			responseText
+			configureResponse
 		});
 	}
 
@@ -90,6 +90,7 @@ const authHandler = async (req, res) => {
 	);
 
 	res.send({
+		success: true,
 		accessToken,
 		refreshToken,
 		accessTokenExpiry,
@@ -125,8 +126,7 @@ const refreshHandler = (req, res) => {
 				error: "Invalid Refresh Token"
 			});
 		}
-		// otherwise, return a bad request error
-		return res.status(400).end();
+		return res.status(500).end();
 	}
 
 	let {
@@ -151,6 +151,7 @@ const refreshHandler = (req, res) => {
 	);
 
 	res.send({
+		success: true,
 		accessToken,
 		newRefreshToken,
 		accessTokenExpiry,

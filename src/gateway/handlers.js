@@ -36,49 +36,31 @@ const loginHandler = async (req, res) => {
 
     // Invalid form
     if (!email || !password) {
-        res.send("Missing email or password");
-        return res.end();
+        return res.status(400).json({
+            error: "Missing email or password",
+            success: false
+        });
     }
 
-    let responseText
+    let tokenResponse
     await loginRequest(email, password)
         .then(async response => {
-            responseText = await response.text()
+            tokenResponse = await response.text()
+            tokenResponse = JSON.parse(tokenResponse)
         }).catch(e => {
             console.log(e)
         })
 
-    // Incorrect password
-    console.log(responseText)
-    if (responseText != "Authenticated") {
-        res.send(responseText)
-        return res.end()
+    // Error
+    if (!tokenResponse.success) {
+        return res.status(400).json(tokenResponse);
     }
 
-    // Correct password
     let {
         accessToken,
         refreshToken,
         accessTokenExpiry
-    } = JSON.parse(responseText)
-
-    let payload;
-    try {
-        payload = verify(accessToken, hmac_key);
-    } catch (e) {
-        if (e instanceof TokenExpiredError) {
-            res.send("Expired Access Token");
-            return res.status(401).end();
-        } else if (e instanceof JsonWebTokenError) {
-            res.send("Invalid Access Token");
-            return res.status(401).end();
-        }
-        // otherwise, return a bad request error
-        console.log(e)
-        return res.status(400).end();
-    }
-    console.log(payload)
-
+    } = tokenResponse
     res.cookie("accessToken", accessToken, {
         httpOnly: true,
     });
@@ -87,8 +69,10 @@ const loginHandler = async (req, res) => {
     });
 
     res.send({
+        success: true,
         accessTokenExpiry,
     });
+
     res.end();
 };
 
@@ -111,34 +95,29 @@ const refreshRequest = (refreshToken) => {
 
 const refreshHandler = async (req, res) => {
 
-    // No token at all
-    if (!req.cookies) {
-        res.send("No Tokens")
-        return res.end();
-    }
-
     let {
         refreshToken
     } = req.cookies
 
     // No refresh token
     if (!refreshToken) {
-        res.send("No Refresh Token")
-        return res.end();
+        return res.status(400).json({
+            error: "No refresh token",
+            success: false
+        });
     }
 
-    let responseText
+    let tokenResponse
     await refreshRequest(refreshToken)
         .then(async res => {
-            responseText = await res.text()
+            tokenResponse = JSON.parse(await res.text())
         }).catch(e => {
             console.log(e)
         })
 
     // refreshToken expired
-    if (responseText == 'Expired Refresh Token') {
-        res.send('Expired Refresh Token')
-        return res.end();
+    if (!tokenResponse.success) {
+        return res.status(400).json(tokenResponse)
     }
 
     // refreshToken not expired, good for new accessToken
@@ -146,7 +125,7 @@ const refreshHandler = async (req, res) => {
         accessToken,
         newRefreshToken,
         accessTokenExpiry,
-    } = JSON.parse(responseText)
+    } = tokenResponse
 
     res.cookie("accessToken", accessToken, {
         httpOnly: true,
@@ -156,6 +135,7 @@ const refreshHandler = async (req, res) => {
     });
 
     res.send({
+        success: true,
         accessTokenExpiry,
     });
     res.end();
@@ -172,20 +152,16 @@ const getUserRequest = (email) => {
 }
 const getUserHandler = async (req, res) => {
 
-    // No token at all
-    if (!req.cookies) {
-        res.send("No Tokens")
-        return res.end();
-    }
-
     let {
         accessToken
     } = req.cookies
 
     // No refresh token
     if (!accessToken) {
-        res.send("No Access Token")
-        return res.end();
+        return res.status(400).json({
+            error: "No access token",
+            success: false
+        });
     }
 
     let payload;
@@ -195,6 +171,11 @@ const getUserHandler = async (req, res) => {
         if (e instanceof TokenExpiredError) {
             res.send("Expired Access Token");
             return res.status(401).end();
+
+            return res.status(400).json({
+                error: "No access token",
+                success: false
+            });
         } else if (e instanceof JsonWebTokenError) {
             res.send("Invalid Access Token");
             return res.status(401).end();
@@ -203,8 +184,6 @@ const getUserHandler = async (req, res) => {
         console.log(e)
         return res.status(400).end();
     }
-
-    console.log(payload)
 
     let responseText
     await getUserRequest(payload.email).then(
@@ -284,6 +263,7 @@ const deleteUserHandler = async (req, res) => {
         responseText = await res.text()
     })
 
+    console.log('TODO')
     res.send(responseText)
     res.end()
 }

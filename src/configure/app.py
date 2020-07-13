@@ -26,7 +26,7 @@ def users():
         password = body.get('password')
         if not password: 
             return 'Missing password'
-
+            
         return jsonify({
             'message': add_user(email, password),
             'email': email
