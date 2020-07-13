@@ -49,6 +49,7 @@ const loginHandler = async (req, res) => {
         })
 
     // Incorrect password
+    console.log(responseText)
     if (responseText != "Authenticated") {
         res.send(responseText)
         return res.end()
@@ -60,6 +61,24 @@ const loginHandler = async (req, res) => {
         refreshToken,
         accessTokenExpiry
     } = JSON.parse(responseText)
+
+
+    let payload;
+    try {
+        payload = verify(accessToken, hmac_key);
+    } catch (e) {
+        if (e instanceof TokenExpiredError) {
+            res.send("Expired Access Token");
+            return res.status(401).end();
+        } else if (e instanceof JsonWebTokenError) {
+            res.send("Invalid Access Token");
+            return res.status(401).end();
+        }
+        // otherwise, return a bad request error
+        console.log(e)
+        return res.status(400).end();
+    }
+    console.log(payload)
 
     res.cookie("accessToken", accessToken, {
         httpOnly: true,
@@ -185,6 +204,8 @@ const getUserHandler = async (req, res) => {
         console.log(e)
         return res.status(400).end();
     }
+
+    console.log(payload)
 
     let responseText
     await getUserRequest(payload.email).then(
