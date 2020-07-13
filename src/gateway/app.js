@@ -14,10 +14,11 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-app.post("/add-user", addUserHandler)
-app.delete("/delete-user", deleteUserHandler)
 app.all("/login", loginHandler);
 app.get("/refresh", refreshHandler)
+
+app.post("user", addUserHandler)
+app.delete("/user", deleteUserHandler)
 app.get("/user", getUserHandler)
 
 app.listen(8008, "0.0.0.0");

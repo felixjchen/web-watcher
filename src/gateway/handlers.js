@@ -13,7 +13,7 @@ const {
 
 
 const loginRequest = (email, password) => {
-    let url = `${token_address}/auth`
+    let url = `${token_address}/authenticate`
     let options = {
         method: "POST",
         body: JSON.stringify({
@@ -61,7 +61,6 @@ const loginHandler = async (req, res) => {
         refreshToken,
         accessTokenExpiry
     } = JSON.parse(responseText)
-
 
     let payload;
     try {

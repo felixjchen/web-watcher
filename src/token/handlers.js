@@ -46,16 +46,18 @@ const authHandler = async (req, res) => {
 
 	// Invalid form
 	if (!email || !password) {
-		res.send("Missing email or password");
-		return res.status(401).end();
+		return res.status(400).json({
+			success: false,
+			error: "Missing email or password"
+		});
 	}
 
 	// Auth against db
-	let resText;
+	let responseText;
 	await authDB(email, password)
 		.then(async response => {
-			resText = await response.text()
-			resText = JSON.parse(resText)
+			responseText = await response.text()
+			responseText = JSON.parse(responseText)
 		})
 		.catch(e => {
 			console.log(e)
@@ -63,8 +65,10 @@ const authHandler = async (req, res) => {
 
 	// Incorrect password
 	if (resText.message != "Authenticated") {
-		res.send(resText);
-		return res.end();
+		return res.status(400).json({
+			success: false,
+			responseText
+		});
 	}
 
 	// Correct password
@@ -100,8 +104,10 @@ const refreshHandler = (req, res) => {
 
 	// No refresh token
 	if (!refreshToken) {
-		res.send("No Refresh Token");
-		return res.status(401).end();
+		return res.status(400).json({
+			success: false,
+			error: "No Refresh Token"
+		});
 	}
 
 	let payload;
@@ -109,11 +115,15 @@ const refreshHandler = (req, res) => {
 		payload = jwt.verify(refreshToken, HMAC_KEY);
 	} catch (e) {
 		if (e instanceof jwt.TokenExpiredError) {
-			res.send("Expired Refresh Token");
-			return res.status(401).end();
+			return res.status(400).json({
+				success: false,
+				error: "Expired Refresh Token"
+			});
 		} else if (e instanceof jwt.JsonWebTokenError) {
-			res.send("Invalid Refresh Token");
-			return res.status(401).end();
+			return res.status(400).json({
+				success: false,
+				error: "Invalid Refresh Token"
+			});
 		}
 		// otherwise, return a bad request error
 		return res.status(400).end();
