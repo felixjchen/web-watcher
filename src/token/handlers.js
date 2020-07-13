@@ -55,7 +55,7 @@ const authHandler = async (req, res) => {
 
   // Incorrect password
   if (resText != "Authenticated") {
-    res.send("Incorrect password");
+    res.send(resText);
     return res.status(401).end();
   }
 

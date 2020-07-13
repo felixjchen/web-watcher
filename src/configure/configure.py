@@ -100,17 +100,17 @@ def check_password(email, password):
             users = document["users"]
 
             if email not in users:
-                return -1
+                return 'User does not exist'
 
             hashed_password = users[email]["password"]
             password = str.encode(password)
             hashed_password = str.encode(hashed_password)
             if bcrypt.checkpw(password, hashed_password):
-                return 1
+                return 'Authenticated'
             else:
-                return -2
+                return 'Wrong password'
 
-    return -3
+    return 'Something wentwrong'
 
 
 def get_user(email):

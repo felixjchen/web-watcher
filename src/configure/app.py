@@ -49,13 +49,13 @@ def user_profile(email):
 
         return jsonify({
             'message': f'UPDATED user {email}',
-            'user_id': email
+            'email': email
         })
 
     if request.method == 'DELETE':
         return jsonify({
             'message': delete_user(email),
-            'user_id': email
+            'email': email
         })
 
     return 'Error'
@@ -68,14 +68,11 @@ def auth():
         password = request.args.get('password')
         if not password: return 'Missing password'
 
-        result = check_password(email, password)
+        return jsonify({
+            'message': check_password(email, password),
+            'email': email
+        })
 
-        if result == -1:
-            return 'User does not exist'
-        elif result == -2:
-            return 'Wrong password'
-        elif result == 1:
-            return 'Authenticated'
 
     return 'Error' 
 

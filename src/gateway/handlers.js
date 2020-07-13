@@ -49,8 +49,8 @@ const loginHandler = async (req, res) => {
         })
 
     // Incorrect password
-    if (responseText == "Incorrect password") {
-        res.send("Incorrect password")
+    if (responseText != "Authenticated") {
+        res.send(responseText)
         return res.end()
     }
 
