@@ -5,11 +5,10 @@ metadata:
   labels:
     app: configure
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
     - port: 80
       protocol: TCP
       targetPort: 8004
-      nodePort: 30000
   selector:
     app: configure-app
