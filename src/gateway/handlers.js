@@ -148,7 +148,6 @@ const addUserRequest = (email, password) => {
 
     return fetch(url, options)
 }
-
 const addUserHandler = async (req, res) => {
     let {
         email,
@@ -161,10 +160,8 @@ const addUserHandler = async (req, res) => {
         return res.end();
     }
 
-    let responseText
-    await addUserRequest(email, password).then(async res => {
-        responseText = await res.text()
-    })
+    let response = await addUserRequest(email, password)
+    let responseText = JSON.parse(await response.text())
 
     res.send(responseText)
     res.end()
@@ -179,12 +176,11 @@ const getUserRequest = (email) => {
     return fetch(url, options)
 }
 const getUserHandler = async (req, res) => {
-
     let {
         accessToken
     } = req.cookies
 
-    // No refresh token
+    // No access token
     if (!accessToken) {
         return res.status(400).json({
             error: "No access token",
@@ -197,9 +193,8 @@ const getUserHandler = async (req, res) => {
         payload = verify(accessToken, hmac_key);
     } catch (e) {
         if (e instanceof TokenExpiredError) {
-
             return res.status(400).json({
-                error: "No access token",
+                error: "Expired access token",
                 success: false
             });
 
@@ -210,26 +205,20 @@ const getUserHandler = async (req, res) => {
             });
         }
         // otherwise, return a bad request error
-        console.log(e)
-        return res.status(400).json({
+        return res.status(500).json({
             error: "Token error",
             success: false
         });
     }
 
-    let responseText;
-    await getUserRequest(payload.email).then(
-        async response => {
-            responseText = await response.text()
-        }).catch(e => {
-        console.log(e)
+    let response = await getUserRequest(payload.email)
+    let responseObj = JSON.parse(await response.text())
+    console.log(`Get ${payload.email} success`)
+
+    res.send({
+        ...responseObj,
+        ...payload
     })
-
-    responseText = JSON.parse(responseText)
-
-    console.log(responseText)
-
-    res.send("Welcome " + JSON.stringify(payload))
     res.end()
 }
 
