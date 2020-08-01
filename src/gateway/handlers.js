@@ -142,6 +142,44 @@ const refreshHandler = async (req, res) => {
 }
 
 
+const addUserRequest = (email, password) => {
+    let url = `${configure_address}/users`
+    let options = {
+        method: "POST",
+        body: JSON.stringify({
+            email,
+            password,
+        }),
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        redirect: "follow",
+    }
+
+    return fetch(url, options)
+}
+
+const addUserHandler = async (req, res) => {
+    let {
+        email,
+        password
+    } = req.body;
+
+    // Invalid form
+    if (!email || !password) {
+        res.send("Missing email or password");
+        return res.end();
+    }
+
+    let responseText
+    await addUserRequest(email, password).then(async res => {
+        responseText = await res.text()
+    })
+
+    res.send(responseText)
+    res.end()
+}
+
 const getUserRequest = (email) => {
     let url = `${configure_address}/users/${email}`
     let options = {
@@ -205,44 +243,6 @@ const getUserHandler = async (req, res) => {
     res.end()
 }
 
-const addUserRequest = (email, password) => {
-    let url = `${configure_address}/users`
-    let options = {
-        method: "POST",
-        body: JSON.stringify({
-            email,
-            password,
-        }),
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        redirect: "follow",
-    }
-
-    return fetch(url, options)
-}
-
-const addUserHandler = async (req, res) => {
-    let {
-        email,
-        password
-    } = req.body;
-
-    // Invalid form
-    if (!email || !password) {
-        res.send("Missing email or password");
-        return res.end();
-    }
-
-    let responseText
-    await addUserRequest(email, password).then(async res => {
-        responseText = await res.text()
-    })
-
-    res.send(responseText)
-    res.end()
-}
-
 
 const deleteUserRequest = (email) => {
     let url = `${configure_address}/users/${email}`
@@ -253,6 +253,7 @@ const deleteUserRequest = (email) => {
     return fetch(url, options)
 }
 const deleteUserHandler = async (req, res) => {
+    //  Need to verify accessToken...
     let {
         email
     } = req.body
