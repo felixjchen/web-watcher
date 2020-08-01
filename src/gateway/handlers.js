@@ -214,7 +214,7 @@ const getUserHandler = async (req, res) => {
     let response = await getUserRequest(payload.email)
     let responseObj = JSON.parse(await response.text())
     console.log(`Get ${payload.email} success`)
-
+    responseObj.success = true
     res.send({
         ...responseObj,
         ...payload
@@ -276,6 +276,91 @@ const deleteUserHandler = async (req, res) => {
     res.end()
 }
 
+const addWatcherRequest = (email, url, frequency) => {
+    let requestURL = `${configure_address}/watchers`
+    let options = {
+        method: "POST",
+        body: JSON.stringify({
+            email,
+            url,
+            frequency
+        }),
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        redirect: "follow",
+    }
+    return fetch(requestURL, options)
+}
+
+const addWatcherHandler = async (req, res) => {
+    let {
+        url,
+        frequency
+    } = req.body;
+
+    // Invalid form
+    if (!url || !frequency) {
+        return res.status(400).json({
+            error: "Missing email, url or password",
+            success: false
+        });
+    }
+
+    let {
+        accessToken
+    } = req.cookies
+
+    // No access token
+    if (!accessToken) {
+        return res.status(400).json({
+            error: "No access token",
+            success: false
+        });
+    }
+
+    // Auth
+    let payload;
+    try {
+        payload = verify(accessToken, hmac_key);
+    } catch (e) {
+        if (e instanceof TokenExpiredError) {
+            return res.status(400).json({
+                error: "Expired access token",
+                success: false
+            });
+
+        } else if (e instanceof JsonWebTokenError) {
+            return res.status(403).json({
+                error: "Invalid access token",
+                success: false
+            });
+        }
+        // otherwise, return a bad request error
+        return res.status(500).json({
+            error: "Token error",
+            success: false
+        });
+    }
+
+    let {
+        email
+    } = payload
+    let response = await addWatcherRequest(email, url, frequency)
+    let responseObj = JSON.parse(await response.text())
+
+    console.log(`${email} add watcher for ${url} with frequency ${frequency}`)
+
+
+    res.send({
+        success: true,
+        message: `${email} add watcher for ${url} with frequency ${frequency}`
+    })
+    res.end()
+}
+
+
+
 module.exports = {
     loginHandler,
     refreshHandler,
@@ -283,4 +368,5 @@ module.exports = {
     addUserHandler,
     deleteUserHandler,
     getUserHandler,
+    addWatcherHandler,
 };
