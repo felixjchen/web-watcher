@@ -429,8 +429,6 @@ const deleteWatcherHandler = async (req, res) => {
     res.end()
 }
 
-
-
 module.exports = {
     loginHandler,
     refreshHandler,
