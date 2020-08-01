@@ -42,19 +42,16 @@ const loginHandler = async (req, res) => {
         });
     }
 
-    let tokenResponse
-    await loginRequest(email, password)
-        .then(async response => {
-            tokenResponse = await response.text()
-            tokenResponse = JSON.parse(tokenResponse)
-        }).catch(e => {
-            console.log(e)
-        })
+    let response = await loginRequest(email, password);
+    let responseText = await response.text()
+    let tokenResponse = JSON.parse(responseText)
 
     // Error
     if (!tokenResponse.success) {
+        console.log(`User ${email} failed to authenticate`)
         return res.status(400).json(tokenResponse);
     }
+    console.log(`User ${email} authenticated`)
 
     let {
         accessToken,
