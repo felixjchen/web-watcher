@@ -8,7 +8,8 @@ const {
     getUserHandler,
     addUserHandler,
     deleteUserHandler,
-    addWatcherHandler
+    addWatcherHandler,
+    deleteWatcherHandler
 } = require("./handlers");
 
 const app = express();
@@ -22,12 +23,13 @@ app.all("/refresh", refreshHandler)
 
 // Add user
 app.post("/user", addUserHandler)
+
 // Need accessToken
 app.get("/user", getUserHandler)
-// Need accessToken
 app.delete("/user", deleteUserHandler)
 
 // Need accessToken
 app.post("/watcher", addWatcherHandler)
+app.delete("/watcher", deleteWatcherHandler)
 
 app.listen(8008, "0.0.0.0");
