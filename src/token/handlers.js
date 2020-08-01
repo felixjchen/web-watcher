@@ -20,7 +20,7 @@ const accessTokenExpiry = 900;
 // 7 days
 const refreshTokenExpiry = 604800;
 
-const authDB = (email, password) => {
+const authRequest = (email, password) => {
 	let url =
 		configure_address + "/authenticate";
 
@@ -52,16 +52,8 @@ const authHandler = async (req, res) => {
 		});
 	}
 
-	// Auth against db
-	let configureResponse;
-	await authDB(email, password)
-		.then(async response => {
-			configureResponse = await response.text()
-			configureResponse = JSON.parse(configureResponse)
-		})
-		.catch(e => {
-			console.log(e)
-		});
+	let response = await authRequest(email, password)
+	let configureResponse = JSON.parse(await response.text())
 
 	// Incorrect password
 	if (configureResponse.message != "Authenticated") {
@@ -126,9 +118,13 @@ const refreshHandler = (req, res) => {
 				error: "Invalid Refresh Token"
 			});
 		}
-		return res.status(500).end();
+		return res.status(500).json({
+			success: false,
+			error: "Something happend..."
+		});
 	}
 
+	// refreshToken is legit... sign new refreshToken and accessToken
 	let {
 		email
 	} = payload;
@@ -152,6 +148,7 @@ const refreshHandler = (req, res) => {
 
 	res.send({
 		success: true,
+		email,
 		accessToken,
 		newRefreshToken,
 		accessTokenExpiry,

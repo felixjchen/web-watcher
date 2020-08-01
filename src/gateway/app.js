@@ -17,7 +17,7 @@ app.use(cookieParser());
 // email and password set in body, sets accessToken and refreshToken cookies, returns accessTokenExpirey
 app.all("/login", loginHandler);
 // use refreshToken cookie to fetch a new accessToken
-app.get("/refresh", refreshHandler)
+app.all("/refresh", refreshHandler)
 
 // Add user
 app.post("/user", addUserHandler)

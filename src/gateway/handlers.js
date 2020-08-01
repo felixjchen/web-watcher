@@ -27,7 +27,6 @@ const loginRequest = (email, password) => {
     };
     return fetch(url, options);
 };
-
 const loginHandler = async (req, res) => {
     let {
         email,
@@ -43,8 +42,7 @@ const loginHandler = async (req, res) => {
     }
 
     let response = await loginRequest(email, password);
-    let responseText = await response.text()
-    let tokenResponse = JSON.parse(responseText)
+    let tokenResponse = JSON.parse(await response.text())
 
     // Error
     if (!tokenResponse.success) {
@@ -89,9 +87,7 @@ const refreshRequest = (refreshToken) => {
     return fetch(url, options);
 
 }
-
 const refreshHandler = async (req, res) => {
-
     let {
         refreshToken
     } = req.cookies
@@ -104,18 +100,15 @@ const refreshHandler = async (req, res) => {
         });
     }
 
-    let tokenResponse
-    await refreshRequest(refreshToken)
-        .then(async res => {
-            tokenResponse = JSON.parse(await res.text())
-        }).catch(e => {
-            console.log(e)
-        })
+    let response = await refreshRequest(refreshToken);
+    let tokenResponse = JSON.parse(await response.text());
 
-    // refreshToken expired
+    // Error
     if (!tokenResponse.success) {
-        return res.status(400).json(tokenResponse)
+        console.log(`Failed refresh`)
+        return res.status(400).json(tokenResponse);
     }
+    console.log(`User ${tokenResponse.email} refreshed accessToken`)
 
     // refreshToken not expired, good for new accessToken
     let {
