@@ -232,23 +232,47 @@ const deleteUserRequest = (email) => {
     return fetch(url, options)
 }
 const deleteUserHandler = async (req, res) => {
-    //  Need to verify accessToken...
     let {
-        email
-    } = req.body
+        accessToken
+    } = req.cookies
 
-    if (!email) {
-        res.send("Missing email")
-        return res.end()
+    // No access token
+    if (!accessToken) {
+        return res.status(400).json({
+            error: "No access token",
+            success: false
+        });
     }
 
-    let responseText
-    await deleteUserRequest(email).then(async res => {
-        responseText = await res.text()
-    })
+    let payload;
+    try {
+        payload = verify(accessToken, hmac_key);
+    } catch (e) {
+        if (e instanceof TokenExpiredError) {
+            return res.status(400).json({
+                error: "Expired access token",
+                success: false
+            });
 
-    console.log('TODO')
-    res.send(responseText)
+        } else if (e instanceof JsonWebTokenError) {
+            return res.status(403).json({
+                error: "Invalid access token",
+                success: false
+            });
+        }
+        // otherwise, return a bad request error
+        return res.status(500).json({
+            error: "Token error",
+            success: false
+        });
+    }
+
+
+    let response = await deleteUserRequest(payload.email)
+    let responseObj = JSON.parse(await response.text())
+
+    console.log(responseObj)
+    res.send(responseObj)
     res.end()
 }
 

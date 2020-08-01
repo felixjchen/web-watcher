@@ -128,11 +128,10 @@ def delete_user(email):
     with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
         db = client[db_client]
         watchers = []
-        with Document(db, user_document) as document:
 
+        with Document(db, user_document) as document:
             if email not in document["users"]:
                 return "User does not exist"
-
             watchers = document["users"][email]['watchers']
 
         for watcher_id in watchers:
