@@ -169,23 +169,27 @@ const getUserHandler = async (req, res) => {
         payload = verify(accessToken, hmac_key);
     } catch (e) {
         if (e instanceof TokenExpiredError) {
-            res.send("Expired Access Token");
-            return res.status(401).end();
 
             return res.status(400).json({
                 error: "No access token",
                 success: false
             });
+
         } else if (e instanceof JsonWebTokenError) {
-            res.send("Invalid Access Token");
-            return res.status(401).end();
+            return res.status(403).json({
+                error: "Invalid access token",
+                success: false
+            });
         }
         // otherwise, return a bad request error
         console.log(e)
-        return res.status(400).end();
+        return res.status(400).json({
+            error: "Token error",
+            success: false
+        });
     }
 
-    let responseText
+    let responseText;
     await getUserRequest(payload.email).then(
         async response => {
             responseText = await response.text()
