@@ -167,6 +167,7 @@
 - frontend at http://CLUSTER_PUBLIC_IP:30001
 - configure API at http://CLUSTER_PUBLIC_IP:30000
 - https://accounts.google.com/DisplayUnlockCaptcha
+- https://cloud.ibm.com/docs/containers?topic=containers-nodeport
 
 ## To do
 
