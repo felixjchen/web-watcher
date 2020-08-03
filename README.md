@@ -4,7 +4,8 @@
 
 - microservice architecture, 4 Python services, 2 Javascript services and one Golang Cronjob script; all containerized and ready to be deployed to a K8 Cluster
 
-- interact by Material Design [frontend](http://52.152.198.147) or REST API (configure service)
+- [frontend](http://159.122.186.2:30000/) 
+- [REST API](http://159.122.186.2:30001/users) 
 
 ## Motivation
 
@@ -166,6 +167,7 @@
 - frontend at http://CLUSTER_PUBLIC_IP:30001
 - configure API at http://CLUSTER_PUBLIC_IP:30000
 - https://accounts.google.com/DisplayUnlockCaptcha
+- https://cloud.ibm.com/docs/containers?topic=containers-nodeport
 
 ## To do
 
