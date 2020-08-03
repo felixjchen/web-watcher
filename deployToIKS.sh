@@ -27,3 +27,5 @@ kubectl apply -f kubernetes/services
 kubectl apply -f kubernetes/deployments
 kubectl apply -f kubernetes/jobs
 echo "Kubernetes has been configured"
+
+ibmcloud ks worker ls --cluster webWatcherCluster
