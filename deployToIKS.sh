@@ -16,16 +16,14 @@ then
     ibmcloud ks cluster config --cluster "${clusterId}"
     echo "Kubernetes context has been set"
 
-    kubectl apply -f kubernets/secrets
-    kubectl apply -f kubernets/services
-    kubectl apply -f kubernets/deployments
-    kubectl apply -f kubernets/jobs
-    echo "Kubernetes has been configured"
 
 else
     echo "webWatcherCluster exists already..."
 fi
 
-clusterId=$(ibmcloud ks cluster ls | egrep -o 'webWatcherCluster\s*(\w*)' | cut -c18- | sed -e 's/^[[:space:]]*//')
-ibmcloud ks cluster config --cluster "${clusterId}"
 
+kubectl apply -f kubernetes/secrets
+kubectl apply -f kubernetes/services
+kubectl apply -f kubernetes/deployments
+kubectl apply -f kubernetes/jobs
+echo "Kubernetes has been configured"
