@@ -171,13 +171,14 @@
 
 ## To do
 
-- gateway
 - frontend: add editing, react, user auth, redesign
-- better logging
+
 - purge old screenshots and fetch new
-- replace requests for token service
-- migration script
-- test suite, every application endpoint, service interactions
+- configure service is slow in Python...
+- swagger docs
+- graphql
+- better logging
+- test suite
 - use alpine images
 
 ## Takeaways
