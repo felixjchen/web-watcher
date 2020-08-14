@@ -4,8 +4,8 @@
 
 - microservice architecture, 4 Python services, 2 Javascript services and one Golang Cronjob script; all containerized and ready to be deployed to a K8 Cluster
 
-- [frontend](http://159.122.186.2:30000/) 
-- [REST API](http://159.122.186.2:30001/users) 
+- [frontend](http://169.51.195.230:30000/) 
+- [REST API](http://169.51.195.230:30001/users) 
 
 ## Motivation
 
