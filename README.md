@@ -170,8 +170,6 @@
 
 ## To do
 
-- frontend: add editing, react, user auth, redesign
-
 - purge old screenshots and fetch new
 - configure service is slow in Python...
 - swagger docs
