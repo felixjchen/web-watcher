@@ -11,11 +11,23 @@ if (production) {
   gatewayAddress = "http://169.51.195.230:30001";
 }
 
-let loginButtonClickHandler = () => {
+let loginButtonClickHandler = async () => {
   let email = document.getElementById("email").value;
   let password = document.getElementById("password").value;
 
-  console.log(email, password);
+  let payload = { email, password };
+  console.log(payload);
+  let options = {
+    method: "POST",
+    body: JSON.stringify(payload),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    redirect: "follow",
+  };
+
+  let response = await fetch(`${gatewayAddress}/login`, options);
+  console.log(await response.text());
 };
 
 render(
