@@ -1,11 +1,10 @@
-# web-watcher
+# Watcher
 
 - application to notify users by email whenever a webpage changes, screenshots entire webpage and creates bounding boxes to show the user what has changed
-
 - microservice architecture, 4 Python services, 2 Javascript services and one Golang Cronjob script; all containerized and ready to be deployed to a K8 Cluster
 
-- [frontend](http://169.51.195.230:30000/) 
-- [REST API](http://169.51.195.230:30001/users) 
+- [frontend](http://169.51.195.230:30000/)
+- [REST API](http://169.51.195.230:30001/users)
 
 ## Motivation
 
@@ -32,11 +31,11 @@
   python app.py
   ```
 - endpoints
-  | To                         | Method | URL                           | Body          | Body Type | Response Type |
+  | To | Method | URL | Body | Body Type | Response Type |
   | -------------------------- | ------ | ----------------------------- | ------------- | --------- | ------------- |
-  | Upload file _F_ to COS     | POST   | http://0.0.0.0:8001/files     | {"file": _F_} | Form      | JSON          |
-  | Download file _F_ from COS | GET    | http://0.0.0.0:8001/files/{F} | .             | .         | File          |
-  | Delete file _F_ in COS     | DELETE | http://0.0.0.0:8001/files/{F} | .             | .         | JSON          |
+  | Upload file _F_ to COS | POST | http://0.0.0.0:8001/files | {"file": _F_} | Form | JSON |
+  | Download file _F_ from COS | GET | http://0.0.0.0:8001/files/{F} | . | . | File |
+  | Delete file _F_ in COS | DELETE | http://0.0.0.0:8001/files/{F} | . | . | JSON |
 
 ### compare
 
@@ -52,10 +51,10 @@
   python app.py
   ```
 - endpoints
-  | To                                                                 | Method | URL                                  | Body                                 | Body Type | Response Type |
+  | To | Method | URL | Body | Body Type | Response Type |
   | ------------------------------------------------------------------ | ------ | ------------------------------------ | ------------------------------------ | --------- | ------------- |
-  | Get structural similarity index between images _P_ and _Q_         | GET    | http://0.0.0.0:8002/difference       | {"file*old": *P*, "file_new": *Q*}   | Form      | JSON          |
-  | Create bounding boxes around the difference of images \_P* and _Q_ | GET    | http://0.0.0.0:8002/difference_image | {"file*old": \_P*, "file*new": \_Q*} | Form      | File          |
+  | Get structural similarity index between images _P_ and _Q_ | GET | http://0.0.0.0:8002/difference | {"file*old": *P*, "file_new": *Q*} | Form | JSON |
+  | Create bounding boxes around the difference of images \_P* and _Q_ | GET | http://0.0.0.0:8002/difference_image | {"file*old": \_P*, "file*new": \_Q*} | Form | File |
 
 ### screenshot
 
@@ -71,9 +70,9 @@
   node app.js
   ```
 - endpoints
-  | To                    | Method | URL                            | Body         | Body Type | Response Type |
+  | To | Method | URL | Body | Body Type | Response Type |
   | --------------------- | ------ | ------------------------------ | ------------ | --------- | ------------- |
-  | Screenshot at URL _U_ | GET    | http://0.0.0.0:8003/screenshot | {"url": _U_} | JSON      | File          |
+  | Screenshot at URL _U_ | GET | http://0.0.0.0:8003/screenshot | {"url": _U_} | JSON | File |
 
 ### configure
 
@@ -91,18 +90,18 @@
   python app.py
   ```
 - endpoints DATED DATED
-  | To                                                                        | Method | URL                                | Body                                             | Body Type | Response Type |
+  | To | Method | URL | Body | Body Type | Response Type |
   | ------------------------------------------------------------------------- | ------ | ---------------------------------- | ------------------------------------------------ | --------- | ------------- |
-  | List all users                                                            | GET    | http://0.0.0.0:8004/users          | .                                                | .         | JSON          |
-  | Create new user with name _N_ and email _E_                               | POST   | http://0.0.0.0:8004/users          | {"name": _N_, "email": _E_}                      | JSON      | JSON          |
-  | Describe user with user id _UID_                                          | GET    | http://0.0.0.0:8004/users/{UID}    | .                                                | .         | JSON          |
-  | Update user with user id _UID_                                            | PUT    | http://0.0.0.0:8004/users/{UID}    | {"name": _N_, "email": _E_}                      | JSON      | JSON          |
-  | Delete user with user id _UID_                                            | DELETE | http://0.0.0.0:8004/users/{UID}    | .                                                | .         | JSON          |
-  | List all watchers                                                         | GET    | http://0.0.0.0:8004/watchers       | .                                                | .         | JSON          |
-  | Create new watcher for user _UID_ at URL _U_ with frequency _F_ (seconds) | POST   | http://0.0.0.0:8004/watchers       | {"user*id": *UID*, "url":\_U*, "frequency": _F_} | JSON      | JSON          |
-  | Describe watcher with watcher id _WID_                                    | GET    | http://0.0.0.0:8004/watchers/{WID} | .                                                | .         | JSON          |
-  | Update watcher with watcher id _WID_                                      | PUT    | http://0.0.0.0:8004/watchers/{WID} | {"user*id": *UID*, "url":\_U*, "frequency": _F_} | JSON      | JSON          |
-  | Delete watcher with watcher id _WID_                                      | DELETE | http://0.0.0.0:8004/watchers/{WID} | .                                                | .         | JSON          |
+  | List all users | GET | http://0.0.0.0:8004/users | . | . | JSON |
+  | Create new user with name _N_ and email _E_ | POST | http://0.0.0.0:8004/users | {"name": _N_, "email": _E_} | JSON | JSON |
+  | Describe user with user id _UID_ | GET | http://0.0.0.0:8004/users/{UID} | . | . | JSON |
+  | Update user with user id _UID_ | PUT | http://0.0.0.0:8004/users/{UID} | {"name": _N_, "email": _E_} | JSON | JSON |
+  | Delete user with user id _UID_ | DELETE | http://0.0.0.0:8004/users/{UID} | . | . | JSON |
+  | List all watchers | GET | http://0.0.0.0:8004/watchers | . | . | JSON |
+  | Create new watcher for user _UID_ at URL _U_ with frequency _F_ (seconds) | POST | http://0.0.0.0:8004/watchers | {"user*id": *UID*, "url":\_U*, "frequency": _F_} | JSON | JSON |
+  | Describe watcher with watcher id _WID_ | GET | http://0.0.0.0:8004/watchers/{WID} | . | . | JSON |
+  | Update watcher with watcher id _WID_ | PUT | http://0.0.0.0:8004/watchers/{WID} | {"user*id": *UID*, "url":\_U*, "frequency": _F_} | JSON | JSON |
+  | Delete watcher with watcher id _WID_ | DELETE | http://0.0.0.0:8004/watchers/{WID} | . | . | JSON |
 
 ### notify
 
@@ -118,9 +117,9 @@
   python app.py
   ```
 - endpoints
-  | To                                                                | Method | URL                        | Body                                   | Body Type | Response Type |
+  | To | Method | URL | Body | Body Type | Response Type |
   | ----------------------------------------------------------------- | ------ | -------------------------- | -------------------------------------- | --------- | ------------- |
-  | Notify email _E_ of a change at URL _U_ with difference image _D_ | POST   | http://0.0.0.0:8006/notify | {"email": _E_, "url":_U_, "file": _D_} | FORM      | JSON          |
+  | Notify email _E_ of a change at URL _U_ with difference image _D_ | POST | http://0.0.0.0:8006/notify | {"email": _E_, "url":_U_, "file": _D_} | FORM | JSON |
 
 ### frontend
 
