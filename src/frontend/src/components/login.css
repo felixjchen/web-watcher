@@ -68,7 +68,13 @@ body {
 
 @media only screen and (max-width: 1056px) {
   #login #rightBox img {
+    height: 100%;
+    width: 130%;
     transform: rotate(270deg);
     object-fit: scale-down;
+  }
+
+  #login #rightBox {
+    padding-left: 0;
   }
 }
