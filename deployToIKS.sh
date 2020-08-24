@@ -12,15 +12,16 @@ then
     done
     echo "webWatcherCluster has been created"
 
-    clusterId=$(ibmcloud ks cluster ls | egrep -o 'webWatcherCluster\s*(\w*)' | cut -c18- | sed -e 's/^[[:space:]]*//')
-    ibmcloud ks cluster config --cluster "${clusterId}"
-    echo "Kubernetes context has been set"
 
 
 else
     echo "webWatcherCluster exists already..."
 fi
 
+
+clusterId=$(ibmcloud ks cluster ls | egrep -o 'webWatcherCluster\s*(\w*)' | cut -c18- | sed -e 's/^[[:space:]]*//')
+ibmcloud ks cluster config --cluster "${clusterId}"
+echo "Kubernetes context has been set"
 
 kubectl apply -f kubernetes/secrets
 kubectl apply -f kubernetes/services

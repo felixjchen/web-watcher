@@ -8,7 +8,7 @@ const production = typeof process.env.KUBERNETES_SERVICE_HOST !== "undefined";
 var configure_address = "http://0.0.0.0:8004";
 if (production) {
   // configure_address = 'http://' + process.env.CONFIGURE_SERVICE_HOST + ':' + process.env.CONFIGURE_SERVICE_PORT
-  configure_address = "http://169.51.195.230:30001";
+  configure_address = "http://10.144.216.186:30001";
 }
 
 console.log("configure address", configure_address);
