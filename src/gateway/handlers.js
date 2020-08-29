@@ -55,13 +55,14 @@ const loginHandler = async (req, res) => {
     secure: true,
   });
 
-  res.send({
-    success: true,
-    accessToken,
-    accessTokenExpiry,
-  });
-
-  res.end();
+  console.log(res.getHeaders());
+  res
+    .send({
+      success: true,
+      accessToken,
+      accessTokenExpiry,
+    })
+    .end();
 };
 
 const refreshRequest = (refreshToken) => {

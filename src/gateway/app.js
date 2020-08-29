@@ -14,14 +14,14 @@ const {
 } = require("./handlers");
 
 const app = express();
-app.use(
-  cors({
-    origin: "https://webwatcher.netlify.app/",
-    credentials: true,
-  })
-);
+corsOptions = {
+  credentials: true,
+  origin: "https://webwatcher.netlify.app/",
+};
+
 app.use(cookieParser());
 app.use(bodyParser.json());
+app.use(cors(corsOptions));
 
 // email and password set in body, sets accessToken and refreshToken cookies, returns accessTokenExpirey
 app.all("/login", loginHandler);
