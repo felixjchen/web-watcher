@@ -40,17 +40,3 @@ app.post("/watcher", addWatcherHandler);
 app.delete("/watcher", deleteWatcherHandler);
 
 app.listen(8008, "0.0.0.0");
-
-// var key = fs.readFileSync(__dirname + "/server.key");
-// var cert = fs.readFileSync(__dirname + "/server.cert");
-// var options = {
-//   hostname: "0.0.0.0",
-//   key: key,
-//   cert: cert,
-// };
-
-// https.createServer(options, app).listen(8008, function () {
-//   console.log(
-//     "Example app listening on port 8008! Go to https://localhost:8008/"
-//   );
-// });
