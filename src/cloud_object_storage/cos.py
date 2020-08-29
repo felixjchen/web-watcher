@@ -20,7 +20,7 @@ COS_BUCKET_LOCATION = "us-east-standard"
 COS_AUTH_ENDPOINT = "https://iam.cloud.ibm.com/identity/token"
 
 # Create resource
-file_bucket = "web-watcher-files" if production else "web-watcher-dev"
+file_bucket = "web-watcher-prod" if production else "web-watcher-dev"
 cos = ibm_boto3.resource("s3",
                          ibm_api_key_id=COS_API_KEY_ID,
                          ibm_service_instance_id=COS_RESOURCE_CRN,

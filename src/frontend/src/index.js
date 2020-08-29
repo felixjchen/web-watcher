@@ -19,6 +19,7 @@ let loginButtonClickHandler = async () => {
   console.log(payload);
   let options = {
     method: "POST",
+    credentials: "include",
     body: JSON.stringify(payload),
     headers: {
       "Content-Type": "application/json",
