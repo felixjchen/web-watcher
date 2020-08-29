@@ -2,11 +2,18 @@ import os
 import requests
 import uuid
 import time
+import bcrypt
+import re
+
+from threading import Thread
+
 from cloudant import cloudant
 from cloudant.document import Document
 
 production = 'KUBERNETES_SERVICE_HOST' in os.environ
 db_client = 'production' if production else 'development'
+user_document = 'user'
+watcher_document = 'watcher'
 
 if production:
     def get_address(host, port):
@@ -36,142 +43,129 @@ else:
     URL = credentials['url']
 
 
-def add_user(name, email):
-    """
-    user_ID (UUID) : {
-        name : string
-        email : string
-        watchers : [watcher1, .. watcherI]
-    }   
-    """
-
-    new_uuid = str(uuid.uuid4())
-    new_user = {
-        "name": name,
-        "email": email,
-        "watchers": []
-    }
-
-    with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
-
-        db = client[db_client]
-
-        with Document(db, "users") as document:
-
-            users = document["users"]
-            users[new_uuid] = new_user
-
-    return new_uuid
+def hash_string(clear_text):
+    salt = bcrypt.gensalt(rounds=4)
+    clear_text = str.encode(clear_text)
+    hash_text = bcrypt.hashpw(clear_text, salt).decode()
+    return hash_text
 
 
-def delete_user(user_id):
-
-    with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
-
-        db = client[db_client]
-
-        watchers = []
-        with Document(db, "users") as document:
-            users = document["users"]
-            watchers = users[user_id]['watchers']
-
-        for watcher_id in watchers:
-            delete_watcher(watcher_id)
-
-        # Otherwise document conflict
-        with Document(db, "users") as document:
-            del(document["users"][user_id])
-
-
-def _deleteAll():
-    users = []
-    with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
-
-        db = client[db_client]
-
-        with Document(db, "users") as document:
-            users = document["users"]
-
-    for user_id in users:
-        delete_user(user_id)
-
-
-def update_user(user_id, name=None, email=None):
-
-    with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
-
-        db = client[db_client]
-
-        with Document(db, "users") as document:
-
-            user = document["users"][user_id]
-
-            if name:
-                user['name'] = name
-
-            if email:
-                user['email'] = email
-
-
-def get_user(user_id):
-
-    with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
-
-        db = client[db_client]
-
-        with Document(db, "users") as document:
-
-            users = document["users"]
-
-            if user_id not in users:
-                return False
-
-            return users[user_id]
-
-
-def list_users():
-
-    with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
-
-        db = client[db_client]
-
-        with Document(db, "users") as document:
-            return document["users"]
-
-
-def add_watcher(user_id, url, frequency):
-
-    watcher_uuid = str(uuid.uuid4())
-    last_run = int(time.time())
-    new_watcher = {
-        'user_id': user_id,
-        'url': url,
-        'frequency': frequency,
-        'last_run': last_run
-    }
-
+def first_screenshot(watcher_uuid, url):
     # FIRST TIME SCREENSHOT
+    # Get new SS
     server_file_path = os.path.join('files', f'{watcher_uuid}.png')
     r = requests.get(f'{screenshot_address}/screenshot', json={'url': url})
     open(server_file_path, 'wb').write(r.content)
-
     # Upload to COS
     files = {'file': open(server_file_path, 'rb')}
     r = requests.post(
         f'{cloud_object_storage_service_address}/files', files=files)
     os.remove(server_file_path)
 
-    # Add watcher to use
-    with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
 
+def add_user(email, password):
+
+    if not re.search('^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$', email):
+        return "Invalid email address"
+
+    with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
+        db = client[db_client]
+        with Document(db, user_document) as document:
+            users = document["users"]
+            if email in users:
+                return "User already exists"
+            hashed_password = hash_string(password)
+            new_user = {
+                'password': hashed_password,
+                "watchers": []
+            }
+            users[email] = new_user
+
+    return f"Created user with email {email}"
+
+
+def update_password(email, password):
+    with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
+        db = client[db_client]
+        with Document(db, user_document) as document:
+            document["users"][email]["password"] = hash_string(password)
+    return True
+
+
+def check_password(email, password):
+    with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
+        db = client[db_client]
+        with Document(db, user_document) as document:
+
+            users = document["users"]
+
+            if email not in users:
+                return 'User does not exist'
+
+            hashed_password = users[email]["password"]
+            password = str.encode(password)
+            hashed_password = str.encode(hashed_password)
+            if bcrypt.checkpw(password, hashed_password):
+                return 'Authenticated'
+            else:
+                return 'Wrong password'
+
+    return 'Something went wrong'
+
+
+def get_user(email):
+    with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
+        db = client[db_client]
+        with Document(db, user_document) as document:
+            users = document["users"]
+            if email not in users:
+                return -1
+            return users[email]
+    return -1
+
+
+def delete_user(email):
+    with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
+        db = client[db_client]
+        watchers = []
+
+        with Document(db, user_document) as document:
+            if email not in document["users"]:
+                return "User does not exist"
+            watchers = document["users"][email]['watchers']
+
+        for watcher_id in watchers:
+            delete_watcher(watcher_id)
+
+        with Document(db, user_document) as document:
+            del(document["users"][email])
+
+    return "Deleted user"
+
+
+def add_watcher(email, url, frequency):
+
+    watcher_uuid = str(uuid.uuid4())
+    last_run = int(time.time())
+    new_watcher = {
+        'email': email,
+        'url': url,
+        'frequency': frequency,
+        'last_run': last_run
+    }
+
+    Thread(target=first_screenshot, args=(watcher_uuid, url,)).start()
+
+    # Add to database
+    with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
         db = client[db_client]
 
-        with Document(db, "users") as document:
-            users = document["users"]
-            users[user_id]['watchers'] += [watcher_uuid]
+        # Add watcher to user
+        with Document(db, user_document) as document:
+            document["users"][email]['watchers'] += [watcher_uuid]
 
         # Add watcher to watchers
-        with Document(db, "watchers") as document:
+        with Document(db, watcher_document) as document:
             watchers = document['watchers']
             watchers[watcher_uuid] = new_watcher
 
@@ -186,22 +180,20 @@ def delete_watcher(watcher_id):
     with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
 
         db = client[db_client]
+        email = ''
 
-        user_id = ''
-
-        # Add watcher to watchers
-        with Document(db, "watchers") as document:
-            user_id = document['watchers'][watcher_id]['user_id']
+        # Remove watcher to watchers
+        with Document(db, watcher_document) as document:
+            email = document['watchers'][watcher_id]['email']
             del(document['watchers'][watcher_id])
 
-        with Document(db, "users") as document:
-            users = document["users"]
-            users[user_id]["watchers"].remove(watcher_id)
+        with Document(db, user_document) as document:
+            document["users"][email]["watchers"].remove(watcher_id)
 
     return True
 
 
-def update_watcher(watcher_id, last_run=None, frequency=None, url=None):
+def update_watcher(watcher_id, last_run=None, frequency=None):
 
     # Add watcher to use
     with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
@@ -209,18 +201,14 @@ def update_watcher(watcher_id, last_run=None, frequency=None, url=None):
         db = client[db_client]
 
         # Add watcher to watchers
-        with Document(db, "watchers") as document:
+        with Document(db, watcher_document) as document:
             watchers = document['watchers']
             watcher = watchers[watcher_id]
 
             if last_run:
                 watcher['last_run'] = last_run
-
             if frequency:
                 watcher['frequency'] = frequency
-
-            if url:
-                watcher['url'] = url
 
     return True
 
@@ -231,7 +219,7 @@ def get_watcher(watcher_id):
 
         db = client[db_client]
 
-        with Document(db, "watchers") as document:
+        with Document(db, watcher_document) as document:
 
             watchers = document["watchers"]
 
@@ -241,26 +229,43 @@ def get_watcher(watcher_id):
             return watchers[watcher_id]
 
 
+def _delete_all():
+    users = []
+    with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
+
+        db = client[db_client]
+
+        with Document(db, user_document) as document:
+            document["users"] = {}
+
+        with Document(db, watcher_document) as document:
+            document["watchers"] = {}
+
+
+def list_users():
+
+    with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
+
+        db = client[db_client]
+
+        with Document(db, user_document) as document:
+            return document["users"]
+
+
 def list_watchers():
 
     with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
 
         db = client[db_client]
 
-        with Document(db, "watchers") as document:
+        with Document(db, watcher_document) as document:
             return document['watchers']
 
 
 if __name__ == "__main__":
-    _deleteAll()
-    # add_user("Felix", "felixchen1998@gmail.com")
-    # felix_id = "0f5e3e25-9cc6-4d60-9faf-f7157abc1b69"
-    # # print(list_users())
-    # # print(get_user(felix_id))
-
-    # # print(list_watchers())
-    # # add_watcher(felix_id, 'http://www.youtube.com', 86400)
-    # print(list_users())
-    # print(list_watchers())
-    # print(get_watcher('e0aab339-7572-489d-8e8e-50fe741697a6'))
-    pass
+    e = 'felixchen@gmail.com'
+    r = add_user(e, 'adjslajdkl')
+    print(update_password(e, 'abc'))
+    print(check_password(e, 'adjslajdkl'))
+    print(check_password(e, 'abc'))
+    print(get_user(e))

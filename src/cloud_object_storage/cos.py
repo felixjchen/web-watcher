@@ -20,7 +20,7 @@ COS_BUCKET_LOCATION = "us-east-standard"
 COS_AUTH_ENDPOINT = "https://iam.cloud.ibm.com/identity/token"
 
 # Create resource
-file_bucket = "web-watcher-files"
+file_bucket = "web-watcher-prod" if production else "web-watcher-dev"
 cos = ibm_boto3.resource("s3",
                          ibm_api_key_id=COS_API_KEY_ID,
                          ibm_service_instance_id=COS_RESOURCE_CRN,
@@ -48,6 +48,7 @@ def get_item(file_path, item_name):
 
     return False
 
+
 def delete_item(item_name):
     try:
         cos.Object(file_bucket, item_name).delete()
@@ -60,6 +61,7 @@ def delete_item(item_name):
         print("Unable to delete item: {0}".format(e))
 
     return False
+
 
 def multi_part_upload(file_path, item_name):
     try:
