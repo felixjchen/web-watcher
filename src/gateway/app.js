@@ -40,3 +40,4 @@ app.post("/watcher", addWatcherHandler);
 app.delete("/watcher", deleteWatcherHandler);
 
 app.listen(8008, "0.0.0.0");
+console.log("Gateway service listening on 8008");

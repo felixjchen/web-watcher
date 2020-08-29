@@ -8,7 +8,7 @@ const production = typeof process.env.KUBERNETES_SERVICE_HOST !== "undefined";
 let gatewayAddress = "http://0.0.0.0:8008";
 if (production) {
   // configure_address = 'http://' + process.env.CONFIGURE_SERVICE_HOST + ':' + process.env.CONFIGURE_SERVICE_PORT
-  gatewayAddress = "http://169.51.195.230:30001";
+  gatewayAddress = "https://8977ea8e.us-south.apigw.appdomain.cloud/gateway";
 }
 
 let loginButtonClickHandler = async () => {
