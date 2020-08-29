@@ -1,6 +1,7 @@
 {
   "name": "carbonreactapp",
   "version": "0.1.0",
+  "homepage": ".",
   "private": true,
   "dependencies": {
     "carbon-components": "^10.17.0",
