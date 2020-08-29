@@ -3,13 +3,8 @@ import { render } from "react-dom";
 
 import Login from "./components/login";
 
-const production = typeof process.env.KUBERNETES_SERVICE_HOST !== "undefined";
-
-let gatewayAddress = "http://0.0.0.0:8008";
-if (production) {
-  // configure_address = 'http://' + process.env.CONFIGURE_SERVICE_HOST + ':' + process.env.CONFIGURE_SERVICE_PORT
-  gatewayAddress = "https://8977ea8e.us-south.apigw.appdomain.cloud/gateway";
-}
+const gatewayAddress =
+  "https://8977ea8e.us-south.apigw.appdomain.cloud/gateway";
 
 let loginButtonClickHandler = async () => {
   let email = document.getElementById("email").value;
