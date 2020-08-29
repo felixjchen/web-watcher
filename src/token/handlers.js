@@ -11,9 +11,9 @@ if (production) {
     process.env.CONFIGURE_SERVICE_HOST +
     ":" +
     process.env.CONFIGURE_SERVICE_PORT;
-  hmac_key = process.env.SECRET_JWT;
+  HMAC_KEY = process.env.SECRET_JWT;
 } else {
-  var { HMAC_KEY } = require("./secrets.json");
+  ({ HMAC_KEY } = require("./secrets.json"));
 }
 
 // 15 min
