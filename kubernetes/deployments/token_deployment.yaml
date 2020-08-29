@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: token-deployment
+  labels:
+    app: token-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: token-app
+  template:
+    metadata:
+      labels:
+        app: token-app
+    spec:
+      containers:
+        - name: token-container
+          image: docker.io/felixchen1998/web-watcher-token:latest
+          # resources:
+          #   limits:
+          #     memory: "256Mi"
+          #     cpu: "250m"
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          env:
+            - name: SECRET_JWT
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: HMAC_KEY
