@@ -15,7 +15,7 @@ const getProductionURL = (serviceName) => {
 if (production) {
   token_address = getProductionURL("TOKEN");
   configure_address = getProductionURL("CONFIGURE");
-  hmac_key = process.env.HMAC_KEY;
+  hmac_key = process.env.SECRET_JWT;
 } else {
   ({ hmac_key } = require("./secrets.json"));
 }
