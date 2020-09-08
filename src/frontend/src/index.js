@@ -3,7 +3,8 @@ import { render } from "react-dom";
 
 import Login from "./components/login";
 
-const gatewayAddress = "https://webwatchergateway.azure-api.net";
+const gatewayAddress =
+  "https://8977ea8e.us-south.apigw.appdomain.cloud/gateway";
 
 let loginButtonClickHandler = async () => {
   let email = document.getElementById("email").value;

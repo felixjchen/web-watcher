@@ -16,7 +16,7 @@ const {
 const app = express();
 corsOptions = {
   credentials: true,
-  origin: "https://webwatcher.netlify.app/",
+  origin: "https://webwatcher.netlify.app",
 };
 
 app.use(cookieParser());
