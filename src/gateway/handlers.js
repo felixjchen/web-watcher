@@ -43,24 +43,30 @@ const loginHandler = async (req, res) => {
   }
   console.log(`User ${email} authenticated`);
 
-  let { accessToken, refreshToken, accessTokenExpiry } = tokenResponse;
-  res.cookie("accessToken", accessToken, {
-    httpOnly: true,
-    SameSite: "None",
-    secure: true,
-  });
-  res.cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    SameSite: "None",
-    secure: true,
-  });
+  let {
+    accessToken,
+    refreshToken,
+    refreshTokenExpiry,
+    accessTokenExpiry,
+  } = tokenResponse;
+  // res.cookie("accessToken", accessToken, {
+  //   httpOnly: true,
+  //   SameSite: "None",
+  //   secure: true,
+  // });
+  // res.cookie("refreshToken", refreshToken, {
+  //   httpOnly: true,
+  //   SameSite: "None",
+  //   secure: true,
+  // });
 
-  console.log(res.getHeaders());
   res
     .send({
       success: true,
       accessToken,
       accessTokenExpiry,
+      refreshToken,
+      refreshTokenExpiry,
     })
     .end();
 };
@@ -102,19 +108,26 @@ const refreshHandler = async (req, res) => {
   console.log(`User ${tokenResponse.email} refreshed accessToken`);
 
   // refreshToken not expired, good for new accessToken
-  let { accessToken, newRefreshToken, accessTokenExpiry } = tokenResponse;
+  let {
+    accessToken,
+    newRefreshToken,
+    refreshTokenExpiry,
+    accessTokenExpiry,
+  } = tokenResponse;
 
-  res.cookie("accessToken", accessToken, {
-    httpOnly: true,
-  });
-  res.cookie("refreshToken", newRefreshToken, {
-    httpOnly: true,
-  });
+  // res.cookie("accessToken", accessToken, {
+  //   httpOnly: true,
+  // });
+  // res.cookie("refreshToken", newRefreshToken, {
+  //   httpOnly: true,
+  // });
 
   res.send({
     success: true,
     accessToken,
     accessTokenExpiry,
+    newRefreshToken,
+    refreshTokenExpiry,
   });
   res.end();
 };

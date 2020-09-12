@@ -87,6 +87,7 @@ const authHandler = async (req, res) => {
     accessToken,
     refreshToken,
     accessTokenExpiry,
+    refreshTokenExpiry,
   });
   res.end();
 };
@@ -152,6 +153,7 @@ const refreshHandler = (req, res) => {
     email,
     accessToken,
     newRefreshToken,
+    refreshTokenExpiry,
     accessTokenExpiry,
   });
   res.end();

@@ -1,3 +1,5 @@
+"use strict";
+
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -14,9 +16,9 @@ const {
 } = require("./handlers");
 
 const app = express();
-corsOptions = {
+const corsOptions = {
   credentials: true,
-  origin: "https://webwatcher.netlify.app",
+  origin: ["http://localhost:3000", "https://webwatcher.netlify.com"],
 };
 
 app.use(cookieParser());
@@ -24,9 +26,9 @@ app.use(bodyParser.json());
 app.use(cors(corsOptions));
 
 // email and password set in body, sets accessToken and refreshToken cookies, returns accessTokenExpirey
-app.all("/login", loginHandler);
+app.post("/login", loginHandler);
 // use refreshToken cookie to fetch a new accessToken
-app.all("/refresh", refreshHandler);
+app.post("/refresh", refreshHandler);
 
 // Add user
 app.post("/user", addUserHandler);
