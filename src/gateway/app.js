@@ -17,8 +17,8 @@ const {
 
 const app = express();
 const corsOptions = {
-  credentials: true,
   origin: ["http://localhost:3000", "https://webwatcher.netlify.com"],
+  credentials: true,
 };
 
 app.use(cookieParser());

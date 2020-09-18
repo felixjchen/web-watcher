@@ -4,13 +4,53 @@ import { render } from "react-dom";
 import Login from "./components/login";
 import Page from "./components/page";
 
-const gatewayAddress = "http://0.0.0.0:8008";
+const gatewayAddress =
+  "https://bwaexdxnvc.execute-api.us-east-2.amazonaws.com/prod";
 
 let setCookie = (cname, cvalue, exSeconds) => {
   var d = new Date();
   d.setTime(d.getTime() + exSeconds * 1000);
   var expires = "expires=" + d.toUTCString();
-  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  document.cookie =
+    cname + "=" + cvalue + ";" + expires + ";path=/; SameSite=None; Secure";
+};
+
+let getCookie = (cname) => {
+  var name = cname + "=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(";");
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == " ") {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+};
+
+let getProfile = async () => {
+  var myHeaders = new Headers();
+  // myHeaders.append("Content-Type", "application/json");
+  myHeaders.append(
+    "Cookie",
+    "accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZlbGl4Y2hlbjE5OThAZ21haWwuY29tIiwiaWF0IjoxNTk5OTM2MDQ5LCJleHAiOjE1OTk5MzY5NDl9.x5_O_7wl7u4lh9TY9JhwKs7W5DqVYFbyrSJ9mr3z-2s; refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZlbGl4Y2hlbjE5OThAZ21haWwuY29tIiwiaWF0IjoxNTk5OTM2MDQ5LCJleHAiOjE2MDA1NDA4NDl9.8_zycnH9sOPUinSj9M-LNQ54NFuMkIlBgUBK23lc4YM"
+  );
+
+  var requestOptions = {
+    // headers: myHeaders,
+    credentials: "include",
+  };
+
+  fetch(
+    "https://bwaexdxnvc.execute-api.us-east-2.amazonaws.com/prod/user",
+    requestOptions
+  )
+    .then((response) => response.text())
+    .then((result) => console.log(result))
+    .catch((error) => console.log("error", error));
 };
 
 let loginButtonClickHandler = async () => {
@@ -21,7 +61,6 @@ let loginButtonClickHandler = async () => {
   password = "dude";
 
   let payload = { email, password };
-  console.log(payload);
   let options = {
     method: "POST",
     credentials: "include",
@@ -52,9 +91,10 @@ let loginButtonClickHandler = async () => {
   if (!success) {
     alert("Bad Login");
   } else {
-    setCookie("accesToken", accessToken, accessTokenExpiry);
+    setCookie("accessToken", accessToken, accessTokenExpiry);
     setCookie("refreshToken", refreshToken, refreshTokenExpiry);
     render(<Page />, document.getElementById("root"));
+    getProfile();
   }
 };
 
