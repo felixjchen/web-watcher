@@ -91,8 +91,8 @@ let loginButtonClickHandler = async () => {
   if (!success) {
     alert("Bad Login");
   } else {
-    setCookie("accessToken", accessToken, accessTokenExpiry);
-    setCookie("refreshToken", refreshToken, refreshTokenExpiry);
+    // setCookie("accessToken", accessToken, accessTokenExpiry);
+    // setCookie("refreshToken", refreshToken, refreshTokenExpiry);
     render(<Page />, document.getElementById("root"));
     getProfile();
   }

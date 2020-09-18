@@ -50,12 +50,16 @@ const loginHandler = async (req, res) => {
     accessTokenExpiry,
   } = tokenResponse;
 
-  // res.cookie("accessToken", accessToken, {
-  //   httpOnly: true,
-  // });
-  // res.cookie("refreshToken", refreshToken, {
-  //   httpOnly: true,
-  // });
+  res.cookie("accessToken", accessToken, {
+    httpOnly: true,
+    sameSite: "None",
+    secure: true,
+  });
+  res.cookie("refreshToken", refreshToken, {
+    httpOnly: true,
+    sameSite: "None",
+    secure: true,
+  });
 
   console.log(res);
   res
