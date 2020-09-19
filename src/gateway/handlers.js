@@ -51,12 +51,14 @@ const loginHandler = async (req, res) => {
   } = tokenResponse;
   res.cookie("accessToken", accessToken, {
     // httpOnly: true,
-    SameSite: "None",
+    maxAge: accessTokenExpiry * 1000,
+    sameSite: "None",
     secure: true,
   });
   res.cookie("refreshToken", refreshToken, {
     // httpOnly: true,
-    SameSite: "None",
+    maxAge: refreshTokenExpiry * 1000,
+    sameSite: "None",
     secure: true,
   });
 
@@ -114,16 +116,18 @@ const refreshHandler = async (req, res) => {
     accessTokenExpiry,
   } = tokenResponse;
 
-  // res.cookie("accessToken", accessToken, {
-  //   httpOnly: true,
-  //   // SameSite: "None",
-  //   // secure: true,
-  // });
-  // res.cookie("refreshToken", newRefreshToken, {
-  //   httpOnly: true,
-  //   // SameSite: "None",
-  //   // secure: true,
-  // });
+  res.cookie("accessToken", accessToken, {
+    // httpOnly: true,
+    maxAge: accessTokenExpiry * 1000,
+    sameSite: "None",
+    secure: true,
+  });
+  res.cookie("refreshToken", newRefreshToken, {
+    // httpOnly: true,
+    maxAge: refreshTokenExpiry * 1000,
+    sameSite: "None",
+    secure: true,
+  });
 
   res.send({
     success: true,
@@ -176,7 +180,6 @@ const getUserRequest = (email) => {
   return fetch(url, options);
 };
 const getUserHandler = async (req, res) => {
-  console.log(req);
   let { accessToken } = req.cookies;
 
   // No access token
