@@ -80,7 +80,7 @@ let getAccessToken = async (refreshToken) => {
 let refreshToken = getCookie("refreshToken");
 
 if (refreshToken) {
-  alert("I have a refresh token..." + refreshToken);
+  getAccessToken(refreshToken);
 }
 
 render(
