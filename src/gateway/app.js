@@ -17,7 +17,7 @@ const {
 
 const app = express();
 const corsOptions = {
-  origin: "https://webwatcher.netlify.com",
+  origin: "https://webwatcher.netlify.app",
   credentials: true,
 };
 

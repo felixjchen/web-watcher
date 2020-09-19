@@ -33,14 +33,14 @@ let getCookie = (cname) => {
 
 let getProfile = async () => {
   var myHeaders = new Headers();
-  // myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("Content-Type", "application/json");
   myHeaders.append(
     "Cookie",
     "accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZlbGl4Y2hlbjE5OThAZ21haWwuY29tIiwiaWF0IjoxNTk5OTM2MDQ5LCJleHAiOjE1OTk5MzY5NDl9.x5_O_7wl7u4lh9TY9JhwKs7W5DqVYFbyrSJ9mr3z-2s; refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZlbGl4Y2hlbjE5OThAZ21haWwuY29tIiwiaWF0IjoxNTk5OTM2MDQ5LCJleHAiOjE2MDA1NDA4NDl9.8_zycnH9sOPUinSj9M-LNQ54NFuMkIlBgUBK23lc4YM"
   );
 
   var requestOptions = {
-    // headers: myHeaders,
+    headers: myHeaders,
     credentials: "include",
   };
 
