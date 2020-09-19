@@ -1,3 +1,5 @@
+"use strict";
+
 import React from "react";
 import { render } from "react-dom";
 
@@ -12,13 +14,10 @@ let getProfile = async () => {
     credentials: "include",
   };
 
-  fetch(
-    "https://bwaexdxnvc.execute-api.us-east-2.amazonaws.com/prod/user",
-    requestOptions
-  )
-    .then((response) => response.text())
-    .then((result) => console.log(result))
-    .catch((error) => console.log("error", error));
+  let response = await fetch(`${gatewayAddress}/user`, requestOptions);
+  let responseText = await response.text();
+
+  return JSON.parse(responseText);
 };
 
 let loginButtonClickHandler = async () => {
@@ -40,29 +39,21 @@ let loginButtonClickHandler = async () => {
   };
 
   let response = await fetch(`${gatewayAddress}/login`, options);
-  let resopnseText = await response.text();
+  let responseText = await response.text();
   let {
     success,
     accessToken,
     accessTokenExpiry,
     refreshTokenExpiry,
     refreshToken,
-  } = JSON.parse(resopnseText);
+  } = JSON.parse(responseText);
 
-  console.log(
-    success,
-    accessToken,
-    accessTokenExpiry,
-    refreshTokenExpiry,
-    refreshToken
-  );
+  console.log(responseText);
   if (!success) {
     alert("Bad Login");
   } else {
-    // setCookie("accessToken", accessToken, accessTokenExpiry);
-    // setCookie("refreshToken", refreshToken, refreshTokenExpiry);
+    let profile = getProfile();
     render(<Page />, document.getElementById("root"));
-    getProfile();
   }
 };
 
