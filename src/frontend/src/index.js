@@ -12,7 +12,7 @@ let setCookie = (cname, cvalue, exSeconds) => {
   d.setTime(d.getTime() + exSeconds * 1000);
   var expires = "expires=" + d.toUTCString();
   document.cookie =
-    cname + "=" + cvalue + ";" + expires + ";path=/; SameSite=None; Secure";
+    cname + "=" + cvalue + ";" + expires + "; path=/; SameSite=None; Secure";
 };
 
 let getCookie = (cname) => {
