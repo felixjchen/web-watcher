@@ -49,15 +49,14 @@ const loginHandler = async (req, res) => {
     refreshTokenExpiry,
     accessTokenExpiry,
   } = tokenResponse;
-
   // res.cookie("accessToken", accessToken, {
   //   httpOnly: true,
-  //   sameSite: "None",
+  //   SameSite: "None",
   //   secure: true,
   // });
   // res.cookie("refreshToken", refreshToken, {
   //   httpOnly: true,
-  //   sameSite: "None",
+  //   SameSite: "None",
   //   secure: true,
   // });
 
