@@ -49,16 +49,16 @@ const loginHandler = async (req, res) => {
     refreshTokenExpiry,
     accessTokenExpiry,
   } = tokenResponse;
-  res.cookie("accessToken", accessToken, {
-    httpOnly: true,
-    // SameSite: "None",
-    // secure: true,
-  });
-  res.cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    // SameSite: "None",
-    // secure: true,
-  });
+  // res.cookie("accessToken", accessToken, {
+  //   httpOnly: true,
+  //   // SameSite: "None",
+  //   // secure: true,
+  // });
+  // res.cookie("refreshToken", refreshToken, {
+  //   httpOnly: true,
+  //   // SameSite: "None",
+  //   // secure: true,
+  // });
 
   res.send({
     success: true,
@@ -114,16 +114,16 @@ const refreshHandler = async (req, res) => {
     accessTokenExpiry,
   } = tokenResponse;
 
-  res.cookie("accessToken", accessToken, {
-    httpOnly: true,
-    // SameSite: "None",
-    // secure: true,
-  });
-  res.cookie("refreshToken", newRefreshToken, {
-    httpOnly: true,
-    // SameSite: "None",
-    // secure: true,
-  });
+  // res.cookie("accessToken", accessToken, {
+  //   httpOnly: true,
+  //   // SameSite: "None",
+  //   // secure: true,
+  // });
+  // res.cookie("refreshToken", newRefreshToken, {
+  //   httpOnly: true,
+  //   // SameSite: "None",
+  //   // secure: true,
+  // });
 
   res.send({
     success: true,
