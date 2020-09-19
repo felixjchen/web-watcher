@@ -61,7 +61,21 @@ let loginButtonClickHandler = async () => {
   }
 };
 
-let getAccessToken = (refreshToken) => {};
+let getAccessToken = async (refreshToken) => {
+  var requestOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ refreshToken }),
+    redirect: "follow",
+  };
+
+  let response = await fetch(`${gatewayAddress}/refresh`, requestOptions);
+  let responseText = await response.text();
+
+  console.log(responseText);
+};
 
 let refreshToken = getCookie("refreshToken");
 
