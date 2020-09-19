@@ -61,6 +61,12 @@ let loginButtonClickHandler = async () => {
   }
 };
 
+let refreshToken = getCookie("refreshToken");
+
+if (refreshToken) {
+  alert("I have a refresh token...");
+}
+
 render(
   <Login handler={loginButtonClickHandler} />,
   document.getElementById("root")

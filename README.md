@@ -172,6 +172,7 @@
 
 - purge old screenshots and fetch new
 - configure service is slow in Python...
+- remove token service?
 - swagger docs
 - graphql
 - better logging
