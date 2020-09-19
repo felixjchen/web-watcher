@@ -64,6 +64,7 @@ let loginButtonClickHandler = async () => {
 let getAccessToken = async (refreshToken) => {
   var requestOptions = {
     method: "POST",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
