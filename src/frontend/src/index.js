@@ -22,6 +22,8 @@ let getProfile = async () => {
   return JSON.parse(responseText);
 };
 
+let getAccessToken = () => {};
+
 let loginButtonClickHandler = async () => {
   let email = document.getElementById("email").value;
   let password = document.getElementById("password").value;
