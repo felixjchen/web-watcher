@@ -61,16 +61,14 @@ const loginHandler = async (req, res) => {
   //   secure: true,
   // });
 
-  console.log(res);
-  res
-    .send({
-      success: true,
-      accessToken,
-      accessTokenExpiry,
-      refreshToken,
-      refreshTokenExpiry,
-    })
-    .end();
+  res.send({
+    success: true,
+    accessToken,
+    accessTokenExpiry,
+    refreshToken,
+    refreshTokenExpiry,
+  });
+  res.end();
 };
 
 const refreshRequest = (refreshToken) => {
@@ -124,15 +122,14 @@ const refreshHandler = async (req, res) => {
   //   httpOnly: true,
   // });
 
-  res
-    .send({
-      success: true,
-      accessToken,
-      accessTokenExpiry,
-      newRefreshToken,
-      refreshTokenExpiry,
-    })
-    .end();
+  res.send({
+    success: true,
+    accessToken,
+    accessTokenExpiry,
+    newRefreshToken,
+    refreshTokenExpiry,
+  });
+  res.end();
 };
 
 const addUserRequest = (email, password) => {
