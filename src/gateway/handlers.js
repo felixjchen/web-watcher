@@ -51,13 +51,15 @@ const loginHandler = async (req, res) => {
   } = tokenResponse;
   res.cookie("accessToken", accessToken, {
     // httpOnly: true,
-    maxAge: accessTokenExpiry * 1000,
+    // maxAge: accessTokenExpiry * 1000,
+    expires: new Date(Date.now() + accessTokenExpiry * 1000),
     sameSite: "None",
     secure: true,
   });
   res.cookie("refreshToken", refreshToken, {
     // httpOnly: true,
-    maxAge: refreshTokenExpiry * 1000,
+    // maxAge: refreshTokenExpiry * 1000,
+    expires: new Date(Date.now() + refreshTokenExpiry * 1000),
     sameSite: "None",
     secure: true,
   });
