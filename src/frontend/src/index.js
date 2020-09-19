@@ -6,6 +6,8 @@ import { render } from "react-dom";
 import Login from "./components/login";
 import Page from "./components/page";
 
+import { setCookie, getCookie } from "./cookieHelpers";
+
 const gatewayAddress =
   "https://bwaexdxnvc.execute-api.us-east-2.amazonaws.com/prod";
 
@@ -34,9 +36,8 @@ let loginButtonClickHandler = async () => {
     body: JSON.stringify(payload),
     headers: {
       "Content-Type": "application/json",
-      Accept: "application/json",
     },
-    // redirect: "follow",
+    redirect: "follow",
   };
 
   let response = await fetch(`${gatewayAddress}/login`, options);
@@ -53,8 +54,9 @@ let loginButtonClickHandler = async () => {
   if (!success) {
     alert("Bad Login");
   } else {
-    let profile = getProfile();
-    console.log(profile)
+    setCookie("refreshToken", refreshToken, refreshTokenExpiry);
+    let profile = await getProfile();
+    console.log(profile);
     render(<Page />, document.getElementById("root"));
   }
 };
