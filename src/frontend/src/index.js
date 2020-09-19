@@ -22,8 +22,6 @@ let getProfile = async () => {
   return JSON.parse(responseText);
 };
 
-let getAccessToken = () => {};
-
 let loginButtonClickHandler = async () => {
   let email = document.getElementById("email").value;
   let password = document.getElementById("password").value;
@@ -63,10 +61,12 @@ let loginButtonClickHandler = async () => {
   }
 };
 
+let getAccessToken = (refreshToken) => {};
+
 let refreshToken = getCookie("refreshToken");
 
 if (refreshToken) {
-  alert("I have a refresh token...");
+  alert("I have a refresh token..." + refreshToken);
 }
 
 render(
