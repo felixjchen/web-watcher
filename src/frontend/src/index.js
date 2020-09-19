@@ -34,8 +34,9 @@ let loginButtonClickHandler = async () => {
     body: JSON.stringify(payload),
     headers: {
       "Content-Type": "application/json",
+      Accept: "application/json",
     },
-    redirect: "follow",
+    // redirect: "follow",
   };
 
   let response = await fetch(`${gatewayAddress}/login`, options);
@@ -53,6 +54,7 @@ let loginButtonClickHandler = async () => {
     alert("Bad Login");
   } else {
     let profile = getProfile();
+    console.log(profile)
     render(<Page />, document.getElementById("root"));
   }
 };
