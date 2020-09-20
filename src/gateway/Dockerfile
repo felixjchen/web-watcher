@@ -5,6 +5,8 @@ RUN npm install
 
 COPY globals.js .
 COPY app.js .
+COPY authenticationHandlers.js .
 COPY handlers.js .
+
 
 CMD node app.js

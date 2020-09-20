@@ -6,14 +6,18 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 
 const {
-  loginHandler,
-  refreshHandler,
   getUserHandler,
   addUserHandler,
   deleteUserHandler,
   addWatcherHandler,
   deleteWatcherHandler,
 } = require("./handlers");
+
+const {
+  loginHandler,
+  refreshHandler,
+  logoutHandler,
+} = require("./authenticationHandlers");
 
 const app = express();
 const corsOptions = {
@@ -29,6 +33,7 @@ app.use(cors(corsOptions));
 app.post("/login", loginHandler);
 // use refreshToken cookie to fetch a new accessToken
 app.post("/refresh", refreshHandler);
+app.post("/logout", logoutHandler);
 
 // Add user
 app.post("/user", addUserHandler);
