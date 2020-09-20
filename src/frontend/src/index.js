@@ -37,6 +37,8 @@ let login = async () => {
     alert("Bad Login");
   } else {
     await getProfile();
+    // Start silent refresh a couple seconds early... so we always have an access token
+    setTimeout(getAccessToken, (accessTokenExpiry - 2) * 1000);
   }
 };
 
@@ -79,11 +81,14 @@ let getAccessToken = async () => {
 
   let response = await fetch(`${gatewayAddress}/refresh`, requestOptions);
   let responseText = await response.text();
-  let { success } = JSON.parse(responseText);
+  let { success, accessTokenExpiry } = JSON.parse(responseText);
 
   // If something is wrong with refresh token.. we logout
   if (!success) {
     await logout();
+  } else {
+    // Start silent refresh a couple seconds early... so we always have an access token
+    setTimeout(getAccessToken, (accessTokenExpiry - 2) * 1000);
   }
 
   return success;

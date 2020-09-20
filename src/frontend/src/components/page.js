@@ -31,17 +31,15 @@ const Page = (props) => (
               onClick={onClickSideNavExpand}
               isActive={isSideNavExpanded}
             />
-            <HeaderName href="#" prefix="Web">
-              Watcher
-            </HeaderName>
+            <HeaderName prefix="Web">Watcher</HeaderName>
             <HeaderNavigation aria-label="FC Watcher">
-              <HeaderMenuItem href="#">Link 1</HeaderMenuItem>
-              <HeaderMenuItem href="#">Link 2</HeaderMenuItem>
+              <HeaderMenuItem>Link 1</HeaderMenuItem>
+              <HeaderMenuItem>Link 2</HeaderMenuItem>
 
               <HeaderMenu aria-label="Link 3" menuLinkName="Link 3">
-                <HeaderMenuItem href="#one">Sub-link 1</HeaderMenuItem>
-                <HeaderMenuItem href="#two">Sub-link 2</HeaderMenuItem>
-                <HeaderMenuItem href="#three">Sub-link 3</HeaderMenuItem>
+                <HeaderMenuItem>Sub-link 1</HeaderMenuItem>
+                <HeaderMenuItem>Sub-link 2</HeaderMenuItem>
+                <HeaderMenuItem>Sub-link 3</HeaderMenuItem>
               </HeaderMenu>
             </HeaderNavigation>
 
@@ -60,29 +58,14 @@ const Page = (props) => (
               expanded={isSideNavExpanded}
             >
               <SideNavItems>
-                <SideNavLink
-                  aria-current="page"
-                  renderIcon={Fade16}
-                  href="javascript:void(0)"
-                >
+                <SideNavLink aria-current="page" renderIcon={Fade16}>
                   Link
                 </SideNavLink>
-                <SideNavLink renderIcon={Fade16} href="javascript:void(0)">
-                  Link
-                </SideNavLink>
+                <SideNavLink renderIcon={Fade16}>Link</SideNavLink>
                 <SideNavMenu renderIcon={Fade16} title="Category title">
-                  <SideNavMenuItem
-                    aria-current="page"
-                    href="javascript:void(0)"
-                  >
-                    Link
-                  </SideNavMenuItem>
-                  <SideNavMenuItem href="javascript:void(0)">
-                    Link
-                  </SideNavMenuItem>
-                  <SideNavMenuItem href="javascript:void(0)">
-                    Link
-                  </SideNavMenuItem>
+                  <SideNavMenuItem aria-current="page">Link</SideNavMenuItem>
+                  <SideNavMenuItem>Link</SideNavMenuItem>
+                  <SideNavMenuItem>Link</SideNavMenuItem>
                 </SideNavMenu>
               </SideNavItems>
             </SideNav>
