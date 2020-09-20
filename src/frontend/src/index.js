@@ -54,7 +54,7 @@ let loginButtonClickHandler = async () => {
   if (!success) {
     alert("Bad Login");
   } else {
-    setCookie("refreshToken", refreshToken, refreshTokenExpiry);
+    // setCookie("refreshToken", refreshToken, refreshTokenExpiry);
     let profile = await getProfile();
     console.log(profile);
     render(<Page />, document.getElementById("root"));
@@ -81,9 +81,7 @@ let getAccessToken = async (refreshToken) => {
 
 let refreshToken = getCookie("refreshToken");
 
-if (refreshToken) {
-  getAccessToken("");
-}
+getAccessToken("");
 
 render(
   <Login handler={loginButtonClickHandler} />,
