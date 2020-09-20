@@ -71,17 +71,21 @@ let getAccessToken = async () => {
   let response = await fetch(`${gatewayAddress}/refresh`, requestOptions);
   let responseText = await response.text();
   let { success } = JSON.parse(responseText);
-
+  console.log(responseText);
   return success;
 };
 
-if (getAccessToken()) {
-  let profile = getProfile();
-  console.log(profile);
-  render(<Page />, document.getElementById("root"));
-} else {
-  render(
-    <Login handler={loginButtonClickHandler} />,
-    document.getElementById("root")
-  );
-}
+let pageLoad = async () => {
+  if (await getAccessToken()) {
+    let profile = await getProfile();
+    console.log(profile);
+    render(<Page />, document.getElementById("root"));
+  } else {
+    render(
+      <Login handler={loginButtonClickHandler} />,
+      document.getElementById("root")
+    );
+  }
+};
+
+pageLoad();
