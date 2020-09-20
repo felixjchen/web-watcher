@@ -29,7 +29,7 @@ const Login = (props) => (
           <h1 className="bx--type-semibold">Sign in to your account</h1>
           <TextInput id="email" labelText="Email" />
           <TextInput.PasswordInput id="password" labelText="Password" />
-          <Button size="small" onClick={props.handler}>
+          <Button size="small" onClick={props.loginHandler}>
             Log in
           </Button>
         </Column>

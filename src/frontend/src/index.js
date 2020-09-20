@@ -35,13 +35,13 @@ let login = async () => {
 
   console.log(responseText);
   if (!success) {
-    alert("Bad Login");
+    alert("Bad login");
   } else {
     await getProfile();
     // Start silent refresh a couple seconds early... so we always have an access token
     silentRefreshTimeout = setTimeout(
       silentRefresh,
-      (accessTokenExpiry - 1) * 1000
+      (accessTokenExpiry - 2) * 1000
     );
   }
 };
@@ -58,7 +58,7 @@ let logout = async () => {
 
   let response = await fetch(`${gatewayAddress}/logout`, requestOptions);
   let responseText = await response.text();
-  render(<Login handler={login} />, document.getElementById("root"));
+  render(<Login loginHandler={login} />, document.getElementById("root"));
 
   // Stop silent refresh
   clearTimeout(silentRefreshTimeout);
@@ -94,7 +94,7 @@ let silentRefresh = async () => {
     // Start silent refresh a couple seconds early... so we always have an access token
     silentRefreshTimeout = setTimeout(
       silentRefresh,
-      (accessTokenExpiry - 1) * 1000
+      (accessTokenExpiry - 2) * 1000
     );
   }
 
