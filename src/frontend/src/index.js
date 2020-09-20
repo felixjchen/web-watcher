@@ -76,10 +76,10 @@ let getAccessToken = async (refreshToken) => {
   let responseText = await response.text();
   let { success } = JSON.parse(responseText);
 
-  console.log(responseText);
+  console.log(success);
 };
 
-let refreshToken = getCookie("refreshToken");
+// let refreshToken = getCookie("refreshToken");
 
 getAccessToken("");
 

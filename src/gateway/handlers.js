@@ -86,7 +86,7 @@ const refreshRequest = (refreshToken) => {
   return fetch(url, options);
 };
 const refreshHandler = async (req, res) => {
-  let { refreshToken } = req.body;
+  let { refreshToken } = req.cookies;
 
   // No refresh token
   if (!refreshToken) {
