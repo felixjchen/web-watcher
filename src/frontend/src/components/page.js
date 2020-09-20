@@ -8,13 +8,14 @@ import {
   HeaderMenuButton,
   HeaderContainer,
   HeaderGlobalBar,
+  HeaderGlobalAction,
   SideNav,
   SideNavMenuItem,
   SideNavItems,
   SideNavLink,
   SideNavMenu,
 } from "carbon-components-react";
-import { Fade16 } from "@carbon/icons-react";
+import { Fade16, Logout20 } from "@carbon/icons-react";
 import "./page.css";
 
 const Page = () => (
@@ -42,13 +43,29 @@ const Page = () => (
                 <HeaderMenuItem href="#three">Sub-link 3</HeaderMenuItem>
               </HeaderMenu>
             </HeaderNavigation>
-            <HeaderGlobalBar>Welcome</HeaderGlobalBar>
+
+            <HeaderGlobalBar>
+              <HeaderGlobalAction aria-label="Logout" onClick={alert("logout")}>
+                <Logout20 />
+              </HeaderGlobalAction>
+            </HeaderGlobalBar>
+
             <SideNav
               aria-label="Side navigation"
               isRail
               expanded={isSideNavExpanded}
             >
               <SideNavItems>
+                <SideNavLink
+                  aria-current="page"
+                  renderIcon={Fade16}
+                  href="javascript:void(0)"
+                >
+                  Link
+                </SideNavLink>
+                <SideNavLink renderIcon={Fade16} href="javascript:void(0)">
+                  Link
+                </SideNavLink>
                 <SideNavMenu renderIcon={Fade16} title="Category title">
                   <SideNavMenuItem
                     aria-current="page"
@@ -63,16 +80,6 @@ const Page = () => (
                     Link
                   </SideNavMenuItem>
                 </SideNavMenu>
-                <SideNavLink
-                  aria-current="page"
-                  renderIcon={Fade16}
-                  href="javascript:void(0)"
-                >
-                  Link
-                </SideNavLink>
-                <SideNavLink renderIcon={Fade16} href="javascript:void(0)">
-                  Link
-                </SideNavLink>
               </SideNavItems>
             </SideNav>
           </Header>

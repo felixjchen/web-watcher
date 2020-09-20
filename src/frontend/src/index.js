@@ -9,17 +9,6 @@ import Page from "./components/page";
 const gatewayAddress =
   "https://bwaexdxnvc.execute-api.us-east-2.amazonaws.com/prod";
 
-let getProfile = async () => {
-  var requestOptions = {
-    credentials: "include",
-  };
-
-  let response = await fetch(`${gatewayAddress}/user`, requestOptions);
-  let responseText = await response.text();
-
-  return JSON.parse(responseText);
-};
-
 let login = async () => {
   let email = document.getElementById("email").value;
   let password = document.getElementById("password").value;
@@ -64,8 +53,19 @@ let logout = async () => {
 
   let response = await fetch(`${gatewayAddress}/logout`, requestOptions);
   let responseText = await response.text();
-
+  render(<Login handler={login} />, document.getElementById("root"));
   return JSON.parse(responseText).success;
+};
+
+let getProfile = async () => {
+  var requestOptions = {
+    credentials: "include",
+  };
+
+  let response = await fetch(`${gatewayAddress}/user`, requestOptions);
+  let responseText = await response.text();
+
+  return JSON.parse(responseText);
 };
 
 let getAccessToken = async () => {
@@ -85,7 +85,6 @@ let getAccessToken = async () => {
   // If something is wrong with refresh token.. we logout
   if (!success) {
     await logout();
-    render(<Login handler={login} />, document.getElementById("root"));
   }
 
   return success;
