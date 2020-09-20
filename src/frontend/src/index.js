@@ -20,7 +20,7 @@ let getProfile = async () => {
   return JSON.parse(responseText);
 };
 
-let loginButtonClickHandler = async () => {
+let login = async () => {
   let email = document.getElementById("email").value;
   let password = document.getElementById("password").value;
 
@@ -40,13 +40,7 @@ let loginButtonClickHandler = async () => {
 
   let response = await fetch(`${gatewayAddress}/login`, options);
   let responseText = await response.text();
-  let {
-    success,
-    accessToken,
-    accessTokenExpiry,
-    refreshTokenExpiry,
-    refreshToken,
-  } = JSON.parse(responseText);
+  let { success, accessTokenExpiry } = JSON.parse(responseText);
 
   console.log(responseText);
   if (!success) {
@@ -56,6 +50,22 @@ let loginButtonClickHandler = async () => {
     console.log(profile);
     render(<Page />, document.getElementById("root"));
   }
+};
+
+let logout = async () => {
+  var requestOptions = {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    redirect: "follow",
+  };
+
+  let response = await fetch(`${gatewayAddress}/logout`, requestOptions);
+  let responseText = await response.text();
+
+  return JSON.parse(responseText).success;
 };
 
 let getAccessToken = async () => {
@@ -71,21 +81,16 @@ let getAccessToken = async () => {
   let response = await fetch(`${gatewayAddress}/refresh`, requestOptions);
   let responseText = await response.text();
   let { success } = JSON.parse(responseText);
-  console.log(responseText);
-  return success;
-};
 
-let pageLoad = async () => {
-  if (await getAccessToken()) {
+  // If something is wrong with refresh token.. we logout
+  if (!success) {
+    await logout();
+    render(<Login handler={login} />, document.getElementById("root"));
+  } else {
     let profile = await getProfile();
     console.log(profile);
     render(<Page />, document.getElementById("root"));
-  } else {
-    render(
-      <Login handler={loginButtonClickHandler} />,
-      document.getElementById("root")
-    );
   }
 };
 
-pageLoad();
+getAccessToken();

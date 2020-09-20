@@ -131,16 +131,21 @@ const refreshHandler = async (req, res) => {
 };
 
 const logoutHandler = async (req, res) => {
-  res.cookie("accessToken", "", {
+  res.cookie("accessToken", "exp", {
     maxAge: 0,
     sameSite: "None",
     secure: true,
   });
-  res.cookie("refreshToken", "", {
+  res.cookie("refreshToken", "exp", {
     maxAge: 0,
     sameSite: "None",
     secure: true,
   });
+
+  res.send({
+    success: true,
+  });
+  res.end();
 };
 
 module.exports = {
