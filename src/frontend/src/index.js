@@ -86,11 +86,23 @@ let getAccessToken = async () => {
   if (!success) {
     await logout();
     render(<Login handler={login} />, document.getElementById("root"));
-  } else {
-    let profile = await getProfile();
-    console.log(profile);
-    render(<Page />, document.getElementById("root"));
+  }
+
+  return success;
+};
+
+let initialSilentRefresh = async () => {
+  try {
+    let success = await getAccessToken();
+
+    if (success) {
+      let profile = await getProfile();
+      console.log(profile);
+      render(<Page />, document.getElementById("root"));
+    }
+  } catch (err) {
+    console.log("Initial silent refresh fail " + err);
   }
 };
 
-getAccessToken();
+initialSilentRefresh();

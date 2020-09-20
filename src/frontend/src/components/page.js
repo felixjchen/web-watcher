@@ -29,7 +29,7 @@ const Page = () => (
               onClick={onClickSideNavExpand}
               isActive={isSideNavExpanded}
             />
-            <HeaderName href="#" prefix="FC">
+            <HeaderName href="#" prefix="Web">
               Watcher
             </HeaderName>
             <HeaderNavigation aria-label="FC Watcher">
