@@ -14,11 +14,12 @@ import {
   SideNavItems,
   SideNavLink,
   SideNavMenu,
+  PropTypes,
 } from "carbon-components-react";
 import { Fade16, Logout20 } from "@carbon/icons-react";
 import "./page.css";
 
-const Page = () => (
+const Page = (props) => (
   <div id="page">
     <HeaderContainer
       render={({ isSideNavExpanded, onClickSideNavExpand }) => (
@@ -45,7 +46,10 @@ const Page = () => (
             </HeaderNavigation>
 
             <HeaderGlobalBar>
-              <HeaderGlobalAction aria-label="Logout" onClick={alert("logout")}>
+              <HeaderGlobalAction
+                aria-label="Logout"
+                onClick={props.logoutHandler}
+              >
                 <Logout20 />
               </HeaderGlobalAction>
             </HeaderGlobalBar>

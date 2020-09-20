@@ -35,9 +35,7 @@ let login = async () => {
   if (!success) {
     alert("Bad Login");
   } else {
-    let profile = await getProfile();
-    console.log(profile);
-    render(<Page />, document.getElementById("root"));
+    await getProfile();
   }
 };
 
@@ -64,8 +62,8 @@ let getProfile = async () => {
 
   let response = await fetch(`${gatewayAddress}/user`, requestOptions);
   let responseText = await response.text();
-
-  return JSON.parse(responseText);
+  console.log(JSON.parse(responseText));
+  render(<Page logoutHandler={logout} />, document.getElementById("root"));
 };
 
 let getAccessToken = async () => {
@@ -95,13 +93,12 @@ let initialSilentRefresh = async () => {
     let success = await getAccessToken();
 
     if (success) {
-      let profile = await getProfile();
-      console.log(profile);
-      render(<Page />, document.getElementById("root"));
+      await getProfile();
     }
   } catch (err) {
     console.log("Initial silent refresh fail " + err);
   }
 };
 
+render(<Login handler={login} />, document.getElementById("root"));
 initialSilentRefresh();
