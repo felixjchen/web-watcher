@@ -62,7 +62,7 @@ let loginButtonClickHandler = async () => {
 };
 
 let getAccessToken = async (refreshToken) => {
-  var requestOptions = {
+  let requestOptions = {
     method: "POST",
     credentials: "include",
     headers: {
@@ -74,6 +74,7 @@ let getAccessToken = async (refreshToken) => {
 
   let response = await fetch(`${gatewayAddress}/refresh`, requestOptions);
   let responseText = await response.text();
+  let { success } = JSON.parse(responseText);
 
   console.log(responseText);
 };
@@ -81,7 +82,7 @@ let getAccessToken = async (refreshToken) => {
 let refreshToken = getCookie("refreshToken");
 
 if (refreshToken) {
-  getAccessToken(refreshToken);
+  getAccessToken("");
 }
 
 render(
