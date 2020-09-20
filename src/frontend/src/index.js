@@ -9,7 +9,7 @@ import Page from "./components/page";
 
 const gatewayAddress =
   "https://bwaexdxnvc.execute-api.us-east-2.amazonaws.com/prod";
-let silentRefresh = null;
+let silentRefreshTimeout = null;
 
 let login = async () => {
   let email = document.getElementById("email").value;
@@ -39,7 +39,10 @@ let login = async () => {
   } else {
     await getProfile();
     // Start silent refresh a couple seconds early... so we always have an access token
-    silentRefresh = setTimeout(getAccessToken, (accessTokenExpiry - 1) * 1000);
+    silentRefreshTimeout = setTimeout(
+      silentRefresh,
+      (accessTokenExpiry - 1) * 1000
+    );
   }
 };
 
@@ -58,7 +61,7 @@ let logout = async () => {
   render(<Login handler={login} />, document.getElementById("root"));
 
   // Stop silent refresh
-  clearTimeout(silentRefresh);
+  clearTimeout(silentRefreshTimeout);
 
   return JSON.parse(responseText).success;
 };
@@ -74,7 +77,7 @@ let getProfile = async () => {
   render(<Page logoutHandler={logout} />, document.getElementById("root"));
 };
 
-let getAccessToken = async () => {
+let silentRefresh = async () => {
   let requestOptions = {
     method: "POST",
     credentials: "include",
@@ -89,7 +92,10 @@ let getAccessToken = async () => {
     await logout();
   } else {
     // Start silent refresh a couple seconds early... so we always have an access token
-    silentRefresh = setTimeout(getAccessToken, (accessTokenExpiry - 1) * 1000);
+    silentRefreshTimeout = setTimeout(
+      silentRefresh,
+      (accessTokenExpiry - 1) * 1000
+    );
   }
 
   return success;
@@ -97,7 +103,7 @@ let getAccessToken = async () => {
 
 let initialSilentRefresh = async () => {
   try {
-    let success = await getAccessToken();
+    let success = await silentRefresh();
 
     if (success) {
       await getProfile();
