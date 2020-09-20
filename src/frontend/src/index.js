@@ -1,5 +1,3 @@
-"use strict";
-
 import React from "react";
 import { Loading } from "carbon-components-react";
 import { render } from "react-dom";
@@ -11,18 +9,20 @@ const gatewayAddress =
   "https://bwaexdxnvc.execute-api.us-east-2.amazonaws.com/prod";
 let silentRefreshTimeout = null;
 
-let login = async () => {
-  let email = document.getElementById("email").value;
-  let password = document.getElementById("password").value;
+let login = async ({ email, password }) => {
+  if (email == null) {
+    email = document.getElementById("email").value;
+  }
+  if (password == null) {
+    password = document.getElementById("password").value;
+  }
 
-  email = "felixchen1998@gmail.com";
-  password = "dude";
+  render(<Loading />, document.getElementById("root"));
 
-  let payload = { email, password };
   let options = {
     method: "POST",
     credentials: "include",
-    body: JSON.stringify(payload),
+    body: JSON.stringify({ email, password }),
     headers: {
       "Content-Type": "application/json",
     },
@@ -36,9 +36,12 @@ let login = async () => {
   console.log(responseText);
   if (!success) {
     alert("Bad login");
+    render(
+      <Login signupHandler={signup} loginHandler={login} />,
+      document.getElementById("root")
+    );
   } else {
     await getProfile();
-    // Start silent refresh a couple seconds early... so we always have an access token
     silentRefreshTimeout = setTimeout(
       silentRefresh,
       (accessTokenExpiry - 2) * 1000
@@ -58,12 +61,38 @@ let logout = async () => {
 
   let response = await fetch(`${gatewayAddress}/logout`, requestOptions);
   let responseText = await response.text();
-  render(<Login loginHandler={login} />, document.getElementById("root"));
+  render(
+    <Login signupHandler={signup} loginHandler={login} />,
+    document.getElementById("root")
+  );
 
   // Stop silent refresh
   clearTimeout(silentRefreshTimeout);
 
   return JSON.parse(responseText).success;
+};
+
+let signup = async () => {
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
+
+  render(<Loading />, document.getElementById("root"));
+
+  let options = {
+    method: "POST",
+    credentials: "include",
+    body: JSON.stringify({ email, password }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    redirect: "follow",
+  };
+
+  let response = await fetch(`${gatewayAddress}/user`, options);
+  let responseText = await response.text();
+  console.log(responseText);
+
+  login({ email, password });
 };
 
 let getProfile = async () => {

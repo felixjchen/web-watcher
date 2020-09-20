@@ -2,22 +2,93 @@ import React from "react";
 import {
   Header,
   HeaderName,
-  HeaderNavigation,
-  HeaderMenu,
-  HeaderMenuItem,
-  HeaderMenuButton,
   HeaderContainer,
   HeaderGlobalBar,
   HeaderGlobalAction,
-  SideNav,
-  SideNavMenuItem,
-  SideNavItems,
-  SideNavLink,
-  SideNavMenu,
-  PropTypes,
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableHeader,
+  TableBody,
+  TableCell,
+  TableToolbar,
+  TableToolbarContent,
+  TableToolbarSearch,
+  DataTable,
+  Button,
+  OverflowMenu,
+  OverflowMenuItem,
 } from "carbon-components-react";
-import { Fade16, Logout20 } from "@carbon/icons-react";
+import { Logout20 } from "@carbon/icons-react";
 import "./page.css";
+
+let action = (t) => {
+  console.log(t);
+};
+const rows = [
+  {
+    id: "a",
+    name: "Load Balancer 3",
+    protocol: "HTTP",
+    port: 3000,
+    rule: "Round robin",
+    attached_groups: "Kevin’s VM Groups",
+    status: "Disabled",
+    enabled: true,
+  },
+  {
+    id: "b",
+    name: "Load Balancer 1",
+    protocol: "HTTP",
+    port: 443,
+    rule: "Round robin",
+    attached_groups: "Maureen’s VM Groups",
+    status: "Starting",
+    enabled: true,
+  },
+  {
+    id: "c",
+    name: "Load Balancer 2",
+    protocol: "HTTP",
+    port: 80,
+    rule: "DNS delegation",
+    attached_groups: "Andrew’s VM Groups",
+    status: "Active",
+    enabled: false,
+  },
+];
+
+const headers = [
+  {
+    key: "name",
+    header: "Name",
+  },
+  {
+    key: "protocol",
+    header: "Protocol",
+  },
+  {
+    key: "port",
+    header: "Port",
+  },
+  {
+    key: "rule",
+    header: "Rule",
+  },
+  {
+    key: "attached_groups",
+    header: "Attached Groups",
+  },
+  {
+    key: "status",
+    header: "Status",
+  },
+  {
+    key: "enabled",
+    header: "Enabled",
+  },
+];
 
 const Page = (props) => (
   <div id="page">
@@ -25,23 +96,7 @@ const Page = (props) => (
       render={({ isSideNavExpanded, onClickSideNavExpand }) => (
         <>
           <Header aria-label="IBM Platform Name">
-            <HeaderMenuButton
-              aria-label="Open menu"
-              isCollapsible
-              onClick={onClickSideNavExpand}
-              isActive={isSideNavExpanded}
-            />
             <HeaderName prefix="Web">Watcher</HeaderName>
-            <HeaderNavigation aria-label="FC Watcher">
-              <HeaderMenuItem>Link 1</HeaderMenuItem>
-              <HeaderMenuItem>Link 2</HeaderMenuItem>
-
-              <HeaderMenu aria-label="Link 3" menuLinkName="Link 3">
-                <HeaderMenuItem>Sub-link 1</HeaderMenuItem>
-                <HeaderMenuItem>Sub-link 2</HeaderMenuItem>
-                <HeaderMenuItem>Sub-link 3</HeaderMenuItem>
-              </HeaderMenu>
-            </HeaderNavigation>
 
             <HeaderGlobalBar>
               <HeaderGlobalAction
@@ -51,28 +106,56 @@ const Page = (props) => (
                 <Logout20 />
               </HeaderGlobalAction>
             </HeaderGlobalBar>
-
-            <SideNav
-              aria-label="Side navigation"
-              isRail
-              expanded={isSideNavExpanded}
-            >
-              <SideNavItems>
-                <SideNavLink aria-current="page" renderIcon={Fade16}>
-                  Link
-                </SideNavLink>
-                <SideNavLink renderIcon={Fade16}>Link</SideNavLink>
-                <SideNavMenu renderIcon={Fade16} title="Category title">
-                  <SideNavMenuItem aria-current="page">Link</SideNavMenuItem>
-                  <SideNavMenuItem>Link</SideNavMenuItem>
-                  <SideNavMenuItem>Link</SideNavMenuItem>
-                </SideNavMenu>
-              </SideNavItems>
-            </SideNav>
           </Header>
         </>
       )}
     />
+
+    <DataTable rows={rows} headers={headers}>
+      {({
+        rows,
+        headers,
+        getHeaderProps,
+        getRowProps,
+        getTableProps,
+        getToolbarProps,
+        onInputChange,
+        getTableContainerProps,
+      }) => (
+        <TableContainer
+          title="Watchers"
+          description="With toolbar"
+          {...getTableContainerProps()}
+        >
+          <TableToolbar {...getToolbarProps()} aria-label="data table toolbar">
+            <TableToolbarContent>
+              <TableToolbarSearch onChange={onInputChange} />
+              <Button onClick={action("Button click")}>Add Watcher</Button>
+            </TableToolbarContent>
+          </TableToolbar>
+          <Table {...getTableProps()}>
+            <TableHead>
+              <TableRow>
+                {headers.map((header) => (
+                  <TableHeader key={header.key} {...getHeaderProps({ header })}>
+                    {header.header}
+                  </TableHeader>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map((row) => (
+                <TableRow key={row.id} {...getRowProps({ row })}>
+                  {row.cells.map((cell) => (
+                    <TableCell key={cell.id}>{cell.value}</TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
+    </DataTable>
   </div>
 );
 

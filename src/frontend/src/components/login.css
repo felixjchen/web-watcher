@@ -30,8 +30,9 @@ body {
   margin-right: 8%;
 }
 
-#login #leftBox .bx--btn--primary {
+#login #leftBox .bx--btn {
   margin-top: 10px;
+  margin-right: 10px;
 }
 
 #login #rightBox {

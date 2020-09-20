@@ -19,3 +19,11 @@ body {
     display: inline;
   }
 }
+
+.bx--header {
+  position: relative;
+}
+
+.bx--data-table-container {
+  padding-top: 0;
+}
