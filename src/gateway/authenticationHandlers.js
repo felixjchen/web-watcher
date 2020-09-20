@@ -57,10 +57,7 @@ const loginHandler = async (req, res) => {
 
   res.send({
     success: true,
-    // accessToken,
     accessTokenExpiry,
-    // refreshToken,
-    // refreshTokenExpiry,
   });
   res.end();
 };
@@ -122,10 +119,7 @@ const refreshHandler = async (req, res) => {
 
   res.send({
     success: true,
-    // accessToken,
     accessTokenExpiry,
-    // newRefreshToken,
-    // refreshTokenExpiry,
   });
   res.end();
 };

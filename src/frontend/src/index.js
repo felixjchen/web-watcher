@@ -9,6 +9,7 @@ import Page from "./components/page";
 
 const gatewayAddress =
   "https://bwaexdxnvc.execute-api.us-east-2.amazonaws.com/prod";
+let silentRefresh = null;
 
 let login = async () => {
   let email = document.getElementById("email").value;
@@ -38,7 +39,7 @@ let login = async () => {
   } else {
     await getProfile();
     // Start silent refresh a couple seconds early... so we always have an access token
-    setTimeout(getAccessToken, (accessTokenExpiry - 2) * 1000);
+    silentRefresh = setTimeout(getAccessToken, (accessTokenExpiry - 1) * 1000);
   }
 };
 
@@ -55,6 +56,10 @@ let logout = async () => {
   let response = await fetch(`${gatewayAddress}/logout`, requestOptions);
   let responseText = await response.text();
   render(<Login handler={login} />, document.getElementById("root"));
+
+  // Stop silent refresh
+  clearTimeout(silentRefresh);
+
   return JSON.parse(responseText).success;
 };
 
@@ -73,10 +78,6 @@ let getAccessToken = async () => {
   let requestOptions = {
     method: "POST",
     credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    redirect: "follow",
   };
 
   let response = await fetch(`${gatewayAddress}/refresh`, requestOptions);
@@ -88,7 +89,7 @@ let getAccessToken = async () => {
     await logout();
   } else {
     // Start silent refresh a couple seconds early... so we always have an access token
-    setTimeout(getAccessToken, (accessTokenExpiry - 2) * 1000);
+    silentRefresh = setTimeout(getAccessToken, (accessTokenExpiry - 1) * 1000);
   }
 
   return success;
