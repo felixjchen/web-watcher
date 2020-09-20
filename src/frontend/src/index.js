@@ -1,6 +1,7 @@
 "use strict";
 
 import React from "react";
+import { Loading } from "carbon-components-react";
 import { render } from "react-dom";
 
 import Login from "./components/login";
@@ -100,5 +101,5 @@ let initialSilentRefresh = async () => {
   }
 };
 
-render(<Login handler={login} />, document.getElementById("root"));
+render(<Loading />, document.getElementById("root"));
 initialSilentRefresh();
