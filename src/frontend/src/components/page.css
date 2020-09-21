@@ -2,7 +2,7 @@ body {
   height: 100vh;
 }
 
-header {
+.bx--header {
   position: relative;
 }
 
