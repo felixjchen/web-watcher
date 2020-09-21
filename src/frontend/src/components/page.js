@@ -19,6 +19,10 @@ import {
   Button,
   OverflowMenu,
   OverflowMenuItem,
+  ModalWrapper,
+  TextInput,
+  Select,
+  SelectItem,
 } from "carbon-components-react";
 import { Logout20 } from "@carbon/icons-react";
 import "./page.css";
@@ -42,7 +46,7 @@ const headers = [
   },
   {
     key: "options",
-    header: "Options",
+    header: "",
   },
 ];
 
@@ -107,7 +111,12 @@ const Page = (props) => {
               </TableHead>
               <TableBody>
                 {rows.map((row) => {
-                  row.cells[3].value = "DROPDOWN";
+                  row.cells[3].value = (
+                    <OverflowMenu flipped={true}>
+                      <OverflowMenuItem itemText="Edit" />
+                      <OverflowMenuItem itemText="Delete" hasDivider isDelete />
+                    </OverflowMenu>
+                  );
                   return (
                     <TableRow key={row.id} {...getRowProps({ row })}>
                       {row.cells.map((cell) => (
@@ -121,6 +130,34 @@ const Page = (props) => {
           </TableContainer>
         )}
       </DataTable>
+
+      {/* <ModalWrapper
+        id="input-modal"
+        handleSubmit={() => {
+          action("onSubmit")();
+          return true;
+        }}
+        buttonTriggerText="Add Watcher"
+      >
+        <TextInput
+          id="test2"
+          placeholder="Hint text here"
+          labelText="Text Input:"
+        />
+        <br />
+        <Select id="select-1" labelText="Select">
+          <SelectItem
+            disabled
+            hidden
+            value="placeholder-item"
+            text="Pick an option"
+          />
+          <SelectItem value="option-1" text="Option 1" />
+          <SelectItem value="option-2" text="Option 2" />
+          <SelectItem value="option-3" text="Option 3" />
+        </Select>
+        <br />
+      </ModalWrapper> */}
     </div>
   );
 };

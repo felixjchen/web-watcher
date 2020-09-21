@@ -136,7 +136,7 @@ let silentRefresh = async () => {
       silentRefresh,
       (accessTokenExpiry - 2) * 1000
     );
-    getProfile();
+    await getProfile();
   }
 
   return success;
