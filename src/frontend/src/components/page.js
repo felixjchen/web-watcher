@@ -60,6 +60,7 @@ const Page = (props) => {
               <HeaderName prefix="Web">Watcher</HeaderName>
               <HeaderGlobalBar>
                 <HeaderGlobalAction
+                  id="logoutIcon"
                   aria-label="Logout"
                   onClick={props.logoutHandler}
                 >

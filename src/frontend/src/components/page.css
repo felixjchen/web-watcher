@@ -2,26 +2,13 @@ body {
   height: 100vh;
 }
 
-/* Nav styles */
-#page .bx--side-nav__items {
-  padding: 0;
-}
-#page .bx--side-nav--rail:not(.bx--side-nav--expanded) {
-  width: 0rem;
-}
-
-#page .bx--header__menu-toggle {
-  display: none;
-}
-
-@media only screen and (max-width: 1056px) {
-  #page .bx--header__menu-toggle {
-    display: inline;
-  }
-}
-
-.bx--header {
+header {
   position: relative;
+}
+
+#logoutIcon {
+  padding-left: 3px;
+  padding-top: 1px;
 }
 
 .bx--data-table-container {
