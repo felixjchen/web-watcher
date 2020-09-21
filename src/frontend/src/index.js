@@ -102,7 +102,9 @@ let getProfile = async () => {
 
   let response = await fetch(`${gatewayAddress}/user`, requestOptions);
   let responseText = await response.text();
-  console.log(JSON.parse(responseText));
+
+  let { email, watchers } = JSON.parse(responseText);
+  console.log(email, watchers);
   render(<Page logoutHandler={logout} />, document.getElementById("root"));
 };
 
