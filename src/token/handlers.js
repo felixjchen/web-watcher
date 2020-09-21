@@ -17,7 +17,8 @@ if (production) {
 }
 
 // 15 min
-const accessTokenExpiry = 900;
+// const accessTokenExpiry = 900;
+const accessTokenExpiry = 60;
 // 7 days
 const refreshTokenExpiry = 604800;
 

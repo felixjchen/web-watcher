@@ -23,8 +23,8 @@ import {
 import { Logout20 } from "@carbon/icons-react";
 import "./page.css";
 
-let action = (t) => {
-  console.log(t);
+let action = () => {
+  console.log("Add WATCHER");
 };
 
 const headers = [
@@ -41,8 +41,8 @@ const headers = [
     header: "Last Run",
   },
   {
-    key: "delete",
-    header: "Delete",
+    key: "options",
+    header: "Options",
   },
 ];
 
@@ -79,7 +79,7 @@ const Page = (props) => {
           getTableContainerProps,
         }) => (
           <TableContainer
-            title={`Welcome ${props.email}`}
+            title={`Hello ${props.email}`}
             // description={`Welcome ${props.email}`}
             {...getTableContainerProps()}
           >
@@ -89,7 +89,7 @@ const Page = (props) => {
             >
               <TableToolbarContent>
                 <TableToolbarSearch onChange={onInputChange} />
-                <Button onClick={action("Button click")}>Add Watcher</Button>
+                <Button onClick={action}>Add Watcher</Button>
               </TableToolbarContent>
             </TableToolbar>
             <Table {...getTableProps()}>
@@ -106,14 +106,20 @@ const Page = (props) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {/* {console.log(props.watchers)} */}
-                {rows.map((row) => (
-                  <TableRow key={row.id} {...getRowProps({ row })}>
-                    {row.cells.map((cell) => (
-                      <TableCell key={cell.id}>{cell.value}</TableCell>
-                    ))}
-                  </TableRow>
-                ))}
+                {rows.map((row) => {
+                  console.log(row.cells);
+                  let date = new Date(0);
+                  date.setUTCSeconds(row.cells[2].value);
+                  row.cells[2].value = String(date);
+                  row.cells[3].value = "DROPDOWN";
+                  return (
+                    <TableRow key={row.id} {...getRowProps({ row })}>
+                      {row.cells.map((cell) => (
+                        <TableCell key={cell.id}>{cell.value}</TableCell>
+                      ))}
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
           </TableContainer>

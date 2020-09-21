@@ -104,7 +104,7 @@ let getProfile = async () => {
   let responseText = await response.text();
 
   let { email, watchers } = JSON.parse(responseText);
-  console.log(email, watchers);
+  console.log("Rendering", email, watchers);
   render(
     <Page logoutHandler={logout} email={email} watchers={watchers} />,
     document.getElementById("root")
@@ -130,6 +130,7 @@ let silentRefresh = async () => {
       silentRefresh,
       (accessTokenExpiry - 2) * 1000
     );
+    getProfile();
   }
 
   return success;
@@ -139,9 +140,9 @@ let initialSilentRefresh = async () => {
   try {
     let success = await silentRefresh();
 
-    if (success) {
-      await getProfile();
-    }
+    // if (success) {
+    //   await getProfile();
+    // }
   } catch (err) {
     console.log("Initial silent refresh fail " + err);
   }
