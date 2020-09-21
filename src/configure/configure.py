@@ -114,14 +114,23 @@ def check_password(email, password):
 
 
 def get_user(email):
+    user = -1
+    print("Getting %s" % email)
     with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
         db = client[db_client]
         with Document(db, user_document) as document:
             users = document["users"]
             if email not in users:
                 return -1
-            return users[email]
-    return -1
+            user = users[email]
+
+        with Document(db, watcher_document) as document:
+            watchers = document["watchers"]
+            userWatchers = {wid: watchers[wid] for wid in user["watchers"]}
+            user["watchers"] = userWatchers
+
+    print("\tGot %s" % user)
+    return user
 
 
 def delete_user(email):
