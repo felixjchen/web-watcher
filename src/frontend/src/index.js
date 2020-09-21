@@ -105,7 +105,10 @@ let getProfile = async () => {
 
   let { email, watchers } = JSON.parse(responseText);
   console.log(email, watchers);
-  render(<Page logoutHandler={logout} />, document.getElementById("root"));
+  render(
+    <Page logoutHandler={logout} email={email} />,
+    document.getElementById("root")
+  );
 };
 
 let silentRefresh = async () => {

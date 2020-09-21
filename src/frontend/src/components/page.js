@@ -90,73 +90,82 @@ const headers = [
   },
 ];
 
-const Page = (props) => (
-  <div id="page">
-    <HeaderContainer
-      render={({ isSideNavExpanded, onClickSideNavExpand }) => (
-        <>
-          <Header aria-label="IBM Platform Name">
-            <HeaderName prefix="Web">Watcher</HeaderName>
+const Page = (props) => {
+  return (
+    <div id="page">
+      <HeaderContainer
+        render={({ isSideNavExpanded, onClickSideNavExpand }) => (
+          <>
+            <Header aria-label="IBM Platform Name">
+              <HeaderName prefix="Web">Watcher</HeaderName>
 
-            <HeaderGlobalBar>
-              <HeaderGlobalAction
-                aria-label="Logout"
-                onClick={props.logoutHandler}
-              >
-                <Logout20 />
-              </HeaderGlobalAction>
-            </HeaderGlobalBar>
-          </Header>
-        </>
-      )}
-    />
+              <HeaderGlobalBar>
+                <HeaderGlobalAction
+                  aria-label="Logout"
+                  onClick={props.logoutHandler}
+                >
+                  <Logout20 />
+                </HeaderGlobalAction>
+              </HeaderGlobalBar>
+            </Header>
+          </>
+        )}
+      />
 
-    <DataTable rows={rows} headers={headers}>
-      {({
-        rows,
-        headers,
-        getHeaderProps,
-        getRowProps,
-        getTableProps,
-        getToolbarProps,
-        onInputChange,
-        getTableContainerProps,
-      }) => (
-        <TableContainer
-          title="Watchers"
-          description="With toolbar"
-          {...getTableContainerProps()}
-        >
-          <TableToolbar {...getToolbarProps()} aria-label="data table toolbar">
-            <TableToolbarContent>
-              <TableToolbarSearch onChange={onInputChange} />
-              <Button onClick={action("Button click")}>Add Watcher</Button>
-            </TableToolbarContent>
-          </TableToolbar>
-          <Table {...getTableProps()}>
-            <TableHead>
-              <TableRow>
-                {headers.map((header) => (
-                  <TableHeader key={header.key} {...getHeaderProps({ header })}>
-                    {header.header}
-                  </TableHeader>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row) => (
-                <TableRow key={row.id} {...getRowProps({ row })}>
-                  {row.cells.map((cell) => (
-                    <TableCell key={cell.id}>{cell.value}</TableCell>
+      <DataTable rows={rows} headers={headers}>
+        {({
+          rows,
+          headers,
+          getHeaderProps,
+          getRowProps,
+          getTableProps,
+          getToolbarProps,
+          onInputChange,
+          getTableContainerProps,
+        }) => (
+          <TableContainer
+            // title={props.email}
+            title={props.email}
+            description="With toolbar"
+            {...getTableContainerProps()}
+          >
+            <TableToolbar
+              {...getToolbarProps()}
+              aria-label="data table toolbar"
+            >
+              <TableToolbarContent>
+                <TableToolbarSearch onChange={onInputChange} />
+                <Button onClick={action("Button click")}>Add Watcher</Button>
+              </TableToolbarContent>
+            </TableToolbar>
+            <Table {...getTableProps()}>
+              <TableHead>
+                <TableRow>
+                  {headers.map((header) => (
+                    <TableHeader
+                      key={header.key}
+                      {...getHeaderProps({ header })}
+                    >
+                      {header.header}
+                    </TableHeader>
                   ))}
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      )}
-    </DataTable>
-  </div>
-);
+              </TableHead>
+              <TableBody>
+                {rows.map((row) => (
+                  <TableRow key={row.id} {...getRowProps({ row })}>
+                    {row.cells.map((cell) => (
+                      <TableCell key={cell.id}>{cell.value}</TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
+      </DataTable>
+    </div>
+  );
+};
 
 export default Page;
