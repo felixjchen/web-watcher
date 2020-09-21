@@ -106,7 +106,7 @@ let getProfile = async () => {
   let { email, watchers } = JSON.parse(responseText);
   console.log(email, watchers);
   render(
-    <Page logoutHandler={logout} email={email} />,
+    <Page logoutHandler={logout} email={email} watchers={watchers} />,
     document.getElementById("root")
   );
 };

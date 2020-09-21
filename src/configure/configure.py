@@ -126,7 +126,8 @@ def get_user(email):
 
         with Document(db, watcher_document) as document:
             watchers = document["watchers"]
-            userWatchers = {wid: watchers[wid] for wid in user["watchers"]}
+            userWatchers = [{**{"id": wid}, **watchers[wid]}
+                            for wid in user["watchers"]]
             user["watchers"] = userWatchers
 
     print("\tGot %s" % user)

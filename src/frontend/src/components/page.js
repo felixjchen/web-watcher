@@ -26,67 +26,23 @@ import "./page.css";
 let action = (t) => {
   console.log(t);
 };
-const rows = [
-  {
-    id: "a",
-    name: "Load Balancer 3",
-    protocol: "HTTP",
-    port: 3000,
-    rule: "Round robin",
-    attached_groups: "Kevin’s VM Groups",
-    status: "Disabled",
-    enabled: true,
-  },
-  {
-    id: "b",
-    name: "Load Balancer 1",
-    protocol: "HTTP",
-    port: 443,
-    rule: "Round robin",
-    attached_groups: "Maureen’s VM Groups",
-    status: "Starting",
-    enabled: true,
-  },
-  {
-    id: "c",
-    name: "Load Balancer 2",
-    protocol: "HTTP",
-    port: 80,
-    rule: "DNS delegation",
-    attached_groups: "Andrew’s VM Groups",
-    status: "Active",
-    enabled: false,
-  },
-];
 
 const headers = [
   {
-    key: "name",
-    header: "Name",
+    key: "url",
+    header: "URL",
   },
   {
-    key: "protocol",
-    header: "Protocol",
+    key: "frequency",
+    header: "Frequency",
   },
   {
-    key: "port",
-    header: "Port",
+    key: "last_run",
+    header: "Last Run",
   },
   {
-    key: "rule",
-    header: "Rule",
-  },
-  {
-    key: "attached_groups",
-    header: "Attached Groups",
-  },
-  {
-    key: "status",
-    header: "Status",
-  },
-  {
-    key: "enabled",
-    header: "Enabled",
+    key: "delete",
+    header: "Delete",
   },
 ];
 
@@ -94,11 +50,10 @@ const Page = (props) => {
   return (
     <div id="page">
       <HeaderContainer
-        render={({ isSideNavExpanded, onClickSideNavExpand }) => (
+        render={() => (
           <>
             <Header aria-label="IBM Platform Name">
               <HeaderName prefix="Web">Watcher</HeaderName>
-
               <HeaderGlobalBar>
                 <HeaderGlobalAction
                   aria-label="Logout"
@@ -112,7 +67,7 @@ const Page = (props) => {
         )}
       />
 
-      <DataTable rows={rows} headers={headers}>
+      <DataTable rows={props.watchers} headers={headers}>
         {({
           rows,
           headers,
@@ -124,9 +79,8 @@ const Page = (props) => {
           getTableContainerProps,
         }) => (
           <TableContainer
-            // title={props.email}
-            title={props.email}
-            description="With toolbar"
+            title={`Welcome ${props.email}`}
+            // description={`Welcome ${props.email}`}
             {...getTableContainerProps()}
           >
             <TableToolbar
@@ -152,6 +106,7 @@ const Page = (props) => {
                 </TableRow>
               </TableHead>
               <TableBody>
+                {/* {console.log(props.watchers)} */}
                 {rows.map((row) => (
                   <TableRow key={row.id} {...getRowProps({ row })}>
                     {row.cells.map((cell) => (
