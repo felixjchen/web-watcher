@@ -79,7 +79,7 @@ const Page = (props) => {
           getTableContainerProps,
         }) => (
           <TableContainer
-            title={`Hello ${props.email}`}
+            // title={`Hello ${props.email}`}
             // description={`Welcome ${props.email}`}
             {...getTableContainerProps()}
           >

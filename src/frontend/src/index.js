@@ -35,7 +35,7 @@ let login = async ({ email, password }) => {
 
   console.log(responseText);
   if (!success) {
-    alert("Bad login");
+    alert("Login failed: username/password error");
     render(
       <Login signupHandler={signup} loginHandler={login} />,
       document.getElementById("root")

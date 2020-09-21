@@ -19,7 +19,8 @@ def users():
     if request.method == 'POST':
         # Add new user
         body = request.json
-        email = body.get('email')
+        email = body.get('email').lower()
+        
         if not email: 
             return 'Missing email'
 
@@ -37,6 +38,8 @@ def users():
 
 @app.route('/users/<email>', methods=['GET', 'PUT', 'DELETE'])
 def user_profile(email):
+
+    email = email.lower()
 
     if request.method == 'GET':
         # Don't show password
@@ -66,7 +69,7 @@ def user_profile(email):
 def authenticate():
     if request.method == 'POST':
         body = request.json
-        email = body.get("email")
+        email = body.get("email").lower()
         password = body.get("password")
         
         if not email: return 'Missing email'
@@ -92,7 +95,7 @@ def watchers():
 
         data = request.json
 
-        email = data.get('email')
+        email = data.get('email').lower()
         if not email: return 'Missing email'
 
         url = data.get('url')
