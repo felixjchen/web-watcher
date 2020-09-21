@@ -107,10 +107,6 @@ const Page = (props) => {
               </TableHead>
               <TableBody>
                 {rows.map((row) => {
-                  console.log(row.cells);
-                  let date = new Date(0);
-                  date.setUTCSeconds(row.cells[2].value);
-                  row.cells[2].value = String(date);
                   row.cells[3].value = "DROPDOWN";
                   return (
                     <TableRow key={row.id} {...getRowProps({ row })}>

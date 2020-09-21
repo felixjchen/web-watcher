@@ -104,7 +104,13 @@ let getProfile = async () => {
   let responseText = await response.text();
 
   let { email, watchers } = JSON.parse(responseText);
-  console.log("Rendering", email, watchers);
+  // Cleanup Date
+  watchers.forEach((i) => {
+    let date = new Date(0);
+    date.setUTCSeconds(i.last_run);
+    i.last_run = String(date);
+  });
+
   render(
     <Page logoutHandler={logout} email={email} watchers={watchers} />,
     document.getElementById("root")
