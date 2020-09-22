@@ -1,4 +1,4 @@
-# Watcher
+# Web Watcher
 
 - [Frontend](https://webwatcher.netlify.app/)
 - [REST API](https://bwaexdxnvc.execute-api.us-east-2.amazonaws.com/prod/login)
