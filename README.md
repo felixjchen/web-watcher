@@ -3,7 +3,7 @@
 - application to notify users by email whenever a webpage changes, screenshots entire webpage and creates bounding boxes to show the user what has changed
 - microservice architecture, 4 Python services, 2 Javascript services and one Golang Cronjob script; all containerized and ready to be deployed to a K8 Cluster
 
-- [frontend](https://webwatcher.netlify.app/)
+- [Frontend](https://webwatcher.netlify.app/)
 - [REST API](https://bwaexdxnvc.execute-api.us-east-2.amazonaws.com/prod)
 
 ## Motivation
