@@ -19,17 +19,11 @@ import {
   Button,
   OverflowMenu,
   OverflowMenuItem,
-  ModalWrapper,
   TextInput,
-  Select,
-  SelectItem,
+  Modal,
 } from "carbon-components-react";
 import { Logout20 } from "@carbon/icons-react";
 import "./page.css";
-
-let action = () => {
-  console.log("Add WATCHER");
-};
 
 const headers = [
   {
@@ -50,117 +44,136 @@ const headers = [
   },
 ];
 
-const Page = (props) => {
-  return (
-    <div id="page">
-      <HeaderContainer
-        render={() => (
-          <>
-            <Header aria-label="IBM Platform Name">
-              <HeaderName prefix="Web">Watcher</HeaderName>
-              <HeaderGlobalBar>
-                <HeaderGlobalAction
-                  id="logoutIcon"
-                  aria-label="Logout"
-                  onClick={props.logoutHandler}
-                >
-                  <Logout20 />
-                </HeaderGlobalAction>
-              </HeaderGlobalBar>
-            </Header>
-          </>
-        )}
-      />
+class Page extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      addWatcherModalOpen: false,
+    };
+  }
 
-      <DataTable rows={props.watchers} headers={headers}>
-        {({
-          rows,
-          headers,
-          getHeaderProps,
-          getRowProps,
-          getTableProps,
-          getToolbarProps,
-          onInputChange,
-          getTableContainerProps,
-        }) => (
-          <TableContainer
-            // title={`Hello ${props.email}`}
-            // description={`Welcome ${props.email}`}
-            {...getTableContainerProps()}
-          >
-            <TableToolbar
-              {...getToolbarProps()}
-              aria-label="data table toolbar"
-            >
-              <TableToolbarContent>
-                <TableToolbarSearch onChange={onInputChange} />
-                <Button onClick={action}>Add Watcher</Button>
-              </TableToolbarContent>
-            </TableToolbar>
-            <Table {...getTableProps()}>
-              <TableHead>
-                <TableRow>
-                  {headers.map((header) => (
-                    <TableHeader
-                      key={header.key}
-                      {...getHeaderProps({ header })}
-                    >
-                      {header.header}
-                    </TableHeader>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows.map((row) => {
-                  row.cells[3].value = (
-                    <OverflowMenu flipped={true}>
-                      <OverflowMenuItem itemText="Edit" />
-                      <OverflowMenuItem itemText="Delete" hasDivider isDelete />
-                    </OverflowMenu>
-                  );
-                  return (
-                    <TableRow key={row.id} {...getRowProps({ row })}>
-                      {row.cells.map((cell) => (
-                        <TableCell key={cell.id}>{cell.value}</TableCell>
-                      ))}
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        )}
-      </DataTable>
+  openModal = () => {
+    this.setState({
+      addWatcherModalOpen: true,
+    });
+  };
+  closeModal = () => {
+    this.setState({
+      addWatcherModalOpen: false,
+    });
+  };
 
-      {/* <ModalWrapper
-        id="input-modal"
-        handleSubmit={() => {
-          action("onSubmit")();
-          return true;
-        }}
-        buttonTriggerText="Add Watcher"
-      >
-        <TextInput
-          id="test2"
-          placeholder="Hint text here"
-          labelText="Text Input:"
+  render() {
+    return (
+      <div id="page">
+        <HeaderContainer
+          render={() => (
+            <>
+              <Header aria-label="IBM Platform Name">
+                <HeaderName prefix="Web">Watcher</HeaderName>
+                <HeaderGlobalBar>
+                  <HeaderGlobalAction
+                    id="logoutIcon"
+                    aria-label="Logout"
+                    onClick={this.props.logoutHandler}
+                  >
+                    <Logout20 />
+                  </HeaderGlobalAction>
+                </HeaderGlobalBar>
+              </Header>
+            </>
+          )}
         />
-        <br />
-        <Select id="select-1" labelText="Select">
-          <SelectItem
-            disabled
-            hidden
-            value="placeholder-item"
-            text="Pick an option"
+
+        <DataTable rows={this.props.watchers} headers={headers}>
+          {({
+            rows,
+            headers,
+            getHeaderProps,
+            getRowProps,
+            getTableProps,
+            getToolbarProps,
+            onInputChange,
+            getTableContainerProps,
+          }) => (
+            <TableContainer
+              // title={`Hello ${props.email}`}
+              // description={`Welcome ${props.email}`}
+              {...getTableContainerProps()}
+            >
+              <TableToolbar
+                {...getToolbarProps()}
+                aria-label="data table toolbar"
+              >
+                <TableToolbarContent>
+                  <TableToolbarSearch onChange={onInputChange} />
+                  <Button onClick={this.openModal}>Add Watcher</Button>
+                </TableToolbarContent>
+              </TableToolbar>
+              <Table {...getTableProps()}>
+                <TableHead>
+                  <TableRow>
+                    {headers.map((header) => (
+                      <TableHeader
+                        key={header.key}
+                        {...getHeaderProps({ header })}
+                      >
+                        {header.header}
+                      </TableHeader>
+                    ))}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {rows.map((row) => {
+                    row.cells[3].value = (
+                      <OverflowMenu flipped={true}>
+                        <OverflowMenuItem itemText="Edit" />
+                        <OverflowMenuItem
+                          itemText="Delete"
+                          hasDivider
+                          isDelete
+                        />
+                      </OverflowMenu>
+                    );
+                    return (
+                      <TableRow key={row.id} {...getRowProps({ row })}>
+                        {row.cells.map((cell) => (
+                          <TableCell key={cell.id}>{cell.value}</TableCell>
+                        ))}
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
+        </DataTable>
+        <Modal
+          hasForm
+          size={"sm"}
+          selectorPrimaryFocus="#text-input-2"
+          open={this.state.addWatcherModalOpen}
+          primaryButtonText={"Add"}
+          secondaryButtonText={"Cancel"}
+          shouldSubmitOnEnter={true}
+          onRequestClose={this.closeModal}
+          onSecondarySubmit={this.closeModal}
+        >
+          <TextInput
+            id="text-input-1"
+            labelText="URL"
+            placeholder="https://www.google.com/"
+            style={{ marginBottom: "1rem" }}
           />
-          <SelectItem value="option-1" text="Option 1" />
-          <SelectItem value="option-2" text="Option 2" />
-          <SelectItem value="option-3" text="Option 3" />
-        </Select>
-        <br />
-      </ModalWrapper> */}
-    </div>
-  );
-};
+          <TextInput
+            id="text-input-2"
+            labelText="Frequency (seconds)"
+            placeholder="60"
+          />
+        </Modal>
+      </div>
+    );
+  }
+}
 
 export default Page;
