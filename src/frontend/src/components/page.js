@@ -25,6 +25,10 @@ import {
 import { Logout20 } from "@carbon/icons-react";
 import "./page.css";
 
+
+const gatewayAddress =
+  "https://bwaexdxnvc.execute-api.us-east-2.amazonaws.com/prod";
+
 const headers = [
   {
     key: "url",
@@ -49,19 +53,64 @@ class Page extends React.Component {
     super(props);
     this.state = {
       addWatcherModalOpen: false,
+      watchers: []
     };
+
+    this.updateWatchers()
+  }
+
+  updateWatchers = async () => {
+    let requestOptions = {
+      credentials: "include",
+    };
+  
+    let response = await fetch(`${gatewayAddress}/user`, requestOptions);
+    let responseText = await response.text();
+  
+    let { watchers } = JSON.parse(responseText);
+    // Cleanup Date
+    watchers.forEach((i) => {
+      let date = new Date(0);
+      date.setUTCSeconds(i.last_run);
+      i.last_run = String(date);
+    });
+
+    let oldState = this.state
+    oldState.watchers = watchers
+    this.setState(oldState);
   }
 
   openModal = () => {
-    this.setState({
-      addWatcherModalOpen: true,
-    });
+    let oldState = this.state
+    oldState.addWatcherModalOpen = true
+    this.setState(oldState);
   };
   closeModal = () => {
-    this.setState({
-      addWatcherModalOpen: false,
-    });
+    let oldState = this.state
+    oldState.addWatcherModalOpen = false
+    this.setState(oldState);
   };
+  submitModal = async () => {
+    let url = document.getElementById("modalUrl").value
+    let frequency = document.getElementById("modalFrequency").value
+
+    let options = {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify({ url, frequency }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      redirect: "follow",
+    };
+
+    let oldState = this.state
+    oldState.addWatcherModalOpen = false
+    this.setState(oldState);
+
+    await fetch("https://bwaexdxnvc.execute-api.us-east-2.amazonaws.com/prod/watcher", options)
+    this.updateWatchers()
+  }
 
   render() {
     return (
@@ -85,7 +134,7 @@ class Page extends React.Component {
           )}
         />
 
-        <DataTable rows={this.props.watchers} headers={headers}>
+        <DataTable rows={this.state.watchers} headers={headers}>
           {({
             rows,
             headers,
@@ -127,11 +176,14 @@ class Page extends React.Component {
                   {rows.map((row) => {
                     row.cells[3].value = (
                       <OverflowMenu flipped={true}>
-                        <OverflowMenuItem itemText="Edit" />
+                        {/* <OverflowMenuItem itemText="Edit" /> */}
                         <OverflowMenuItem
                           itemText="Delete"
                           hasDivider
                           isDelete
+                          onClick={() => {
+                            alert(1)
+                          }}
                         />
                       </OverflowMenu>
                     );
@@ -157,16 +209,17 @@ class Page extends React.Component {
           secondaryButtonText={"Cancel"}
           shouldSubmitOnEnter={true}
           onRequestClose={this.closeModal}
+          onRequestSubmit={this.submitModal}
           onSecondarySubmit={this.closeModal}
         >
           <TextInput
-            id="text-input-1"
+            id="modalUrl"
             labelText="URL"
             placeholder="https://www.google.com/"
             style={{ marginBottom: "1rem" }}
           />
           <TextInput
-            id="text-input-2"
+            id="modalFrequency"
             labelText="Frequency (seconds)"
             placeholder="60"
           />

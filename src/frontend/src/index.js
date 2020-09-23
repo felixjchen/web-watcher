@@ -41,10 +41,13 @@ let login = async ({ email, password }) => {
       document.getElementById("root")
     );
   } else {
-    await getProfile();
     silentRefreshTimeout = setTimeout(
       silentRefresh,
       (accessTokenExpiry - 2) * 1000
+    );
+    render(
+      <Page logoutHandler={logout} />,
+      document.getElementById("root")
     );
   }
 };
@@ -95,27 +98,6 @@ let signup = async () => {
   login({ email, password });
 };
 
-let getProfile = async () => {
-  var requestOptions = {
-    credentials: "include",
-  };
-
-  let response = await fetch(`${gatewayAddress}/user`, requestOptions);
-  let responseText = await response.text();
-
-  let { email, watchers } = JSON.parse(responseText);
-  // Cleanup Date
-  watchers.forEach((i) => {
-    let date = new Date(0);
-    date.setUTCSeconds(i.last_run);
-    i.last_run = String(date);
-  });
-
-  render(
-    <Page logoutHandler={logout} email={email} watchers={watchers} />,
-    document.getElementById("root")
-  );
-};
 
 let silentRefresh = async () => {
   let requestOptions = {
@@ -136,7 +118,10 @@ let silentRefresh = async () => {
       silentRefresh,
       (accessTokenExpiry - 2) * 1000
     );
-    await getProfile();
+    render(
+      <Page logoutHandler={logout} />,
+      document.getElementById("root")
+    );
   }
 
   return success;
@@ -146,9 +131,6 @@ let initialSilentRefresh = async () => {
   try {
     let success = await silentRefresh();
 
-    // if (success) {
-    //   await getProfile();
-    // }
   } catch (err) {
     console.log("Initial silent refresh fail " + err);
   }
