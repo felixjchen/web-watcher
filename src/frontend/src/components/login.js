@@ -14,7 +14,7 @@ import fractel from "./threetree_90.png";
 const Login = (props) => (
   <div id="login">
     <Header aria-label="header">
-      <HeaderName href="#" prefix="Web">
+      <HeaderName href="https://github.com/felixjchen/web-watcher" prefix="Web">
         Watcher
       </HeaderName>
     </Header>

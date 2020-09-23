@@ -46,7 +46,7 @@ let login = async ({ email, password }) => {
       (accessTokenExpiry - 2) * 1000
     );
     render(
-      <Page logoutHandler={logout} />,
+      <Page gatewayAddress={gatewayAddress} logoutHandler={logout} />,
       document.getElementById("root")
     );
   }
@@ -119,7 +119,7 @@ let silentRefresh = async () => {
       (accessTokenExpiry - 2) * 1000
     );
     render(
-      <Page logoutHandler={logout} />,
+      <Page gatewayAddress={gatewayAddress} logoutHandler={logout} />,
       document.getElementById("root")
     );
   }

@@ -26,9 +26,6 @@ import { Logout20 } from "@carbon/icons-react";
 import "./page.css";
 
 
-const gatewayAddress =
-  "https://bwaexdxnvc.execute-api.us-east-2.amazonaws.com/prod";
-
 const headers = [
   {
     key: "url",
@@ -64,7 +61,7 @@ class Page extends React.Component {
       credentials: "include",
     };
   
-    let response = await fetch(`${gatewayAddress}/user`, requestOptions);
+    let response = await fetch(`${this.props.gatewayAddress}/user`, requestOptions);
     let responseText = await response.text();
   
     let { watchers } = JSON.parse(responseText);
@@ -78,6 +75,21 @@ class Page extends React.Component {
     let oldState = this.state
     oldState.watchers = watchers
     this.setState(oldState);
+  }
+
+  deleteWatcher = async (watcherId) => {
+    let requestOptions = {
+      method: 'DELETE',
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ watcherId }),
+      redirect: 'follow'
+    };
+
+    await fetch(`${this.props.gatewayAddress}/watcher`, requestOptions)
+    this.updateWatchers()
   }
 
   openModal = () => {
@@ -119,7 +131,7 @@ class Page extends React.Component {
           render={() => (
             <>
               <Header aria-label="IBM Platform Name">
-                <HeaderName prefix="Web">Watcher</HeaderName>
+                <HeaderName href="https://github.com/felixjchen/web-watcher" prefix="Web">Watcher</HeaderName>
                 <HeaderGlobalBar>
                   <HeaderGlobalAction
                     id="logoutIcon"
@@ -174,6 +186,7 @@ class Page extends React.Component {
                 </TableHead>
                 <TableBody>
                   {rows.map((row) => {
+                    // Set row 3 to dropdown menu
                     row.cells[3].value = (
                       <OverflowMenu flipped={true}>
                         {/* <OverflowMenuItem itemText="Edit" /> */}
@@ -182,11 +195,12 @@ class Page extends React.Component {
                           hasDivider
                           isDelete
                           onClick={() => {
-                            alert(1)
+                            this.deleteWatcher(row.id)
                           }}
                         />
                       </OverflowMenu>
                     );
+
                     return (
                       <TableRow key={row.id} {...getRowProps({ row })}>
                         {row.cells.map((cell) => (
