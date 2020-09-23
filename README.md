@@ -194,7 +194,7 @@
 ## Takeaways
 
 - log events
-- JWTs, Bcrypt, Cookies and CORS
+- JWTs (access and refresh token), Bcrypt, Cookies and CORS
 - React excels for constant rendering, Vanilla/jQuery frontend is painful
 - Puppeteer can take full screen screenshots, Selenium cannot
 - Golang's goroutines are easier to use then Python threading
