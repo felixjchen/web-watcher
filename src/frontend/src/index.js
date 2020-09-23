@@ -110,7 +110,6 @@ let silentRefresh = async () => {
   let response = await fetch(`${gatewayAddress}/refresh`, requestOptions);
   let responseText = await response.text();
   let { success, accessTokenExpiry, email } = JSON.parse(responseText);
-
   // If something is wrong with refresh token.. we logout
   if (!success) {
     await logout();
