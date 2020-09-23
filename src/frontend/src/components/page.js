@@ -21,7 +21,7 @@ import {
   OverflowMenuItem,
   TextInput,
   Modal,
-  Link
+  // Link
 } from "carbon-components-react";
 import { Logout20 } from "@carbon/icons-react";
 import "./page.css";
@@ -191,9 +191,9 @@ class Page extends React.Component {
                   {rows.map((row) => {
                     console.log(row)
                     // Set col 0 to link
-                    row.cells[0].value = (
+                    /* row.cells[0].value = (
                       <Link href={row.cells[0].value}>{row.cells[0].value}</Link>
-                    )
+                    ) */
                     // Set col 3 to dropdown menu
                     row.cells[3].value = (
                       <OverflowMenu flipped={true}>
