@@ -193,9 +193,8 @@
 
 ## Takeaways
 
-- take only what you need from client
-- log everything
-- Vanilla frontend is painful, React may excel here
+- log events
+- React excels for constant rendering, Vanilla/jQuery frontend is painful
 - Puppeteer can take full screen screenshots, Selenium cannot
 - Golang's goroutines are easier to use then Python threading
 - Golang's defer keyword is very useful for deleting files
