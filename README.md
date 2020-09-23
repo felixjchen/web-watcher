@@ -25,9 +25,9 @@
 
 ### cloud_object_storage
 
-- [Docker image](https://hub.docker.com/repository/docker/felixchen1998/web-watcher-cloud-object-storage)
+<!-- - [Docker image](https://hub.docker.com/repository/docker/felixchen1998/web-watcher-cloud-object-storage) -->
 - uploads and downloads files from IBM COS (Cloud Object Storage)
-- requires:
+<!-- - requires:
   - python3.7
   - IBM COS, src/cloud*object_storage/secrets.py populated with service credentials & bucket named \_web-watcher-files*
 - to run locally:
@@ -37,7 +37,7 @@
   mkdir files
   # secrets.py populated with service credentials
   python app.py
-  ```
+  ``` -->
 - endpoints
   | To | Method | URL | Body | Body Type | Response Type |
   | -------------------------- | ------ | ----------------------------- | ------------- | --------- | ------------- |
@@ -47,9 +47,9 @@
 
 ### compare
 
-- [Docker image](https://hub.docker.com/repository/docker/felixchen1998/web-watcher-compare)
+<!-- - [Docker image](https://hub.docker.com/repository/docker/felixchen1998/web-watcher-compare) -->
 - find difference between two images using opencv2 and scikit-image
-- requires
+<!-- - requires
   - python3.7
 - to run locally
   ```
@@ -57,7 +57,7 @@
   pip install -r requirements.txt
   mkdir files
   python app.py
-  ```
+  ``` -->
 - endpoints
   | To | Method | URL | Body | Body Type | Response Type |
   | ------------------------------------------------------------------ | ------ | ------------------------------------ | ------------------------------------ | --------- | ------------- |
@@ -66,17 +66,17 @@
 
 ### screenshot
 
-- [Docker image](https://hub.docker.com/repository/docker/felixchen1998/web-watcher-screenshot)
+<!-- - [Docker image](https://hub.docker.com/repository/docker/felixchen1998/web-watcher-screenshot) -->
 - uses Puppeteer to screenshot an entire webpage
-- requires
+<!-- - requires
   - nodejs 12.16.3
-  - npm 6.14.5
-- to run locally
+  - npm 6.14.5 -->
+<!-- - to run locally
   ```
   cd src/screenshot
   npm install
   node app.js
-  ```
+  ``` -->
 - endpoints
   | To | Method | URL | Body | Body Type | Response Type |
   | --------------------- | ------ | ------------------------------ | ------------ | --------- | ------------- |
@@ -84,9 +84,9 @@
 
 ### configure
 
-- [Docker image](https://hub.docker.com/repository/docker/felixchen1998/web-watcher-configure)
+<!-- - [Docker image](https://hub.docker.com/repository/docker/felixchen1998/web-watcher-configure) -->
 - reads and writes configuration to IBM Cloud Cloudant NoSQL
-- requires
+<!-- - requires
   - python3.7
   - IBM Cloudant DB, src/configure/secrets.py populated with service credentials & database named _configuration_
 - to run locally
@@ -96,8 +96,8 @@
   mkdir files
   # populate secrets.py with service credentials
   python app.py
-  ```
-- endpoints DATED DATED
+  ``` -->
+- endpoints, OUTDATED 
   | To | Method | URL | Body | Body Type | Response Type |
   | ------------------------------------------------------------------------- | ------ | ---------------------------------- | ------------------------------------------------ | --------- | ------------- |
   | List all users | GET | http://0.0.0.0:8004/users | . | . | JSON |
@@ -113,9 +113,9 @@
 
 ### notify
 
-- [Docker image](https://hub.docker.com/repository/docker/felixchen1998/web-watcher-notify)
+<!-- - [Docker image](https://hub.docker.com/repository/docker/felixchen1998/web-watcher-notify) -->
 - notifies users by email using smtplib and Gmail account
-- requires
+<!-- - requires
   - python3.7
 - to run locally
   ```
@@ -123,7 +123,7 @@
   pip install -r requirements.txt
   mkdir files
   python app.py
-  ```
+  ``` -->
 - endpoints
   | To | Method | URL | Body | Body Type | Response Type |
   | ----------------------------------------------------------------- | ------ | -------------------------- | -------------------------------------- | --------- | ------------- |
@@ -131,9 +131,10 @@
 
 ### frontend
 
-- [Docker image](https://hub.docker.com/repository/docker/felixchen1998/web-watcher-frontend)
-- UI to add/delete users and watchers using Google's Material Design
-- requires
+<!-- - [Docker image](https://hub.docker.com/repository/docker/felixchen1998/web-watcher-frontend) -->
+- UI to sign up, login, add and delete watchers
+- IBM Carbon Design with React
+<!-- - requires
   - nodejs 12.16.3
   - npm 6.14.5
   - configure service
@@ -143,23 +144,23 @@
   npm install
   node app.js
   ```
-- view at https://0.0.0.0:8005
+- view at https://0.0.0.0:8005 -->
 
 ## Cron Jobs
 
 ### check
 
-- [Docker image](https://hub.docker.com/repository/docker/felixchen1998/web-watcher-check)
+<!-- - [Docker image](https://hub.docker.com/repository/docker/felixchen1998/web-watcher-check) -->
 - threaded for each watcher, check if the web page has changed, notify user with difference image on change
-- requires
+<!-- - requires
   - go 1.14
   - cloud-object-storage service
   - compare service
   - screenshot service
   - configure service
-  - notify service
+  - notify service -->
 
-## Production
+<!-- ## Production
 
 - requires
   - kubectl configured pointing at cluster
@@ -174,7 +175,7 @@
 - frontend at http://CLUSTER_PUBLIC_IP:30001
 - configure API at http://CLUSTER_PUBLIC_IP:30000
 - https://accounts.google.com/DisplayUnlockCaptcha
-- https://cloud.ibm.com/docs/containers?topic=containers-nodeport
+- https://cloud.ibm.com/docs/containers?topic=containers-nodeport -->
 
 ## To do
 
