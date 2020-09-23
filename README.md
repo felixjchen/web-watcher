@@ -13,12 +13,12 @@
 - upcoming releases
 
 ## Implementation
-- microservice architecture, API gateway design pattern
 - React frontend with IBM Carbon Components
+- microservice architecture, API gateway design pattern
 - 4 Python services
 - 3 Javascript services
 - Go Cron script
-- Bcrypt , JWT and cookies
+- JWTs (access and refresh token), Bcrypt, Cookies and CORS
 
 
 ## Services
