@@ -178,7 +178,9 @@
 
 ## To do
 
+- update React tempaltes... use react Class component for login
 - purge old screenshots and fetch new
+- notification service rework
 - configure service is slow in Python...
 - automate AWS API gateway deployment/figure out IBN API CORS
 - remove token service?

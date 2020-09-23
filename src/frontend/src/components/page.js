@@ -69,7 +69,7 @@ class Page extends React.Component {
     watchers.forEach((i) => {
       let date = new Date(0);
       date.setUTCSeconds(i.last_run);
-      i.last_run = String(date);
+      i.last_run = String(date).slice(0, 24);
     });
 
     let oldState = this.state
@@ -146,7 +146,7 @@ class Page extends React.Component {
           )}
         />
 
-        <DataTable rows={this.state.watchers} headers={headers}>
+        <DataTable rows={this.state.watchers} headers={headers} isSortable>
           {({
             rows,
             headers,
@@ -158,7 +158,7 @@ class Page extends React.Component {
             getTableContainerProps,
           }) => (
             <TableContainer
-              // title={`Hello ${props.email}`}
+              title={`Welcome ${this.props.email}`}
               // description={`Welcome ${props.email}`}
               {...getTableContainerProps()}
             >
@@ -175,13 +175,16 @@ class Page extends React.Component {
                 <TableHead>
                   <TableRow>
                     {headers.map((header) => (
+                      
                       <TableHeader
                         key={header.key}
-                        {...getHeaderProps({ header })}
+                        {...getHeaderProps({ header, isSortable: (header.key !== "options") })}
                       >
                         {header.header}
                       </TableHeader>
+
                     ))}
+
                   </TableRow>
                 </TableHead>
                 <TableBody>

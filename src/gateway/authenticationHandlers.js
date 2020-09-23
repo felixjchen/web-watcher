@@ -120,6 +120,7 @@ const refreshHandler = async (req, res) => {
   res.send({
     success: true,
     accessTokenExpiry,
+    email: tokenResponse.email,
   });
   res.end();
 };

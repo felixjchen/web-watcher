@@ -17,6 +17,8 @@ let login = async ({ email, password }) => {
     password = document.getElementById("password").value;
   }
 
+  console.log(email, password)
+
   render(<Loading />, document.getElementById("root"));
 
   let options = {
@@ -46,7 +48,7 @@ let login = async ({ email, password }) => {
       (accessTokenExpiry - 2) * 1000
     );
     render(
-      <Page gatewayAddress={gatewayAddress} logoutHandler={logout} />,
+      <Page email={email} gatewayAddress={gatewayAddress} logoutHandler={logout} />,
       document.getElementById("root")
     );
   }
@@ -107,7 +109,7 @@ let silentRefresh = async () => {
 
   let response = await fetch(`${gatewayAddress}/refresh`, requestOptions);
   let responseText = await response.text();
-  let { success, accessTokenExpiry } = JSON.parse(responseText);
+  let { success, accessTokenExpiry, email } = JSON.parse(responseText);
 
   // If something is wrong with refresh token.. we logout
   if (!success) {
@@ -119,7 +121,7 @@ let silentRefresh = async () => {
       (accessTokenExpiry - 2) * 1000
     );
     render(
-      <Page gatewayAddress={gatewayAddress} logoutHandler={logout} />,
+      <Page email={email} gatewayAddress={gatewayAddress} logoutHandler={logout} />,
       document.getElementById("root")
     );
   }
@@ -129,8 +131,7 @@ let silentRefresh = async () => {
 
 let initialSilentRefresh = async () => {
   try {
-    let success = await silentRefresh();
-
+    await silentRefresh();
   } catch (err) {
     console.log("Initial silent refresh fail " + err);
   }
