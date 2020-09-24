@@ -46,11 +46,13 @@ const loginHandler = async (req, res) => {
   } = tokenResponse;
   res.cookie("accessToken", accessToken, {
     maxAge: accessTokenExpiry * 1000,
+    httpOnly: true,
     sameSite: "None",
     secure: true,
   });
   res.cookie("refreshToken", refreshToken, {
     maxAge: refreshTokenExpiry * 1000,
+    httpOnly: true,
     sameSite: "None",
     secure: true,
   });
@@ -108,11 +110,13 @@ const refreshHandler = async (req, res) => {
 
   res.cookie("accessToken", accessToken, {
     maxAge: accessTokenExpiry * 1000,
+    httpOnly: true,
     sameSite: "None",
     secure: true,
   });
   res.cookie("refreshToken", newRefreshToken, {
     maxAge: refreshTokenExpiry * 1000,
+    httpOnly: true,
     sameSite: "None",
     secure: true,
   });
@@ -128,11 +132,13 @@ const refreshHandler = async (req, res) => {
 const logoutHandler = async (req, res) => {
   res.cookie("accessToken", "exp", {
     maxAge: 0,
+    httpOnly: true,
     sameSite: "None",
     secure: true,
   });
   res.cookie("refreshToken", "exp", {
     maxAge: 0,
+    httpOnly: true,
     sameSite: "None",
     secure: true,
   });
