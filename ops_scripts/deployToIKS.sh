@@ -15,15 +15,18 @@ else
     echo "webWatcherCluster exists already..."
 fi
 
-
 clusterId=$(ibmcloud ks cluster ls | egrep -o 'webWatcherCluster\s*(\w*)' | cut -c18- | sed -e 's/^[[:space:]]*//')
 ibmcloud ks cluster config --cluster "${clusterId}"
 echo "Kubernetes context has been set"
 
-kubectl apply -f kubernetes/secrets
-kubectl apply -f kubernetes/services
-kubectl apply -f kubernetes/deployments
-kubectl apply -f kubernetes/jobs
+kubectl apply -f ../kubernetes/secrets
+kubectl apply -f ../kubernetes/services
+kubectl apply -f ../kubernetes/deployments
+kubectl apply -f ../kubernetes/jobs
 echo "Kubernetes has been configured"
 
-ibmcloud ks worker ls --cluster webWatcherCluster
+publicIP=$(python getClusterPublicIP.py 2>&1)
+echo "Nodeport Public IP: $publicIP" 
+
+aws apigateway put-integration --rest-api-id bwaexdxnvc --resource-id 5mbg5v --http-method ANY --type HTTP_PROXY --uri "http://$publicIP:30002/{proxy}" --integration-http-method ANY
+aws apigateway create-deployment --rest-api-id bwaexdxnvc --stage-name prod --description latest 
