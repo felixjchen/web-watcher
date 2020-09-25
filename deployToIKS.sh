@@ -11,9 +11,6 @@ then
         echo "Waiting for deployment..."
     done
     echo "webWatcherCluster has been created"
-
-
-
 else
     echo "webWatcherCluster exists already..."
 fi
