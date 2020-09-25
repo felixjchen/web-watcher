@@ -26,7 +26,8 @@ kubectl apply -f ../kubernetes/jobs
 echo "Kubernetes has been configured"
 
 publicIP=$(python getClusterPublicIP.py 2>&1)
-echo "Nodeport Public IP: $publicIP" 
+echo "NodePort Public IP: $publicIP" 
 
 aws apigateway put-integration --rest-api-id bwaexdxnvc --resource-id 5mbg5v --http-method ANY --type HTTP_PROXY --uri "http://$publicIP:30002/{proxy}" --integration-http-method ANY
 aws apigateway create-deployment --rest-api-id bwaexdxnvc --stage-name prod --description latest 
+echo "AWS apigateway proxies to NodePort" 
