@@ -3,13 +3,14 @@ kind: CronJob
 metadata:
   name: check-job
 spec:
+  concurrencyPolicy: Forbid
   schedule: "*/1 * * * *"
   jobTemplate:
     spec:
+      backoffLimit: 0
       template:
         spec:
           containers:
             - name: check-script
               image: docker.io/felixchen1998/web-watcher-check:latest
-
           restartPolicy: Never
