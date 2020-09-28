@@ -32,13 +32,13 @@
   - python3.7
   - IBM COS, src/cloud*object_storage/secrets.py populated with service credentials & bucket named \_web-watcher-files*
 - to run locally:
-  ````
+  ```
   cd src/cloud_object_storage
   pip install -r requirements.txt
   mkdir files
   # secrets.py populated with service credentials
   python app.py
-  ````
+  ```
 - endpoints
   | To | Method | URL | Body | Body Type | Response Type |
   | -------------------------- | ------ | ----------------------------- | ------------- | --------- | ------------- |
@@ -54,12 +54,12 @@
 <!-- - requires
   - python3.7
 - to run locally
-  ````
+  ```
   cd src/compare
   pip install -r requirements.txt
   mkdir files
   python app.py
-  ````
+  ```
 - endpoints
   | To | Method | URL | Body | Body Type | Response Type |
   | ------------------------------------------------------------------ | ------ | ------------------------------------ | ------------------------------------ | --------- | ------------- |
@@ -94,13 +94,13 @@
   - python3.7
   - IBM Cloudant DB, src/configure/secrets.py populated with service credentials & database named _configuration_
 - to run locally
-  ````
+  ```
   cd src/configure
   pip install -r requirements.txt
   mkdir files
   # populate secrets.py with service credentials
   python app.py
-  ````
+  ```
 - endpoints, OUTDATED
   | To | Method | URL | Body | Body Type | Response Type |
   | ------------------------------------------------------------------------- | ------ | ---------------------------------- | ------------------------------------------------ | --------- | ------------- |
@@ -123,12 +123,12 @@
 <!-- - requires
   - python3.7
 - to run locally
-  ````
+  ```
   cd src/notify
   pip install -r requirements.txt
   mkdir files
   python app.py
-  ````
+  ```
 - endpoints
   | To | Method | URL | Body | Body Type | Response Type |
   | ----------------------------------------------------------------- | ------ | -------------------------- | -------------------------------------- | --------- | ------------- |
@@ -166,22 +166,6 @@
   - screenshot service
   - configure service
   - notify service -->
-
-<!-- ## Production
-
-- requires
-  - kubectl configured pointing at cluster
-  - service credentials for IBM COS and IBM Cloudant database in kubernetes/secrets & Gmail username and password in kubernetes/secrets
-- to deploy
-  ```
-  kubectl apply -f kubernetes/secrets
-  kubectl apply -f kubernetes/services
-  kubectl apply -f kubernetes/deployments
-  kubectl apply -f kubernetes/jobs
-  ```
-- frontend at http://CLUSTER_PUBLIC_IP:30001
-- configure API at http://CLUSTER_PUBLIC_IP:30000
-- https://cloud.ibm.com/docs/containers?topic=containers-nodeport -->
 
 - https://accounts.google.com/DisplayUnlockCaptcha
 
