@@ -12,6 +12,6 @@ COPY app.py .
 COPY configure.py .
 
 CMD gunicorn --worker-class gevent \
-    --workers 2 \
+    --workers 1 \
     --bind 0.0.0.0:8004 \
     app:app
