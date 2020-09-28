@@ -5,6 +5,8 @@ metadata:
 spec:
   concurrencyPolicy: Forbid
   schedule: "*/1 * * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
       backoffLimit: 0

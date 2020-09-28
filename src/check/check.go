@@ -108,7 +108,8 @@ func main() {
 	for wid, data := range watchers {
 		wg.Add(1)
 		data := data.(map[string]interface{})
-		go handleWatcher(wid, data, &wg)
+		// go handleWatcher(wid, data, &wg)
+		handleWatcher(wid, data, &wg)
 	}
 	wg.Wait()
 	fmt.Println("Main thread completed")
