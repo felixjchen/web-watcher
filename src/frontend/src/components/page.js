@@ -26,7 +26,6 @@ import {
 import { Logout20 } from "@carbon/icons-react";
 import "./page.css";
 
-
 const headers = [
   {
     key: "url",
@@ -51,20 +50,23 @@ class Page extends React.Component {
     super(props);
     this.state = {
       addWatcherModalOpen: false,
-      watchers: []
+      watchers: [],
     };
 
-    this.updateWatchers()
+    this.updateWatchers();
   }
 
   updateWatchers = async () => {
     let requestOptions = {
       credentials: "include",
     };
-  
-    let response = await fetch(`${this.props.gatewayAddress}/user`, requestOptions);
+
+    let response = await fetch(
+      `${this.props.gatewayAddress}/user`,
+      requestOptions
+    );
     let responseText = await response.text();
-  
+
     let { watchers } = JSON.parse(responseText);
     // Cleanup Date
     watchers.forEach((i) => {
@@ -73,39 +75,39 @@ class Page extends React.Component {
       i.last_run = String(date).slice(0, 24);
     });
 
-    let oldState = this.state
-    oldState.watchers = watchers
+    let oldState = this.state;
+    oldState.watchers = watchers;
     this.setState(oldState);
-  }
+  };
 
   deleteWatcher = async (watcherId) => {
     let requestOptions = {
-      method: 'DELETE',
+      method: "DELETE",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ watcherId }),
-      redirect: 'follow'
+      redirect: "follow",
     };
 
-    await fetch(`${this.props.gatewayAddress}/watcher`, requestOptions)
-    this.updateWatchers()
-  }
+    await fetch(`${this.props.gatewayAddress}/watcher`, requestOptions);
+    this.updateWatchers();
+  };
 
   openModal = () => {
-    let oldState = this.state
-    oldState.addWatcherModalOpen = true
+    let oldState = this.state;
+    oldState.addWatcherModalOpen = true;
     this.setState(oldState);
   };
   closeModal = () => {
-    let oldState = this.state
-    oldState.addWatcherModalOpen = false
+    let oldState = this.state;
+    oldState.addWatcherModalOpen = false;
     this.setState(oldState);
   };
   submitModal = async () => {
-    let url = document.getElementById("modalUrl").value
-    let frequency = document.getElementById("modalFrequency").value
+    let url = document.getElementById("modalUrl").value;
+    let frequency = document.getElementById("modalFrequency").value;
 
     let options = {
       method: "POST",
@@ -117,13 +119,16 @@ class Page extends React.Component {
       redirect: "follow",
     };
 
-    let oldState = this.state
-    oldState.addWatcherModalOpen = false
+    let oldState = this.state;
+    oldState.addWatcherModalOpen = false;
     this.setState(oldState);
 
-    await fetch("https://bwaexdxnvc.execute-api.us-east-2.amazonaws.com/prod/watcher", options)
-    this.updateWatchers()
-  }
+    await fetch(
+      "https://bwaexdxnvc.execute-api.us-east-2.amazonaws.com/prod/watcher",
+      options
+    );
+    this.updateWatchers();
+  };
 
   render() {
     return (
@@ -132,7 +137,12 @@ class Page extends React.Component {
           render={() => (
             <>
               <Header aria-label="IBM Platform Name">
-                <HeaderName href="https://github.com/felixjchen/web-watcher" prefix="Web">Watcher</HeaderName>
+                <HeaderName
+                  href="https://github.com/felixjchen/web-watcher"
+                  prefix="Web"
+                >
+                  Watcher
+                </HeaderName>
                 <HeaderGlobalBar>
                   <HeaderGlobalAction
                     id="logoutIcon"
@@ -176,44 +186,47 @@ class Page extends React.Component {
                 <TableHead>
                   <TableRow>
                     {headers.map((header) => (
-                      
                       <TableHeader
                         key={header.key}
-                        {...getHeaderProps({ header, isSortable: (header.key !== "options") })}
+                        {...getHeaderProps({
+                          header,
+                          isSortable: header.key !== "options",
+                        })}
                       >
                         {header.header}
                       </TableHeader>
                     ))}
-
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {rows.map((row) => {
-                    console.log(row)
-                    // Set col 0 to link
-                    /* row.cells[0].value = (
-                      <Link href={row.cells[0].value}>{row.cells[0].value}</Link>
-                    ) */
-                    // Set col 3 to dropdown menu
-                    row.cells[3].value = (
-                      <OverflowMenu flipped={true}>
-                        {/* <OverflowMenuItem itemText="Edit" /> */}
-                        <OverflowMenuItem
-                          itemText="Delete"
-                          hasDivider
-                          isDelete
-                          onClick={() => {
-                            this.deleteWatcher(row.id)
-                          }}
-                        />
-                      </OverflowMenu>
-                    );
+                    console.log(row.cells);
 
                     return (
                       <TableRow key={row.id} {...getRowProps({ row })}>
-                        {row.cells.map((cell) => (
-                          <TableCell key={cell.id}>{cell.value}</TableCell>
-                        ))}
+                        <TableCell key={row.cells[0].id}>
+                          {row.cells[0].value}
+                        </TableCell>
+                        <TableCell key={row.cells[1].id}>
+                          {row.cells[1].value}
+                        </TableCell>
+                        <TableCell key={row.cells[2].id}>
+                          {row.cells[2].value}
+                        </TableCell>
+                        <TableCell key={row.cells[3].id}>
+                          {row.cells[3].value}
+                          <OverflowMenu flipped={true}>
+                            {/* <OverflowMenuItem itemText="Edit" /> */}
+                            <OverflowMenuItem
+                              itemText="Delete"
+                              hasDivider
+                              isDelete
+                              onClick={() => {
+                                this.deleteWatcher(row.cells[3].id);
+                              }}
+                            />
+                          </OverflowMenu>
+                        </TableCell>
                       </TableRow>
                     );
                   })}
