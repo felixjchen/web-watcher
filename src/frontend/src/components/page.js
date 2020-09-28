@@ -21,7 +21,7 @@ import {
   OverflowMenuItem,
   TextInput,
   Modal,
-  // Link
+  Link,
 } from "carbon-components-react";
 import { Logout20 } from "@carbon/icons-react";
 import "./page.css";
@@ -205,7 +205,12 @@ class Page extends React.Component {
                     return (
                       <TableRow key={row.id} {...getRowProps({ row })}>
                         <TableCell key={row.cells[0].id}>
-                          {row.cells[0].value}
+                          <p style={{ display: "none" }}>
+                            {row.cells[0].value}
+                          </p>
+                          <Link href={row.cells[0].value}>
+                            {row.cells[0].value}
+                          </Link>
                         </TableCell>
                         <TableCell key={row.cells[1].id}>
                           {row.cells[1].value}

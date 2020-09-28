@@ -43,7 +43,7 @@ aws apigateway put-integration --rest-api-id bwaexdxnvc --resource-id wdi9o3 --h
 aws apigateway create-deployment --rest-api-id bwaexdxnvc --stage-name prod --description latest 
 
 echo "------------------------------------------------------------------"
-echo "aws apigateway reverse proxies to NodePort" 
+echo "AWS apigateway reverse proxies to NodePort" 
 echo "------------------------------------------------------------------"
 
 
