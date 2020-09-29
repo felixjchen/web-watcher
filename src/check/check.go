@@ -81,7 +81,7 @@ func handleWatcher(wid string, data map[string]interface{}, wg *sync.WaitGroup) 
 
 func main() {
 	// Gonna limit number of threads
-	runtime.GOMAXPROCS(3)
+	runtime.GOMAXPROCS(2)
 
 	// Check if on K8 cluster and we should be getting address from env variables for services
 	_, production := os.LookupEnv("KUBERNETES_SERVICE_HOST")
@@ -108,8 +108,7 @@ func main() {
 	for wid, data := range watchers {
 		wg.Add(1)
 		data := data.(map[string]interface{})
-		// go handleWatcher(wid, data, &wg)
-		handleWatcher(wid, data, &wg)
+		go handleWatcher(wid, data, &wg)
 	}
 	wg.Wait()
 	fmt.Println("Main thread completed")

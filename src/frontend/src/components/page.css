@@ -14,3 +14,10 @@ body {
 .bx--data-table-container {
   padding-top: 0;
 }
+
+@media only screen and (max-width: 1056px) {
+  td:nth-child(1){
+    max-width: 28vw;
+    overflow-y: scroll;
+  }
+}
