@@ -17,7 +17,7 @@ body {
 
 @media only screen and (max-width: 1056px) {
   td:nth-child(1){
-    max-width: 38vw;
+    max-width: 34vw;
     overflow-y: scroll;
   }
 }
