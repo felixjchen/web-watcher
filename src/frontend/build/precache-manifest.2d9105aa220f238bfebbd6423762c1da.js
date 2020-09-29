@@ -1,10 +1,10 @@
 self.__precacheManifest = [
   {
-    "revision": "02e638dc0c67f080dc54",
-    "url": "./static/css/main.6cb7a90d.chunk.css"
+    "revision": "20a4c00ad73809de4e81",
+    "url": "./static/css/main.27f3b38e.chunk.css"
   },
   {
-    "revision": "02e638dc0c67f080dc54",
+    "revision": "20a4c00ad73809de4e81",
     "url": "./static/js/main.6e2ee683.chunk.js"
   },
   {
@@ -20,7 +20,7 @@ self.__precacheManifest = [
     "url": "./static/media/threetree_90.8428407b.png"
   },
   {
-    "revision": "702ade2f3aeec8245aa00dc31a305664",
+    "revision": "12440971f0ca411f68fcba36ae068ed8",
     "url": "./index.html"
   }
 ];
