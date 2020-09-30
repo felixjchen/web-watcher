@@ -22,10 +22,26 @@ import {
   TextInput,
   Modal,
   Link,
+  RadioButton,
+  RadioButtonGroup,
+  FormGroup,
 } from "carbon-components-react";
 import { Logout20 } from "@carbon/icons-react";
 import "./page.css";
 
+const toSeconds = {
+  everyHour: 3600,
+  every6Hours: 21600,
+  every12Hours: 43200,
+  every24Hours: 86400,
+};
+
+const fromSeconds = {
+  3600: "every hour",
+  21600: "every 6 hours",
+  43200: "every 12 hours",
+  86400: "every 24 hours",
+};
 const headers = [
   {
     key: "url",
@@ -107,8 +123,8 @@ class Page extends React.Component {
   };
   submitModal = async () => {
     let url = document.getElementById("modalUrl").value;
-    let frequency = document.getElementById("modalFrequency").value;
 
+    let frequency = toSeconds[window.RadioButtonGroup.state.selected];
     let options = {
       method: "POST",
       credentials: "include",
@@ -200,8 +216,6 @@ class Page extends React.Component {
                 </TableHead>
                 <TableBody>
                   {rows.map((row) => {
-                    console.log(row.cells);
-
                     return (
                       <TableRow key={row.id} {...getRowProps({ row })}>
                         <TableCell key={row.cells[0].id}>
@@ -213,7 +227,9 @@ class Page extends React.Component {
                           </Link>
                         </TableCell>
                         <TableCell key={row.cells[1].id}>
-                          {row.cells[1].value}
+                          {row.cells[1].value in fromSeconds
+                            ? fromSeconds[row.cells[1].value]
+                            : row.cells[1].value}
                         </TableCell>
                         <TableCell key={row.cells[2].id}>
                           {row.cells[2].value}
@@ -227,7 +243,7 @@ class Page extends React.Component {
                               hasDivider
                               isDelete
                               onClick={() => {
-                                this.deleteWatcher(row.cells[3].id);
+                                this.deleteWatcher(row.id);
                               }}
                             />
                           </OverflowMenu>
@@ -258,11 +274,36 @@ class Page extends React.Component {
             placeholder="https://www.google.com/"
             style={{ marginBottom: "1rem" }}
           />
-          <TextInput
-            id="modalFrequency"
-            labelText="Frequency (seconds)"
-            placeholder="60"
-          />
+          <FormGroup legendText="Frequency">
+            <RadioButtonGroup
+              defaultSelected="everyHour"
+              name="frequency"
+              ref={(RadioButtonGroup) => {
+                window.RadioButtonGroup = RadioButtonGroup;
+              }}
+            >
+              <RadioButton
+                labelText="every hour"
+                value="everyHour"
+                id="radio-1"
+              />
+              <RadioButton
+                labelText="every 6 hours"
+                value="every6Hours"
+                id="radio-2"
+              />
+              <RadioButton
+                labelText="every 12 hours"
+                value="every12Hours"
+                id="radio-3"
+              />
+              <RadioButton
+                labelText="every 24 hours"
+                value="every24Hours"
+                id="radio-4"
+              />
+            </RadioButtonGroup>
+          </FormGroup>
         </Modal>
       </div>
     );
