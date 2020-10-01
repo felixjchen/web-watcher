@@ -13,14 +13,13 @@ app.use(bodyParser.json());
 const screenshot = async (url) => {
   console.log(`Starting: ${url}`);
 
-  const page = await browser.newPage();
   const filePath = `files/${uuid()}.png`;
 
+  const page = await browser.newPage();
   await page.setViewport({
     width: 1920,
     height: 1080,
   });
-
   await page.goto(url);
   // await new Promise((resolve) => setTimeout(resolve, 1000));
   await page.screenshot({
