@@ -171,11 +171,13 @@
 
 ## To do
 
-- update React tempaltes... use react Class component for login
+<!-- - update React templates... use react Class component for login -->
+
 - purge old screenshots and fetch new
-- notification service rework
+- notification service rework, for easier redeployment
 - configure service is slow in Python...
-- automate AWS API gateway deployment/figure out IBN API CORS
+- compare service takes alot of memory in Python...
+- figure out IBM API Gateway CORS (cannot configure last time I tried... alo), save cents from AWS bill!
 - remove token service?
 - swagger docs
 - graphql
