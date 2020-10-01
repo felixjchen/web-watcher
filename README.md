@@ -5,13 +5,6 @@
 
 - application to notify users by email whenever a webpage changes, screenshots entire webpage and creates bounding boxes to show the user what has changed
 
-## Motivation
-
-- course work websites
-- job postings
-- shopping
-- upcoming releases
-
 ## Implementation
 
 - React frontend with IBM Carbon Components
@@ -20,6 +13,13 @@
 - 3 Javascript services
 - Go Cron script
 - JWTs (access and refresh token), Bcrypt, Cookies and CORS
+
+## Motivation
+
+- course work websites
+- job postings
+- shopping
+- upcoming releases
 
 ## Services
 
