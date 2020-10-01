@@ -52,6 +52,6 @@ app.get("/screenshot", async (req, res) => {
 app.listen(8003, "0.0.0.0", async () => {
   browser = await puppeteer.launch({
     args: ["--no-sandbox"],
-    headless: false,
+    // headless: false,
   });
 });
