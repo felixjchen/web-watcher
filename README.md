@@ -7,7 +7,7 @@
 
 ## Implementation
 
-- React frontend with IBM Carbon Components
+- React with IBM Carbon Design
 - JWTs (access and refresh token), Bcrypt, Cookies and CORS
 - microservice architecture, API gateway design pattern
 - 4 Python services
@@ -46,9 +46,9 @@
   | Download file _F_ from COS | GET | http://0.0.0.0:8001/files/{F} | . | . | File |
   | Delete file _F_ in COS | DELETE | http://0.0.0.0:8001/files/{F} | . | . | JSON |
 
-### compare
-
 <!-- - [Docker image](https://hub.docker.com/repository/docker/felixchen1998/web-watcher-compare) -->
+
+### compare
 
 - find difference between two images using opencv2 and scikit-image
 <!-- - requires
@@ -66,9 +66,9 @@
   | Get structural similarity index between images _P_ and _Q_ | GET | http://0.0.0.0:8002/difference | {"file*old": *P*, "file_new": *Q*} | Form | JSON |
   | Create bounding boxes around the difference of images \_P* and _Q_ | GET | http://0.0.0.0:8002/difference_image | {"file*old": \_P*, "file*new": \_Q*} | Form | File |
 
-### screenshot
-
 <!-- - [Docker image](https://hub.docker.com/repository/docker/felixchen1998/web-watcher-screenshot) -->
+
+### screenshot
 
 - uses Puppeteer to screenshot an entire webpage
     <!-- - requires
@@ -115,9 +115,9 @@
   | Update watcher with watcher id _WID_ | PUT | http://0.0.0.0:8004/watchers/{WID} | {"user*id": *UID*, "url":\_U*, "frequency": _F_} | JSON | JSON |
   | Delete watcher with watcher id _WID_ | DELETE | http://0.0.0.0:8004/watchers/{WID} | . | . | JSON |
 
-### notify
-
 <!-- - [Docker image](https://hub.docker.com/repository/docker/felixchen1998/web-watcher-notify) -->
+
+### notify
 
 - notifies users by email using smtplib and Gmail account
 <!-- - requires
@@ -134,9 +134,9 @@
   | ----------------------------------------------------------------- | ------ | -------------------------- | -------------------------------------- | --------- | ------------- |
   | Notify email _E_ of a change at URL _U_ with difference image _D_ | POST | http://0.0.0.0:8006/notify | {"email": _E_, "url":_U_, "file": _D_} | FORM | JSON |
 
-### frontend
-
 <!-- - [Docker image](https://hub.docker.com/repository/docker/felixchen1998/web-watcher-frontend) -->
+
+### frontend
 
 - UI to sign up, login, add and delete watchers
 - IBM Carbon Design with React
