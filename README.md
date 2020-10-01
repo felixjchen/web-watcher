@@ -8,11 +8,11 @@
 ## Implementation
 
 - React frontend with IBM Carbon Components
+- JWTs (access and refresh token), Bcrypt, Cookies and CORS
 - microservice architecture, API gateway design pattern
 - 4 Python services
 - 3 Javascript services
 - Go Cron script
-- JWTs (access and refresh token), Bcrypt, Cookies and CORS
 
 ## Motivation
 
