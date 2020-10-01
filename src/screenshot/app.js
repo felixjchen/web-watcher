@@ -6,15 +6,13 @@ const path = require("path");
 const fs = require("fs");
 
 const app = express();
+let browser = null;
 
 app.use(bodyParser.json());
 
-async function screenshot(url) {
+const screenshot = async (url) => {
   console.log(`Starting: ${url}`);
 
-  const browser = await puppeteer.launch({
-    args: ["--no-sandbox"],
-  });
   const page = await browser.newPage();
   const filePath = `files/${uuid()}.png`;
 
@@ -24,25 +22,25 @@ async function screenshot(url) {
   });
 
   await page.goto(url);
-  await new Promise((resolve) => setTimeout(resolve, 5000));
+  // await new Promise((resolve) => setTimeout(resolve, 1000));
   await page.screenshot({
     path: filePath,
     fullPage: true,
   });
 
-  await browser.close();
+  page.close();
 
   console.log(`Done: ${url}`);
   return filePath;
-}
+};
 
-app.get("/screenshot", async function (request, response) {
-  url = request.body.url;
-  var filePath = await screenshot(url, filePath);
-  serverFilePath = path.join(__dirname, filePath);
+app.get("/screenshot", async (req, res) => {
+  let url = req.body.url;
+  let filePath = await screenshot(url);
+  let serverFilePath = path.join(__dirname, filePath);
 
-  response.sendFile(serverFilePath);
-  response.on("finish", function () {
+  res.sendFile(serverFilePath);
+  res.on("finish", function () {
     fs.unlink(serverFilePath, (err) => {
       if (err) {
         console.log(err);
@@ -51,4 +49,9 @@ app.get("/screenshot", async function (request, response) {
   });
 });
 
-app.listen(8003, "0.0.0.0");
+app.listen(8003, "0.0.0.0", async () => {
+  browser = await puppeteer.launch({
+    args: ["--no-sandbox"],
+    headless: false,
+  });
+});
