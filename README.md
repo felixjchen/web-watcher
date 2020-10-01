@@ -71,19 +71,19 @@
 <!-- - [Docker image](https://hub.docker.com/repository/docker/felixchen1998/web-watcher-screenshot) -->
 
 - uses Puppeteer to screenshot an entire webpage
-  <!-- - requires
-    - nodejs 12.16.3
-    - npm 6.14.5 -->
-  <!-- - to run locally
-    ```
-    cd src/screenshot
-    npm install
-    node app.js
-    ``` -->
-- endpoints
-  | To | Method | URL | Body | Body Type | Response Type |
-  | --------------------- | ------ | ------------------------------ | ------------ | --------- | ------------- |
-  | Screenshot at URL _U_ | GET | http://0.0.0.0:8003/screenshot | {"url": _U_} | JSON | File |
+    <!-- - requires
+      - nodejs 12.16.3
+      - npm 6.14.5 -->
+    <!-- - to run locally
+      ```
+      cd src/screenshot
+      npm install
+      node app.js
+      ``` -->
+  <!-- - endpoints
+    | To | Method | URL | Body | Body Type | Response Type |
+    | --------------------- | ------ | ------------------------------ | ------------ | --------- | ------------- |
+    | Screenshot at URL _U_ | GET | http://0.0.0.0:8003/screenshot | {"url": _U_} | JSON | File | -->
 
 ### configure
 
