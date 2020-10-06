@@ -154,7 +154,7 @@ class Page extends React.Component {
             <>
               <Header aria-label="IBM Platform Name">
                 <HeaderName
-                  href="https://github.com/felixjchen/web-watcher"
+                  // href="https://github.com/felixjchen/web-watcher"
                   prefix="Web"
                 >
                   Watcher
