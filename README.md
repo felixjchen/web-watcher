@@ -173,6 +173,7 @@
 
 <!-- - update React templates... use react Class component for login -->
 
+- non full page screenshots
 - purge old screenshots and fetch new
 - notification service rework, for easier redeployment
 - configure service is slow in Python...

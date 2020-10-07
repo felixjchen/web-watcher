@@ -27,7 +27,7 @@ const screenshot = async (url) => {
     fullPage: true,
   });
 
-  page.close();
+  await page.close();
 
   console.log(`Done: ${url}`);
   return filePath;
@@ -50,7 +50,7 @@ app.get("/screenshot", async (req, res) => {
 
 app.listen(8003, "0.0.0.0", async () => {
   browser = await puppeteer.launch({
-    args: ["--no-sandbox"],
+    args: ["--no-sandbox", "--disable-dev-shm-usage"],
     // headless: false,
   });
 });
