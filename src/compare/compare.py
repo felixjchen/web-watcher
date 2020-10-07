@@ -81,10 +81,10 @@ def pad_images(image1, image2):
     pad2W = maxW - image2W
 
     image1 = cv2.copyMakeBorder(
-        image1, 0, pad1H, 0, pad1W, cv2.BORDER_CONSTANT)
+        image1, pad1H, 0, pad1W, 0, cv2.BORDER_CONSTANT)
 
     image2 = cv2.copyMakeBorder(
-        image2, 0, pad2H, 0, pad2W, cv2.BORDER_CONSTANT)
+        image2, pad2H, 0, pad2W, 0, cv2.BORDER_CONSTANT)
 
     return image1, image2
 

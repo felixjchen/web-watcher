@@ -16,6 +16,7 @@ const screenshot = async (url) => {
   const filePath = `files/${uuid()}.png`;
 
   const page = await browser.newPage();
+  await page.setDefaultNavigationTimeout(0);
   await page.setViewport({
     width: 1920,
     height: 1080,

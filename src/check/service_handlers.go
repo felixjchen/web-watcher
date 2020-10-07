@@ -8,6 +8,7 @@ import (
 	"os"
 	"strconv"
 	"sync"
+	"time"
 
 	"mime/multipart"
 	"path/filepath"
@@ -54,7 +55,7 @@ func getRequestToFile(url string, filePath string, payload io.Reader, wg *sync.W
 	defer wg.Done()
 
 	// Get the data
-	client := &http.Client{}
+	client := &http.Client{Timeout: 360 * time.Second}
 	req, err := http.NewRequest("GET", url, payload)
 	req.Header.Add("Content-Type", "application/json")
 	resp, err := client.Do(req)
