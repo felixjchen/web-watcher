@@ -1,7 +1,6 @@
 # Web Watcher
 
 - [Frontend](https://webwatcher.netlify.app/) 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/9936cb1c-5bed-4ffa-add4-df35970548a7/deploy-status)](https://app.netlify.com/sites/webwatcher/deploys)
 - [REST API](https://bwaexdxnvc.execute-api.us-east-2.amazonaws.com/prod/login)
 
 - application to notify users by email whenever a webpage changes, screenshots entire webpage and creates bounding boxes to show the user what has changed
@@ -176,6 +175,7 @@
 
 ## To do
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/9936cb1c-5bed-4ffa-add4-df35970548a7/deploy-status)](https://app.netlify.com/sites/webwatcher/deploys)
 <!-- - update React templates... use react Class component for login -->
 
 - non full page screenshots
