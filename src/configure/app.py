@@ -102,10 +102,12 @@ def watchers():
         if not url: return 'Missing url'
 
         frequency = data.get('frequency')
-        if frequency is not int: frequency = int(frequency)
         if not frequency: return 'Missing frequency'
+        if frequency is not int: frequency = int(frequency)
 
+        print(f"Creating watcher for {email} at {url}")
         watcher_id, last_run = add_watcher(email, url, frequency)
+        print(f"Dibe watcher for {email} at {url}")
 
         return jsonify({
             'message': f'CREATED watcher {watcher_id}',

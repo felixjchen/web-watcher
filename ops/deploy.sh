@@ -28,7 +28,6 @@ echo "------------------------------------------------------------------"
 kubectl apply -f ../kubernetes/secrets
 kubectl apply -f ../kubernetes/services
 kubectl apply -f ../kubernetes/deployments
-sleep 15
 kubectl apply -f ../kubernetes/jobs
 echo "------------------------------------------------------------------"
 echo "Kubernetes has been configured"

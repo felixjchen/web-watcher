@@ -54,4 +54,6 @@ app.listen(8003, "0.0.0.0", async () => {
     args: ["--no-sandbox", "--disable-dev-shm-usage"],
     // headless: false,
   });
+
+  console.log("started");
 });

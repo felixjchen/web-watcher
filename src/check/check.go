@@ -17,14 +17,14 @@ var screenshotAddress = "http://0.0.0.0:8003"
 var configureAddress = "http://0.0.0.0:8004"
 var notifyAddress = "http://0.0.0.0:8006"
 
-func handleWatcher(wid string, data map[string]interface{}, wg *sync.WaitGroup) {
-	defer wg.Done()
+// func handleWatcher(wid string, data map[string]interface{}, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+func handleWatcher(wid string, data map[string]interface{}) {
 
 	lastRun := int64(data["last_run"].(float64))
 	frequency := int64(data["frequency"].(float64))
 
 	if now > lastRun+frequency {
-		////////////////////////////////////////
 		// Get old SS, get new SS, can get both files at same time in seperate threads
 		var wg2 sync.WaitGroup
 		var url string
@@ -32,7 +32,9 @@ func handleWatcher(wid string, data map[string]interface{}, wg *sync.WaitGroup) 
 		wg2.Add(1)
 		COSFilePath := "files/COS" + wid + ".png"
 		url = cloudObjectStorageAddress + "/files/" + wid + ".png"
+		fmt.Println(wid, "fetching old", url)
 		go getRequestToFile(url, COSFilePath, nil, &wg2)
+		fmt.Println(wid, "done old", url)
 		defer os.Remove(COSFilePath)
 		// Take new SS
 		wg2.Add(1)
@@ -40,7 +42,9 @@ func handleWatcher(wid string, data map[string]interface{}, wg *sync.WaitGroup) 
 		url = screenshotAddress + "/screenshot"
 		watcherURL := data["url"].(string)
 		payload := strings.NewReader("{\n   \"url\":\"" + watcherURL + "\"\n}")
+		fmt.Println(wid, "fetching new", watcherURL)
 		go getRequestToFile(url, SSFilePath, payload, &wg2)
+		fmt.Println(wid, "done new", watcherURL)
 		defer os.Remove(SSFilePath)
 		wg2.Wait()
 		////////////////////////////////////////
@@ -68,7 +72,6 @@ func handleWatcher(wid string, data map[string]interface{}, wg *sync.WaitGroup) 
 		}
 
 		url = configureAddress + "/watchers/" + wid + "?last_run=" + strconv.FormatInt(now, 10)
-		fmt.Println(url)
 		updateWatcher(url)
 
 	} else {
@@ -79,8 +82,6 @@ func handleWatcher(wid string, data map[string]interface{}, wg *sync.WaitGroup) 
 }
 
 func main() {
-	// Gonna limit number of threads
-	// runtime.GOMAXPROCS(2)
 
 	// Check if on K8 cluster and we should be getting address from env variables for services
 	_, production := os.LookupEnv("KUBERNETES_SERVICE_HOST")
@@ -103,13 +104,14 @@ func main() {
 
 	watchers := getRequestToInterface(configureAddress + "/watchers").(map[string]interface{})
 
-	var wg sync.WaitGroup
+	// var wg sync.WaitGroup
 	for wid, data := range watchers {
-		wg.Add(1)
+		// wg.Add(1)
 		data := data.(map[string]interface{})
-		go handleWatcher(wid, data, &wg)
+		handleWatcher(wid, data)
+		// go handleWatcher(wid, data, &wg)
 	}
-	wg.Wait()
+	// wg.Wait()
 	fmt.Println("Main thread completed")
 	fmt.Println("--------------------------------------------------------------------------------------------------------------------")
 

@@ -4,7 +4,7 @@ metadata:
   name: check-job
 spec:
   concurrencyPolicy: Forbid
-  schedule: "*/1 * * * *"
+  schedule: "*/15 * * * *"
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
   jobTemplate:
