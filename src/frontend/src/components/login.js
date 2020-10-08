@@ -14,9 +14,7 @@ import fractel from "./threetree_90.png";
 const Login = (props) => (
   <div id="login">
     <Header aria-label="header">
-      <HeaderName href="https://github.com/felixjchen/web-watcher" prefix="Web">
-        Watcher
-      </HeaderName>
+      <HeaderName prefix="Web">Watcher</HeaderName>
     </Header>
     <Grid>
       <Row>
@@ -27,23 +25,23 @@ const Login = (props) => (
           lg={{ span: 4, offset: 2 }}
         >
           <h1 className="bx--type-semibold">Sign in to your account</h1>
-          <TextInput 
-          id="email" 
-          labelText="Email" 
-          onKeyPress={(event) => {
-            if (event.key === "Enter") {
-              props.loginHandler({})
-            }
-          }}
+          <TextInput
+            id="email"
+            labelText="Email"
+            onKeyPress={(event) => {
+              if (event.key === "Enter") {
+                props.loginHandler({});
+              }
+            }}
           />
-          <TextInput.PasswordInput 
-          id="password" 
-          labelText="Password" 
-          onKeyPress={(event) => {
-            if (event.key === "Enter") {
-              props.loginHandler({})
-            }
-          }}
+          <TextInput.PasswordInput
+            id="password"
+            labelText="Password"
+            onKeyPress={(event) => {
+              if (event.key === "Enter") {
+                props.loginHandler({});
+              }
+            }}
           />
           <Button size="small" kind="secondary" onClick={props.signupHandler}>
             Sign up
