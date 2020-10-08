@@ -24,6 +24,10 @@
 
 ## Services
 
+### token
+- signs access_tokens, refresh_tokens upon successful login
+- signs access_tokens given refresh_token
+
 ### cloud_object_storage
 
 <!-- - [Docker image](https://hub.docker.com/repository/docker/felixchen1998/web-watcher-cloud-object-storage) -->
