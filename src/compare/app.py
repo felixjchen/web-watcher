@@ -1,5 +1,6 @@
 from gevent import monkey
-monkey.patch_all()
+if True:
+    monkey.patch_all()
 
 import os
 import io
@@ -37,7 +38,9 @@ def difference():
     file_new.save(file_path_new)
 
     # Get structural similarity index
+    print(f"Getting difference between {file_ID_old} and {file_ID_new}")
     result = str(get_difference(file_path_old, file_path_new))
+    print(f"Done difference between {file_ID_old} and {file_ID_new}")
 
     # Remove two downloaded files
     os.remove(file_path_old)
@@ -74,20 +77,22 @@ def difference_image():
     file_path_difference = os.path.join('files', f'{uuid.uuid4()}.png')
     file_path_difference = os.path.abspath(file_path_difference)
 
+    print(f"Getting difference image between {file_ID_old} and {file_ID_new}")
     create_difference_image(file_path_old, file_path_new, file_path_difference)
+    print(f"Done difference image between {file_ID_old} and {file_ID_new}")
 
     # Remove two downloaded files
     os.remove(file_path_old)
     os.remove(file_path_new)
 
     # Buffer file into memmory
-    differece_image_buffer = io.BytesIO()
-    with open(file_path_difference, 'rb') as f:
-        differece_image_buffer.write(f.read())
-    differece_image_buffer.seek(0)
-    os.remove(file_path_difference)
+    # differece_image_buffer = io.BytesIO()
+    # with open(file_path_difference, 'rb') as f:
+    #     differece_image_buffer.write(f.read())
+    # differece_image_buffer.seek(0)
+    # os.remove(file_path_difference)
 
-    return send_file(differece_image_buffer, mimetype='image/gif')
+    return send_file(file_path_difference, mimetype='image/gif')
 
 
 if __name__ == "__main__":
