@@ -27,13 +27,13 @@ echo "------------------------------------------------------------------"
 
 kubectl apply -f ../kubernetes/secrets
 kubectl apply -f ../kubernetes/services
-kubectl apply -f ../kubernetes/deployments
+kubectl apply -f ../kubernetes/deployments 
 kubectl apply -f ../kubernetes/jobs
 echo "------------------------------------------------------------------"
 echo "Kubernetes has been configured"
 echo "------------------------------------------------------------------"
 
-publicIP=$(python getClusterPublicIP.py 2>&1)
+publicIP=$(python ./lib/getClusterPublicIP.py 2>&1)
 echo "------------------------------------------------------------------"
 echo "NodePort Public IP: $publicIP" 
 echo "------------------------------------------------------------------"
