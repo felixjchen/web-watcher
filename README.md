@@ -67,8 +67,6 @@
 
 ## To do
 
-- non full page screenshots
-- purge old screenshots and fetch new
 - notification service rework, for easier redeployment, AWS?
 - configure service is slow in Python...
 - compare service takes alot of memory in Python... Go perhaps? Create a new algo?
