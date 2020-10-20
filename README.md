@@ -25,8 +25,8 @@
 
 ### token
 
-- signs access_tokens, refresh_tokens upon successful login
-- signs access_tokens given refresh_token
+- signs JWT access_tokens, refresh_tokens upon successful login
+- signs JWT access_tokens given refresh_token
 
 ### cloud_object_storage
 
