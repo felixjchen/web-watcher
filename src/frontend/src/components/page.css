@@ -1,5 +1,6 @@
 body {
   height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
 }
 
 .bx--header {
@@ -16,7 +17,7 @@ body {
 }
 
 @media only screen and (max-width: 1056px) {
-  td:nth-child(1){
+  td:nth-child(1) {
     max-width: 26vw;
     overflow: auto;
   }

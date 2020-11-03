@@ -29,6 +29,10 @@ import {
 import { Logout20 } from "@carbon/icons-react";
 import "./page.css";
 
+// https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
+const vh = window.innerHeight * 0.01;
+document.documentElement.style.setProperty("--vh", `${vh}px`);
+
 const toSeconds = {
   everyHour: 3600,
   every6Hours: 21600,
