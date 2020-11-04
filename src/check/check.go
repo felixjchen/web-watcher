@@ -17,9 +17,9 @@ var screenshotAddress = "http://0.0.0.0:8003"
 var configureAddress = "http://0.0.0.0:8004"
 var notifyAddress = "http://0.0.0.0:8006"
 
-// func handleWatcher(wid string, data map[string]interface{}, wg *sync.WaitGroup) {
-// 	defer wg.Done()
-func handleWatcher(wid string, data map[string]interface{}) {
+func handleWatcher(wid string, data map[string]interface{}, wg *sync.WaitGroup) {
+	defer wg.Done()
+// func handleWatcher(wid string, data map[string]interface{}) {
 
 	lastRun := int64(data["last_run"].(float64))
 	frequency := int64(data["frequency"].(float64))
@@ -104,12 +104,12 @@ func main() {
 
 	watchers := getRequestToInterface(configureAddress + "/watchers").(map[string]interface{})
 
-	// var wg sync.WaitGroup
+	var wg sync.WaitGroup
 	for wid, data := range watchers {
-		// wg.Add(1)
+		wg.Add(1)
 		data := data.(map[string]interface{})
-		handleWatcher(wid, data)
-		// go handleWatcher(wid, data, &wg)
+		// handleWatcher(wid, data)
+		go handleWatcher(wid, data, &wg)
 	}
 	// wg.Wait()
 	fmt.Println("Main thread completed")
