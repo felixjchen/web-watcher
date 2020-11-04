@@ -1,7 +1,7 @@
 # Web Watcher
 
 - [Frontend](https://webwatcher.netlify.app/)
-- [REST API](https://bwaexdxnvc.execute-api.us-east-2.amazonaws.com/prod/login)
+- [Gateway](https://bwaexdxnvc.execute-api.us-east-2.amazonaws.com/prod/login)
 
 - application to notify users by email whenever a webpage changes, screenshots entire webpage and creates bounding boxes to show the user what has changed
 
