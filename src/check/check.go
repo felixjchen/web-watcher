@@ -111,7 +111,7 @@ func main() {
 		// handleWatcher(wid, data)
 		go handleWatcher(wid, data, &wg)
 	}
-	// wg.Wait()
+	wg.Wait()
 	fmt.Println("Main thread completed")
 	fmt.Println("--------------------------------------------------------------------------------------------------------------------")
 
