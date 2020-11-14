@@ -20,7 +20,7 @@ def send_email(to, url_changed, difference_image_path):
 
 	msg = MIMEMultipart()
 	msg['Subject'] = 'web-watcher notification'
-	msg['From'] = USER
+	msg['From'] = 'alerterf@gmail.com'
 	msg['To'] = to
 
 	# Encapsulate the plain and HTML versions of the message body in an
@@ -43,11 +43,13 @@ def send_email(to, url_changed, difference_image_path):
 	msgImage.add_header('Content-Disposition', "attachment; filename=difference")
 	msg.attach(msgImage)
 
-	server = smtplib.SMTP( "smtp.gmail.com", 587 )
+	server = smtplib.SMTP( "smtp.sendgrid.net", 587 )
 	server.starttls()
 	server.login(USER, PASSWORD)
 	server.send_message(msg)
 	server.quit()
 	
+	print(f"Mailed {to}")
+
 if __name__ == "__main__":
-	send_email('felixchen1998@gmail.com', 'http://www.youtube.com', 'files/img.png')
+	send_email('alerterf@gmail.com', 'http://www.youtube.com', 'files/img.png')

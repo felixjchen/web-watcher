@@ -8,6 +8,7 @@ RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 RUN mkdir files
+ADD ./files files
 COPY app.py .
 COPY notify.py .
 
