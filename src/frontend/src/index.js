@@ -85,8 +85,6 @@ let signup = async () => {
   let email = document.getElementById("email").value;
   let password = document.getElementById("password").value;
 
-  render(<Loading />, document.getElementById("root"));
-
   if (
     !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
       email
@@ -95,6 +93,8 @@ let signup = async () => {
     alert("You have entered an invalid email address!");
     return true;
   }
+
+  render(<Loading />, document.getElementById("root"));
 
   let options = {
     method: "POST",
