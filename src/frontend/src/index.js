@@ -17,7 +17,7 @@ let login = async ({ email, password }) => {
     password = document.getElementById("password").value;
   }
 
-  console.log(email, password)
+  console.log(email, password);
 
   render(<Loading />, document.getElementById("root"));
 
@@ -48,7 +48,11 @@ let login = async ({ email, password }) => {
       (accessTokenExpiry - 2) * 1000
     );
     render(
-      <Page email={email} gatewayAddress={gatewayAddress} logoutHandler={logout} />,
+      <Page
+        email={email}
+        gatewayAddress={gatewayAddress}
+        logoutHandler={logout}
+      />,
       document.getElementById("root")
     );
   }
@@ -83,6 +87,15 @@ let signup = async () => {
 
   render(<Loading />, document.getElementById("root"));
 
+  if (
+    !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+      email
+    )
+  ) {
+    alert("You have entered an invalid email address!");
+    return true;
+  }
+
   let options = {
     method: "POST",
     credentials: "include",
@@ -99,7 +112,6 @@ let signup = async () => {
 
   login({ email, password });
 };
-
 
 let silentRefresh = async () => {
   let requestOptions = {
@@ -120,7 +132,11 @@ let silentRefresh = async () => {
       (accessTokenExpiry - 2) * 1000
     );
     render(
-      <Page email={email} gatewayAddress={gatewayAddress} logoutHandler={logout} />,
+      <Page
+        email={email}
+        gatewayAddress={gatewayAddress}
+        logoutHandler={logout}
+      />,
       document.getElementById("root")
     );
   }

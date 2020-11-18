@@ -19,7 +19,7 @@ else:
 def send_email(to, url_changed, difference_image_path):
 
 	msg = MIMEMultipart()
-	msg['Subject'] = 'web-watcher notification'
+	msg['Subject'] = 'Web Watcher'
 	msg['From'] = 'alerterf@gmail.com'
 	msg['To'] = to
 
@@ -32,7 +32,7 @@ def send_email(to, url_changed, difference_image_path):
 	msgAlternative.attach(msgText)
 
 	# We reference the image in the IMG SRC attribute by the ID we give it below
-	msgText = MIMEText(f'{url_changed} has changed <br><img src="cid:image1"><br>', 'html')
+	msgText = MIMEText(f'Web Watcher has detected a change for {url_changed} <br><img src="cid:image1"><br>', 'html')
 	msgAlternative.attach(msgText)
 
 	with open(difference_image_path, 'rb') as fp:
