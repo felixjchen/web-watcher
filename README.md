@@ -82,7 +82,7 @@
 
 - log events
 - JWTs (access and refresh token), Bcrypt, Cookies and CORS
-- React excels for constant rendering, Vanilla/jQuery frontend is painful
+- React excels for constant rendering, [Vanilla/jQuery frontend is painful] (https://github.com/felixjchen/web-watcher/issues/8)
 - Puppeteer can take full screen screenshots, Selenium cannot
 - Golang's goroutines are easier to use then Python threading
 - Golang's defer keyword is very useful for deleting files
