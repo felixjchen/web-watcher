@@ -42,7 +42,7 @@
 
 ### configure
 
-- reads and writes configuration to IBM Cloud Cloudant NoSQL
+- reads and writes configuration to IBM Cloud CouchDB NoSQL
 
 ### notify
 
