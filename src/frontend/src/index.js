@@ -109,11 +109,16 @@ let signup = async () => {
   let response = await fetch(`${gatewayAddress}/user`, options);
   let responseText = await response.text();
   let responseObj = JSON.parse(responseText);
+  console.log(responseObj);
 
   if (responseObj.success) {
     login({ email, password });
   } else {
     alert("Some error occurred..");
+    render(
+      <Login signupHandler={signup} loginHandler={login} />,
+      document.getElementById("root")
+    );
   }
 };
 
