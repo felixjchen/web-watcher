@@ -86,5 +86,5 @@
 - Puppeteer can take full screen screenshots, Selenium cannot
 - Golang's goroutines are easier to use then Python threading
 - Golang's defer keyword is very useful for deleting files
-- Microservice architecure allowed me to replace services seemlessly
-- Microservice architecure allowed me to use different programming languages together
+- Microservice architecture allowed me to replace services seemlessly
+- Microservice architecture allowed me to use different programming languages together
