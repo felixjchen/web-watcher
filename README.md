@@ -59,11 +59,6 @@
 
 - threaded for each watcher, check if the web page has changed, notify user with difference image on changex
 
-## Stuff
-
-[![Netlify Status](https://api.netlify.com/api/v1/badges/9936cb1c-5bed-4ffa-add4-df35970548a7/deploy-status)](https://app.netlify.com/sites/webwatcher/deploys)
-
-- https://accounts.google.com/DisplayUnlockCaptcha
 
 ## To do
 
@@ -88,3 +83,10 @@
 - Golang's defer keyword is very useful for deleting files
 - Microservice architecture allowed me to replace services seemlessly
 - Microservice architecture allowed me to use different programming languages together
+
+
+## Stuff
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/9936cb1c-5bed-4ffa-add4-df35970548a7/deploy-status)](https://app.netlify.com/sites/webwatcher/deploys)
+
+- https://accounts.google.com/DisplayUnlockCaptcha
