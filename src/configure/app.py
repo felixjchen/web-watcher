@@ -30,7 +30,8 @@ def users():
             
         return jsonify({
             'message': add_user(email, password),
-            'email': email
+            'email': email,
+            'success': True
         })
 
     return 'Error'
