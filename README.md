@@ -3,7 +3,7 @@
 
 - microservice application to notify users by email whenever a webpage changes
 - screenshots entire webpages and creates bounding boxes to show the user what has changed
-- [Frontend](https://webwatcher.netlify.app/)
+- https://webwatcher.netlify.app/
 - [Gateway API](https://bwaexdxnvc.execute-api.us-east-2.amazonaws.com/prod/login)
 
 ## Implementation
