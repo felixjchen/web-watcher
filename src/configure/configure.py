@@ -65,9 +65,6 @@ def first_screenshot(watcher_uuid, url):
 
 def add_user(email, password):
 
-    if not re.search('^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$', email):
-        return "Invalid email address"
-
     with cloudant(USERNAME, PASSWORD, url=URL, connect=True, auto_renew=True) as client:
         db = client[db_client]
         with Document(db, user_document) as document:

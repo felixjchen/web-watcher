@@ -108,9 +108,13 @@ let signup = async () => {
 
   let response = await fetch(`${gatewayAddress}/user`, options);
   let responseText = await response.text();
-  console.log(responseText);
+  let responseObj = JSON.parse(responseText);
 
-  login({ email, password });
+  if (responseObj.success) {
+    login({ email, password });
+  } else {
+    alert("Some error occurred..");
+  }
 };
 
 let silentRefresh = async () => {
