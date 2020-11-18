@@ -6,6 +6,13 @@
 - https://webwatcher.netlify.app/
 - [Gateway API](https://bwaexdxnvc.execute-api.us-east-2.amazonaws.com/prod/login)
 
+## Motivation
+
+- course work websites
+- job postings
+- shopping
+- upcoming releases
+
 ## Implementation
 
 - React with IBM Carbon Design
@@ -15,12 +22,6 @@
 - 3 Javascript services
 - Go Cron script
 
-## Motivation
-
-- course work websites
-- job postings
-- shopping
-- upcoming releases
 
 ## Services
 
