@@ -2,10 +2,10 @@
 lines=$(ibmcloud ks cluster ls | grep webWatcherCluster -c)
 if [ "$lines" -eq "0" ];
 then
+    echo "------------------------------------------------------------------"
     ibmcloud ks init
     ibmcloud ks cluster create classic --name webWatcherCluster 
 
-    echo "------------------------------------------------------------------"
     while [ "$(ibmcloud ks cluster ls | grep "^.*webWatcherCluster.*normal.*$" -c)" -ne "1" ];
     do
         sleep 30
