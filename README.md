@@ -1,8 +1,8 @@
 # Web Watcher
 
 
-- microservice application to notify users by email whenever a webpage changes
-- screenshots entire webpages and creates bounding boxes to show the user what has changed
+- application to notify users by email whenever a webpage changes
+- screenshots and creates bounding boxes on webpage differences
 - https://webwatcher.netlify.app/
 - [Gateway API](https://bwaexdxnvc.execute-api.us-east-2.amazonaws.com/prod/login)
 
