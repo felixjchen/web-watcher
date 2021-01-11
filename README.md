@@ -1,9 +1,9 @@
 # Web Watcher
 
 
-- application to notify users by email whenever a webpage changes
-- screenshots and creates bounding boxes on webpage differences
 - https://webwatcher.netlify.app/
+- notifies users by email whenever a webpage changes
+- screenshots and creates bounding boxes on webpage differences
 - [Gateway API](https://bwaexdxnvc.execute-api.us-east-2.amazonaws.com/prod/login)
 
 ## Motivation
@@ -20,7 +20,7 @@
 - microservice architecture, API gateway design pattern
 - 4 Python services
 - 3 Javascript services
-- Go Cron script
+- Go script
 
 
 ## Services
