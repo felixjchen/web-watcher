@@ -1,17 +1,7 @@
 # Web Watcher
+A microservice application to watch webpages and notify users when they change with fullpage screenshots and bounding boxes around the differences. 
 
-
-- https://webwatcher.netlify.app/
-- notifies users by email whenever a webpage changes
-- screenshots and creates bounding boxes on webpage differences
-- [Gateway API](https://bwaexdxnvc.execute-api.us-east-2.amazonaws.com/prod/login)
-
-## Motivation
-
-- course work websites
-- job postings
-- shopping
-- upcoming releases
+https://webwatcher.netlify.app/
 
 ## Implementation
 
@@ -21,46 +11,6 @@
 - 4 Python services
 - 3 Javascript services
 - Go script
-
-
-## Services
-
-### token
-
-- signs JWT access_tokens, refresh_tokens upon successful login
-- signs JWT access_tokens given refresh_token
-
-### cloud_object_storage
-
-- uploads and downloads files from IBM COS (Cloud Object Storage)
-
-### compare
-
-- find difference between two images using opencv2 and scikit-image
-
-### screenshot
-
-- uses Puppeteer to screenshot an entire webpage
-
-### configure
-
-- reads and writes configuration to IBM Cloud CouchDB NoSQL
-
-### notify
-
-- notifies users by email using smtplib and Gmail account
-
-### frontend
-
-- UI to sign up, login, add and delete watchers
-- IBM Carbon Design with React
-
-## Cron Jobs
-
-### check
-
-- threaded for each watcher, check if the web page has changed, notify user with difference image on changex
-
 
 ## To do
 
@@ -75,9 +25,9 @@
 - test suite
 - use alpine images
 
-## Takeaways
+## Learnings
 
-- log events
+- logging
 - JWTs (access and refresh token), Bcrypt, Cookies and CORS
 - React excels for constant rendering, [Vanilla/jQuery frontend is painful](https://github.com/felixjchen/web-watcher/issues/8)
 - Puppeteer can take full screen screenshots, Selenium cannot
