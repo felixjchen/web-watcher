@@ -1,5 +1,5 @@
 # Web Watcher
-A microservice application to watch webpages and notify users when they change with fullpage screenshots and bounding boxes around the differences. 
+A microservice application to notify users when webpages change with fullpage bounding boxes highlighting the changes. 
 
 https://webwatcher.netlify.app/
 
