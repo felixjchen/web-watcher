@@ -11,7 +11,7 @@ ibm-cos-sdk-core==2.6.2
 ibm-cos-sdk-s3transfer==2.6.2
 idna==2.9
 itsdangerous==1.1.0
-Jinja2==2.11.2
+Jinja2==2.11.3
 jmespath==0.9.5
 MarkupSafe==1.1.1
 python-dateutil==2.8.1
