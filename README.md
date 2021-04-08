@@ -16,7 +16,7 @@ https://webwatcher.netlify.app/
 
 - notification service rework, for easier redeployment, AWS?
 - configure service is slow in Python...
-- compare service takes alot of memory in Python... Go perhaps? Create a new algo?
+- compare service takes alot of memory in Python... Go perhaps? 
 - figure out IBM API Gateway CORS (cannot configure last time I tried...), save cents from AWS bill
 - remove token service, add all auth to Gateway
 - swagger docs
