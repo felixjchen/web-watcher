@@ -1,16 +1,16 @@
 
-A microservice application to notify users when webpages change with fullpage bounding boxes highlighting the changes. 
-
 https://webwatcher.netlify.app/
 
 ## Implementation
 
+- Deployed with AWS API Gateway, IBM Cloud Kubernetes Service, IBM COS, IBM Cloudant DB
+
 - React with IBM Carbon Design
-- JWTs (access and refresh token), Bcrypt, Cookies and CORS
 - microservice architecture, API gateway design pattern
+- JWTs (access and refresh token), Bcrypt, Cookies and CORS
 - 4 Python services
 - 3 Javascript services
-- Go script
+- Go Cronjob script
 
 ## To do
 
