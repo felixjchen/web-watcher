@@ -1,6 +1,6 @@
 
 
-Capture web page changes and recieve notifications
+Captures web page changes and notifies users
 
 
  🌐 [Application](https://webwatcher.netlify.app/)
