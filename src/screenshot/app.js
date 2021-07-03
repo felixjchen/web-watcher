@@ -25,7 +25,7 @@ const screenshot = async (url) => {
   await new Promise((resolve) => setTimeout(resolve, 3000));
   await page.screenshot({
     path: filePath,
-    fullPage: false,
+    fullPage: true,
   });
 
   await page.close();

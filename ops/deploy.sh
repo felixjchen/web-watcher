@@ -33,7 +33,7 @@ echo "------------------------------------------------------------------"
 echo "Kubernetes has been configured"
 echo "------------------------------------------------------------------"
 
-publicIP=$(python ./lib/getClusterPublicIP.py 2>&1)
+publicIP=$(python getClusterPublicIP.py 2>&1)
 echo "------------------------------------------------------------------"
 echo "NodePort Public IP: $publicIP" 
 echo "------------------------------------------------------------------"
