@@ -3,7 +3,7 @@
 Captures web page changes and notifies users
 
 
- 🌐 [Application](https://webwatcher.netlify.app/)
+ 🌐 [Application](https://webwatcher.netlify.app/) Note: This is not maintained anymore
 
 ## Implementation
 
